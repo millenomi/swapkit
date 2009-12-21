@@ -8,10 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-// String. Automatically taken from CFBundleIdentifier if not present.
+// These constants are the keys in an app registration -- a dictionary that says what an app can do. You can -- indeed, if you use SwapKit, you're expected to -- add a registration for your app, and you can query the services for all registrations on the system.
+// These constants are used:
+// - in Info.plist, in a dictionary under the ILSwapRegistration key, if you're using +didFinishLaunchingWithOptions: (much easier), or
+// - as an argument to -registerWithAttributes:, if you are using it, less commonly, or
+// - in the dictionaries returned by -applicationRegistrations and related methods (and in dictionaries passed to any ...Registration: argument).
+
+// String. A unique identifier for your app. Automatically taken from CFBundleIdentifier if not given.
 #define kILAppIdentifier @"ILAppIdentifier"
 
-// String. Automatically taken from CFBundleDisplayName or CFBundleName or the bundle's name on the filesystem if not present. Localized, user-visible.
+// String. Localized, user-visible name for your app. Automatically taken from CFBundleDisplayName or CFBundleName or the bundle's name on the filesystem if not present.
 #define kILAppVisibleName @"ILAppVisibleName" 
 
 // String. The URL scheme that can be used to send items to this application.
@@ -29,10 +35,12 @@
 // Property list object. The bundle version (CFBundleVersion in Info.plist). Used to update the registration after an app update. Will be ignored and overwritten by the internal registration machinery if given.
 #define kILAppVersion @"ILAppVersion"
 
-// --
+// -- - --
 
 // The key in Info.plist the swap service will look for when autoregistering in didFinishLaunchingWithOptions:.
 #define kILSwapServiceRegistrationInfoDictionaryKey @"ILSwapRegistration"
+
+// -- - --
 
 @protocol ILSwapServiceDelegate;
 
@@ -107,3 +115,4 @@
 - (void) swapServiceDidReceiveItemsInPasteboard:(UIPasteboard*) pasteboard;
 
 @end
+
