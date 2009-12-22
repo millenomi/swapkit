@@ -61,7 +61,6 @@
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
-				15F4E0F010DFD31B00C17BF0 /* MobileCoreServices.framework */,
 			);
 			name = SwapKit;
 			sourceTree = "<group>";
@@ -69,6 +68,7 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				15F4E0F010DFD31B00C17BF0 /* MobileCoreServices.framework */,
 				AACBBE490F95108600F1A2B1 /* Foundation.framework */,
 			);
 			name = Frameworks;
