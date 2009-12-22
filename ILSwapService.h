@@ -51,7 +51,7 @@
 
 // -- - --
 
-// These keys are used in the attributes array that's passed to -sendPasteboard:attributes:toApplicationWithRegistration: and -swapServiceDidReceiveItemsInPasteboard:attributes:.
+// These keys are used in the attributes array that's passed to -sendRequestWithAttributes:toApplicationWithRegistration: and -swapServiceDidReceiveItemsInPasteboard:attributes:.
 // Those dictionaries can contain any custom key, so long that it does not have the @"swap." prefix.
 
 #define kILSwapServicePasteboardNameKey @"swap.pasteboard"
