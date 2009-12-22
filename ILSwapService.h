@@ -133,6 +133,7 @@
 
 // Called whenever somebody calls our receive URL scheme. The pasteboard contains the passed-in items.
 // Please note: the pasteboard will be automatically invalidated and deleted after this call. You must copy or retain any data you wish to keep.
+// 'attributes' contains the attributes that were passed to -sendRequestWithAttributes:toApplicationWithRegistration:. Usually, the most interesting key in there is kILSwapServiceActionKey, which contains the action the other app intended for your data.
 - (void) swapServiceDidReceiveItemsInPasteboard:(UIPasteboard*) pasteboard attributes:(NSDictionary*) attributes;
 
 @end
