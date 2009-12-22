@@ -13,8 +13,6 @@
 #define kILSwapServiceLastRegistrationUUIDDefaultsKey @"ILSwapServiceLastRegistrationUUID"
 #define kILSwapServiceRegistrationUTI @"net.infinite-labs.SwapKit.Registration"
 
-#define kILSwapServiceReceiveURLPasteboardKey @"pasteboard"
-
 #import "L0UUID.h"
 #import "NSURL+L0URLParsing.h"
 
@@ -133,6 +131,9 @@ L0ObjCSingletonMethod(sharedService)
 		
 		if (![reg objectForKey:kILAppSupportsReceivingMultipleItems])
 			[reg setObject:[NSNumber numberWithBool:NO] forKey:kILAppSupportsReceivingMultipleItems];
+		
+		if (![reg objectForKey:kILAppSupportedActions])
+			[reg setObject:[NSArray arrayWithObject:kILSwapDefaultAction] forKey:kILAppSupportedActions];
 	}
 	
 	NSArray* registrationItemArray = [NSArray arrayWithObject:
@@ -162,11 +163,11 @@ L0ObjCSingletonMethod(sharedService)
 		return NO;
 	
 	if ([[u scheme] isEqual:recvScheme]) {
-		if (![delegate respondsToSelector:@selector(swapServiceDidReceiveItemsInPasteboard:)])
+		if (![delegate respondsToSelector:@selector(swapServiceDidReceiveItemsInPasteboard:attributes:)])
 			return NO;
 		
 		NSDictionary* parts = [u dictionaryByDecodingQueryString];
-		NSString* pasteboardName = [parts objectForKey:kILSwapServiceReceiveURLPasteboardKey];
+		NSString* pasteboardName = [parts objectForKey:kILSwapServicePasteboardNameKey];
 		if (!pasteboardName)
 			return NO;
 		
@@ -174,7 +175,7 @@ L0ObjCSingletonMethod(sharedService)
 		if (!pb)
 			return NO;
 		
-		[delegate swapServiceDidReceiveItemsInPasteboard:pb];
+		[delegate swapServiceDidReceiveItemsInPasteboard:pb attributes:parts];
 		[UIPasteboard removePasteboardWithName:pb.name];
 		return YES;
 	}
@@ -217,46 +218,64 @@ L0ObjCSingletonMethod(sharedService)
 	return [[self applicationRegistrations] objectForKey:appID];
 }
 
-- (BOOL) sendItems:(NSArray*) items ofType:(id) uti toApplicationWithIdentifier:(NSString*) appID;
+- (NSDictionary*) applicationRegistrationForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
 {
-	if ([items count] == 0)
-		return NO;
+	if (!action)
+		action = kILSwapDefaultAction;
 	
 	NSDictionary* reg = nil;
+	BOOL isMany = [items count] > 1;
+	for (NSString* candidateAppID in [self applicationRegistrations]) {
+		NSDictionary* r = [[self applicationRegistrations] objectForKey:candidateAppID];
+		if (![r objectForKey:kILAppReceiveItemURLScheme])
+			continue;
+		
+		if (![[r objectForKey:kILAppSupportedActions] containsObject:action])
+			continue;
+		
+		if (![L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]) containsObject:uti])
+			continue;
+		
+		if (isMany && ![L0As(NSNumber, [r objectForKey:kILAppSupportsReceivingMultipleItems]) boolValue])
+			continue;
+		
+		reg = r;
+		break;
+	}
 	
-	if (appID)
-		reg = [self registrationForApplicationWithIdentifier:appID];
-	else {
-		BOOL isMany = [items count] > 1;
+	if (!reg && isMany) {
 		for (NSString* candidateAppID in [self applicationRegistrations]) {
 			NSDictionary* r = [[self applicationRegistrations] objectForKey:candidateAppID];
 			if (![r objectForKey:kILAppReceiveItemURLScheme])
 				continue;
 			
-			if (![L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]) containsObject:uti])
+			if (![[r objectForKey:kILAppSupportedActions] containsObject:action])
 				continue;
 			
-			if (isMany && ![L0As(NSNumber, [r objectForKey:kILAppSupportsReceivingMultipleItems]) boolValue])
+			if (![L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]) containsObject:uti])
 				continue;
 			
 			reg = r;
 			break;
 		}
-		
-		if (!reg && isMany) {
-			for (NSString* candidateAppID in [self applicationRegistrations]) {
-				NSDictionary* r = [[self applicationRegistrations] objectForKey:candidateAppID];
-				if (![r objectForKey:kILAppReceiveItemURLScheme])
-					continue;
-				
-				if (![L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]) containsObject:uti])
-					continue;
-				
-				reg = r;
-				break;
-			}
-		}
 	}
+	
+	return reg;
+}
+
+- (BOOL) sendItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) appID;
+{
+	if ([items count] == 0)
+		return NO;
+	
+	if (!action)
+		action = kILSwapDefaultAction;
+	
+	NSDictionary* reg = nil;
+	if (appID)
+		reg = [self registrationForApplicationWithIdentifier:appID];
+	else 
+		reg = [self applicationRegistrationForSendingItems:items ofType:uti forAction:action];
 	
 	if (!reg)
 		return NO;
@@ -276,19 +295,24 @@ L0ObjCSingletonMethod(sharedService)
 	}
 	pb.items = a;
 	
-	BOOL done = [self sendPasteboard:pb toApplicationWithRegistration:reg];
+	NSDictionary* attrs = [NSDictionary dictionaryWithObjectsAndKeys:
+						   pb.name, kILSwapServicePasteboardNameKey,
+						   action, kILSwapServiceActionKey,
+						   nil];
+	
+	BOOL done = [self sendRequestWithAttributes:attrs toApplicationWithRegistration:reg];
 	if (!done)
 		[UIPasteboard removePasteboardWithName:pb.name];
 	return done;
 }
 
-- (BOOL) sendPasteboard:(UIPasteboard *)pb toApplicationWithRegistration:(NSDictionary *)reg;
+- (BOOL) sendRequestWithAttributes:(NSDictionary*) attributes toApplicationWithRegistration:(NSDictionary*) reg;
 {
 	NSString* s = [reg objectForKey:kILAppReceiveItemURLScheme];
 	if (!s)
 		return NO;
-	
-	NSString* queryString = [[NSDictionary dictionaryWithObject:pb.name forKey:kILSwapServiceReceiveURLPasteboardKey] queryString];
+		
+	NSString* queryString = [attributes queryString];
 	NSString* urlString = [NSString stringWithFormat:@"%@:?%@", s, queryString];
 	NSURL* u = [NSURL URLWithString:urlString];
 	if (!u)
@@ -297,8 +321,7 @@ L0ObjCSingletonMethod(sharedService)
 	if (![[UIApplication sharedApplication] canOpenURL:u])
 		return NO;
 	
-	[[UIApplication sharedApplication] openURL:u];
-	return YES;
+	return [[UIApplication sharedApplication] openURL:u];
 }
 
 @end
