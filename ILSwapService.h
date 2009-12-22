@@ -55,7 +55,7 @@
 // Those dictionaries can contain any custom key, so long that it does not have the @"swap." prefix.
 
 #define kILSwapServicePasteboardNameKey @"swap.pasteboard"
-#define kILSwapServiceActionKey @"swap.ction"
+#define kILSwapServiceActionKey @"swap.action"
 
 // -- - --
 
