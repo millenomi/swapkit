@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		157B24CB10E518A3001DE5CC /* ILSwapCommonActions.h in Headers */ = {isa = PBXBuildFile; fileRef = 157B24C910E518A3001DE5CC /* ILSwapCommonActions.h */; };
+		157B24CC10E518A3001DE5CC /* ILSwapCommonActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 157B24CA10E518A3001DE5CC /* ILSwapCommonActions.m */; };
+		157B24CF10E51B3C001DE5CC /* ILSwapSendingController.h in Headers */ = {isa = PBXBuildFile; fileRef = 157B24CD10E51B3C001DE5CC /* ILSwapSendingController.h */; };
+		157B24D010E51B3C001DE5CC /* ILSwapSendingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 157B24CE10E51B3C001DE5CC /* ILSwapSendingController.m */; };
 		15F4E0E610DFD02F00C17BF0 /* ILSwapService.h in Headers */ = {isa = PBXBuildFile; fileRef = 15F4E0E410DFD02F00C17BF0 /* ILSwapService.h */; };
 		15F4E0E710DFD02F00C17BF0 /* ILSwapService.m in Sources */ = {isa = PBXBuildFile; fileRef = 15F4E0E510DFD02F00C17BF0 /* ILSwapService.m */; };
 		15F4E0EA10DFD16800C17BF0 /* L0UUID.h in Headers */ = {isa = PBXBuildFile; fileRef = 15F4E0E810DFD16800C17BF0 /* L0UUID.h */; };
@@ -20,6 +24,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		157B24C910E518A3001DE5CC /* ILSwapCommonActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapCommonActions.h; sourceTree = "<group>"; };
+		157B24CA10E518A3001DE5CC /* ILSwapCommonActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapCommonActions.m; sourceTree = "<group>"; };
+		157B24CD10E51B3C001DE5CC /* ILSwapSendingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapSendingController.h; sourceTree = "<group>"; };
+		157B24CE10E51B3C001DE5CC /* ILSwapSendingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapSendingController.m; sourceTree = "<group>"; };
 		15F4E0E410DFD02F00C17BF0 /* ILSwapService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapService.h; sourceTree = "<group>"; };
 		15F4E0E510DFD02F00C17BF0 /* ILSwapService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapService.m; sourceTree = "<group>"; };
 		15F4E0E810DFD16800C17BF0 /* L0UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = L0UUID.h; sourceTree = "<group>"; };
@@ -77,6 +85,10 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				157B24CD10E51B3C001DE5CC /* ILSwapSendingController.h */,
+				157B24CE10E51B3C001DE5CC /* ILSwapSendingController.m */,
+				157B24C910E518A3001DE5CC /* ILSwapCommonActions.h */,
+				157B24CA10E518A3001DE5CC /* ILSwapCommonActions.m */,
 				15F4E0EC10DFD19300C17BF0 /* NSURL+L0URLParsing.h */,
 				15F4E0ED10DFD19300C17BF0 /* NSURL+L0URLParsing.m */,
 				15F4E0E810DFD16800C17BF0 /* L0UUID.h */,
@@ -108,6 +120,8 @@
 				15F4E0EA10DFD16800C17BF0 /* L0UUID.h in Headers */,
 				15F4E0EE10DFD19300C17BF0 /* NSURL+L0URLParsing.h in Headers */,
 				15F4E14910E0052100C17BF0 /* SwapKit.h in Headers */,
+				157B24CB10E518A3001DE5CC /* ILSwapCommonActions.h in Headers */,
+				157B24CF10E51B3C001DE5CC /* ILSwapSendingController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +171,8 @@
 				15F4E0E710DFD02F00C17BF0 /* ILSwapService.m in Sources */,
 				15F4E0EB10DFD16800C17BF0 /* L0UUID.m in Sources */,
 				15F4E0EF10DFD19300C17BF0 /* NSURL+L0URLParsing.m in Sources */,
+				157B24CC10E518A3001DE5CC /* ILSwapCommonActions.m in Sources */,
+				157B24D010E51B3C001DE5CC /* ILSwapSendingController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

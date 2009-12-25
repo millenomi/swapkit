@@ -162,22 +162,29 @@ L0ObjCSingletonMethod(sharedService)
 	if (!recvScheme)
 		return NO;
 	
+	NSDictionary* parts = [u dictionaryByDecodingQueryString];
+
 	if ([[u scheme] isEqual:recvScheme]) {
-		if (![delegate respondsToSelector:@selector(swapServiceDidReceiveItemsInPasteboard:attributes:)])
-			return NO;
+		if ([delegate respondsToSelector:@selector(swapServiceDidReceiveItemsInPasteboard:attributes:)]) {
 		
-		NSDictionary* parts = [u dictionaryByDecodingQueryString];
-		NSString* pasteboardName = [parts objectForKey:kILSwapServicePasteboardNameKey];
-		if (!pasteboardName)
-			return NO;
+			NSString* pasteboardName = [parts objectForKey:kILSwapServicePasteboardNameKey];
+			
+			UIPasteboard* pb = nil;
+			
+			if (pasteboardName)
+				pb = [UIPasteboard pasteboardWithName:pasteboardName create:YES];
+			
+			if (pb.numberOfItems > 0) {
+				[delegate swapServiceDidReceiveItemsInPasteboard:pb attributes:parts];
+				[UIPasteboard removePasteboardWithName:pb.name];
+				return YES;
+			}
+		}
 		
-		UIPasteboard* pb = [UIPasteboard pasteboardWithName:pasteboardName create:YES];
-		if (!pb)
-			return NO;
-		
-		[delegate swapServiceDidReceiveItemsInPasteboard:pb attributes:parts];
-		[UIPasteboard removePasteboardWithName:pb.name];
-		return YES;
+		if ([delegate respondsToSelector:@selector(swapServiceDidReceiveRequestWithAttributes:)]) {
+			[delegate swapServiceDidReceiveRequestWithAttributes:parts];
+			return YES;
+		}
 	}
 	
 	return NO;
@@ -261,6 +268,29 @@ L0ObjCSingletonMethod(sharedService)
 	}
 	
 	return reg;
+}
+
+- (NSArray*) allApplicationRegistrationsForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
+{
+	if (!action)
+		action = kILSwapDefaultAction;
+	
+	NSMutableArray* candidates = [NSMutableArray array];
+	for (NSString* candidateAppID in [self applicationRegistrations]) {
+		NSDictionary* r = [[self applicationRegistrations] objectForKey:candidateAppID];
+		if (![r objectForKey:kILAppReceiveItemURLScheme])
+			continue;
+		
+		if (![[r objectForKey:kILAppSupportedActions] containsObject:action])
+			continue;
+		
+		if (![L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]) containsObject:uti])
+			continue;
+		
+		[candidates addObject:r];
+	}	
+	
+	return candidates;
 }
 
 - (BOOL) sendItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) appID;

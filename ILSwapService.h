@@ -75,7 +75,7 @@
 // Registers this app to Swap Services. Most methods of this class DO NOT WORK unless this method is called first with valid attributes. Methods that only work after registration are noted in their comments below.
 - (void) registerWithAttributes:(NSDictionary*) a;
 
-// Called to perform appropriate delegate method calls based on the URL. Returns YES if it has performed any action based on the URL (such as calling a delegate method), NO otherwise.
+// Called to perform appropriate delegate method calls based on the URL. Returns YES if it has performed any action based on the URL (such as calling a delegate method), NO otherwise. Calling delegate methods require having called -registerWithAttributes: since the app launched.
 - (BOOL) performActionsForURL:(NSURL*) u;
 
 // Convenience method:
@@ -119,6 +119,9 @@
 // Passing nil for the action is the same as passing kILSwapDefaultAction.
 - (NSDictionary*) applicationRegistrationForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
 
+// As above, but returns all applicable registrations.
+- (NSArray*) allApplicationRegistrationsForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
+
 // Sends a request with the given attributes to the app with the given registration, which cannot be nil.
 // This method does no checking -- it is assumed that this method is called with an attributes dictionary that will be successfully parsed by another app. Note that this at the moment means that it must contain the kILSwapServicePasteboardNameKey pointing to an actual persistent pasteboard. -sendItems:ofType:forAction:toApplicationWithIdentifier: uses this method to send appropriately-formatted requests.
 // Returns YES if the item was dispatched to the app, NO otherwise. (This only happens in cases of force majeoure -- eg the app does not have a URL scheme for receiving.)
@@ -131,10 +134,13 @@
 
 @optional
 
-// Called whenever somebody calls our receive URL scheme. The pasteboard contains the passed-in items.
+// Called whenever somebody calls our receive URL scheme for requests sent by -sendItems:ofType:toApplicationWithIdentifier:. The pasteboard contains the passed-in items.
 // Please note: the pasteboard will be automatically invalidated and deleted after this call. You must copy or retain any data you wish to keep.
 // 'attributes' contains the attributes that were passed to -sendRequestWithAttributes:toApplicationWithRegistration:. Usually, the most interesting key in there is kILSwapServiceActionKey, which contains the action the other app intended for your data.
 - (void) swapServiceDidReceiveItemsInPasteboard:(UIPasteboard*) pasteboard attributes:(NSDictionary*) attributes;
+
+// Called whenever somebody calls our receive URL scheme for requests not caught by the above delegate method. Can be used to receive custom requests sent through -sendRequestWithAttributes:toApplicationWithRegistration:.
+- (void) swapServiceDidReceiveRequestWithAttributes:(NSDictionary*) dictionary;
 
 @end
 
