@@ -6,6 +6,21 @@
 	objectVersion = 45;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		15EAA0E610E690F100B7321A /* SwapKit (Source) */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 15EAA0F910E6910500B7321A /* Build configuration list for PBXAggregateTarget "SwapKit (Source)" */;
+			buildPhases = (
+				15EAA0E510E690F100B7321A /* CopyFiles */,
+			);
+			dependencies = (
+				15EAA0EA10E690F600B7321A /* PBXTargetDependency */,
+			);
+			name = "SwapKit (Source)";
+			productName = "SwapKit (Source)";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		157B24CB10E518A3001DE5CC /* ILSwapCommonActions.h in Headers */ = {isa = PBXBuildFile; fileRef = 157B24C910E518A3001DE5CC /* ILSwapCommonActions.h */; };
 		157B24CC10E518A3001DE5CC /* ILSwapCommonActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 157B24CA10E518A3001DE5CC /* ILSwapCommonActions.m */; };
@@ -15,6 +30,10 @@
 		15A75AA610E601800028C0EE /* ILSwapSendingController.h in Headers */ = {isa = PBXBuildFile; fileRef = 157B24CD10E51B3C001DE5CC /* ILSwapSendingController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		15A75AA710E601800028C0EE /* ILSwapService.h in Headers */ = {isa = PBXBuildFile; fileRef = 15F4E0E410DFD02F00C17BF0 /* ILSwapService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		15A75AA810E601800028C0EE /* SwapKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 15F4E14810E0052100C17BF0 /* SwapKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		15EAA0EF10E6910300B7321A /* ILSwapCommonActions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 157B24C910E518A3001DE5CC /* ILSwapCommonActions.h */; };
+		15EAA0F010E6910300B7321A /* ILSwapSendingController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 157B24CD10E51B3C001DE5CC /* ILSwapSendingController.h */; };
+		15EAA0F110E6910300B7321A /* ILSwapService.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 15F4E0E410DFD02F00C17BF0 /* ILSwapService.h */; };
+		15EAA0F210E6910300B7321A /* SwapKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 15F4E14810E0052100C17BF0 /* SwapKit.h */; };
 		15F4E0E610DFD02F00C17BF0 /* ILSwapService.h in Headers */ = {isa = PBXBuildFile; fileRef = 15F4E0E410DFD02F00C17BF0 /* ILSwapService.h */; };
 		15F4E0E710DFD02F00C17BF0 /* ILSwapService.m in Sources */ = {isa = PBXBuildFile; fileRef = 15F4E0E510DFD02F00C17BF0 /* ILSwapService.m */; };
 		15F4E0EA10DFD16800C17BF0 /* L0UUID.h in Headers */ = {isa = PBXBuildFile; fileRef = 15F4E0E810DFD16800C17BF0 /* L0UUID.h */; };
@@ -25,6 +44,32 @@
 		15F4E14910E0052100C17BF0 /* SwapKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 15F4E14810E0052100C17BF0 /* SwapKit.h */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		15EAA0E910E690F600B7321A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = SwapKit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		15EAA0E510E690F100B7321A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(BUILT_PRODUCTS_DIR)/Headers";
+			dstSubfolderSpec = 0;
+			files = (
+				15EAA0EF10E6910300B7321A /* ILSwapCommonActions.h in CopyFiles */,
+				15EAA0F010E6910300B7321A /* ILSwapSendingController.h in CopyFiles */,
+				15EAA0F110E6910300B7321A /* ILSwapService.h in CopyFiles */,
+				15EAA0F210E6910300B7321A /* SwapKit.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		157B24C910E518A3001DE5CC /* ILSwapCommonActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapCommonActions.h; sourceTree = "<group>"; };
@@ -203,6 +248,7 @@
 			targets = (
 				D2AAC07D0554694100DB518D /* SwapKit */,
 				15A75A9510E600940028C0EE /* SwapKit (Framework) */,
+				15EAA0E610E690F100B7321A /* SwapKit (Source) */,
 			);
 		};
 /* End PBXProject section */
@@ -255,6 +301,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		15EAA0EA10E690F600B7321A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D2AAC07D0554694100DB518D /* SwapKit */;
+			targetProxy = 15EAA0E910E690F600B7321A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		15A75A9710E600940028C0EE /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -304,6 +358,27 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = SwapKit;
 				SDKROOT = "";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		15EAA0E710E690F100B7321A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "SwapKit (Source)";
+			};
+			name = Debug;
+		};
+		15EAA0E810E690F100B7321A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "SwapKit (Source)";
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -375,6 +450,15 @@
 			buildConfigurations = (
 				15A75A9710E600940028C0EE /* Debug */,
 				15A75A9810E600940028C0EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		15EAA0F910E6910500B7321A /* Build configuration list for PBXAggregateTarget "SwapKit (Source)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				15EAA0E710E690F100B7321A /* Debug */,
+				15EAA0E810E690F100B7321A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
