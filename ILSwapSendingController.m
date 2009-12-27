@@ -53,15 +53,15 @@
 - (void) send:(UIView*) v;
 {
 	ILSwapService* s = [ILSwapService sharedService];
-	NSArray* d = [s allApplicationRegistrationsForSendingItems:items ofType:type forAction:action];
+	NSArray* candidates = [s allApplicationRegistrationsForSendingItems:items ofType:type forAction:action];
 	
-	if ([d count] == 0)
+	if ([candidates count] == 0)
 		return;
 	
-	if ([d count] == 1) {
-		[s sendItems:items ofType:type forAction:action toApplicationWithIdentifier:[[d objectAtIndex:0] objectForKey:kILAppIdentifier]];
-		return;
-	}
+//	if ([d count] == 1) {
+//		[s sendItems:items ofType:type forAction:action toApplicationWithIdentifier:[[d objectAtIndex:0] objectForKey:kILAppIdentifier]];
+//		return;
+//	}
 	
 	[destinations release]; destinations = nil;
 	NSMutableArray* dests = [NSMutableArray array];
@@ -70,7 +70,7 @@
 	UIActionSheet* sheet = [[UIActionSheet new] autorelease];
 	sheet.delegate = self;
 	
-	for (NSDictionary* app in destinations) {
+	for (NSDictionary* app in candidates) {
 		if (![app objectForKey:kILAppVisibleName])
 			continue;
 		
