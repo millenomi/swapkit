@@ -395,7 +395,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(INFINITELABS_TOOLS)/Common/iPhone/UIKit.pch";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Tools/Common/iPhone/UIKit.pch";
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = SwapKit;
 			};
@@ -409,7 +409,7 @@
 				DSTROOT = /tmp/SwapKit.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(INFINITELABS_TOOLS)/Common/iPhone/UIKit.pch";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Tools/Common/iPhone/UIKit.pch";
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = SwapKit;
 			};

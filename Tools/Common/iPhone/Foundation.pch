@@ -1,0 +1,7 @@
+// Precompiled header for Foundation-only targets.
+
+#import "Common.h"
+
+#ifdef __OBJC__
+	#import <Foundation/Foundation.h>
+#endif

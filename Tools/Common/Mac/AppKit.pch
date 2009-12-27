@@ -1,0 +1,7 @@
+// Precompiled header for AppKit-aware targets.
+
+#import "Common.h"
+
+#ifdef __OBJC__
+	#import <Cocoa/Cocoa.h>
+#endif
