@@ -59,7 +59,7 @@
 		15EAA0E510E690F100B7321A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "$(BUILT_PRODUCTS_DIR)/Headers";
+			dstPath = "$(SYMROOT)/Headers/SwapKit";
 			dstSubfolderSpec = 0;
 			files = (
 				15EAA0EF10E6910300B7321A /* ILSwapCommonActions.h in CopyFiles */,
