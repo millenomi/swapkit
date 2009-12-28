@@ -41,10 +41,10 @@
 				<int key="NSvFlags">1316</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUITextView" id="23134707">
+					<object class="IBUITextView" id="779589977">
 						<reference key="NSNextResponder" ref="380026005"/>
 						<int key="NSvFlags">1298</int>
-						<string key="NSFrame">{{0, 64}, {320, 372}}</string>
+						<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 						<reference key="NSSuperview" ref="380026005"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -58,7 +58,7 @@
 							<int key="IBUIAutocapitalizationType">2</int>
 						</object>
 					</object>
-					<object class="IBUINavigationBar" id="643449862">
+					<object class="IBUINavigationBar" id="64281601">
 						<reference key="NSNextResponder" ref="380026005"/>
 						<int key="NSvFlags">1314</int>
 						<string key="NSFrame">{{0, 20}, {320, 44}}</string>
@@ -67,36 +67,9 @@
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<object class="NSArray" key="IBUIItems">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUINavigationItem" id="502994350">
-								<reference key="IBUINavigationBar" ref="643449862"/>
-								<string key="IBUITitle">SwapKit Send Test</string>
-								<object class="IBUIBarButtonItem" key="IBUIRightBarButtonItem" id="665798446">
-									<int key="IBUIStyle">2</int>
-									<int key="IBUISystemItemIdentifier">0</int>
-								</object>
-							</object>
-						</object>
-					</object>
-					<object class="IBUIToolbar" id="770202404">
-						<reference key="NSNextResponder" ref="380026005"/>
-						<int key="NSvFlags">1290</int>
-						<string key="NSFrame">{{0, 436}, {320, 44}}</string>
-						<reference key="NSSuperview" ref="380026005"/>
-						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-						<object class="NSMutableArray" key="IBUIItems">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIBarButtonItem" id="363927459">
-								<reference key="IBUIToolbar" ref="770202404"/>
-								<int key="IBUISystemItemIdentifier">5</int>
-							</object>
-							<object class="IBUIBarButtonItem" id="668890941">
-								<reference key="IBUIToolbar" ref="770202404"/>
-								<int key="IBUISystemItemIdentifier">9</int>
-							</object>
-							<object class="IBUIBarButtonItem" id="68808911">
-								<reference key="IBUIToolbar" ref="770202404"/>
-								<int key="IBUISystemItemIdentifier">5</int>
+							<object class="IBUINavigationItem" id="846096485">
+								<reference key="IBUINavigationBar" ref="64281601"/>
+								<string key="IBUITitle">Receiver</string>
 							</object>
 						</object>
 					</object>
@@ -134,43 +107,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">loremIpsumView</string>
+						<string key="label">textView</string>
 						<reference key="source" ref="664661524"/>
-						<reference key="destination" ref="23134707"/>
+						<reference key="destination" ref="779589977"/>
 					</object>
-					<int key="connectionID">17</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">send</string>
-						<reference key="source" ref="668890941"/>
-						<reference key="destination" ref="664661524"/>
-					</object>
-					<int key="connectionID">18</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">delegate</string>
-						<reference key="source" ref="23134707"/>
-						<reference key="destination" ref="664661524"/>
-					</object>
-					<int key="connectionID">20</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">doneButton</string>
-						<reference key="source" ref="664661524"/>
-						<reference key="destination" ref="665798446"/>
-					</object>
-					<int key="connectionID">21</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">done</string>
-						<reference key="source" ref="665798446"/>
-						<reference key="destination" ref="664661524"/>
-					</object>
-					<int key="connectionID">22</int>
+					<int key="connectionID">13</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -187,9 +128,8 @@
 						<reference key="object" ref="380026005"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="643449862"/>
-							<reference ref="770202404"/>
-							<reference ref="23134707"/>
+							<reference ref="64281601"/>
+							<reference ref="779589977"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -211,57 +151,22 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">10</int>
-						<reference key="object" ref="643449862"/>
+						<reference key="object" ref="64281601"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="502994350"/>
+							<reference ref="846096485"/>
 						</object>
 						<reference key="parent" ref="380026005"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">11</int>
-						<reference key="object" ref="502994350"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="665798446"/>
-						</object>
-						<reference key="parent" ref="643449862"/>
+						<reference key="object" ref="846096485"/>
+						<reference key="parent" ref="64281601"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">12</int>
-						<reference key="object" ref="770202404"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="668890941"/>
-							<reference ref="363927459"/>
-							<reference ref="68808911"/>
-						</object>
+						<reference key="object" ref="779589977"/>
 						<reference key="parent" ref="380026005"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">13</int>
-						<reference key="object" ref="668890941"/>
-						<reference key="parent" ref="770202404"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">14</int>
-						<reference key="object" ref="363927459"/>
-						<reference key="parent" ref="770202404"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">15</int>
-						<reference key="object" ref="68808911"/>
-						<reference key="parent" ref="770202404"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">16</int>
-						<reference key="object" ref="23134707"/>
-						<reference key="parent" ref="380026005"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">19</int>
-						<reference key="object" ref="665798446"/>
-						<reference key="parent" ref="502994350"/>
 					</object>
 				</object>
 			</object>
@@ -274,11 +179,6 @@
 					<string>10.IBPluginDependency</string>
 					<string>11.IBPluginDependency</string>
 					<string>12.IBPluginDependency</string>
-					<string>13.IBPluginDependency</string>
-					<string>14.IBPluginDependency</string>
-					<string>15.IBPluginDependency</string>
-					<string>16.IBPluginDependency</string>
-					<string>19.IBPluginDependency</string>
 					<string>2.IBAttributePlaceholdersKey</string>
 					<string>2.IBEditorWindowLastContentRect</string>
 					<string>2.IBPluginDependency</string>
@@ -292,11 +192,6 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSMutableDictionary">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<reference key="dict.sortedKeys" ref="0"/>
@@ -304,9 +199,9 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 						</object>
 					</object>
-					<string>{{594, 339}, {320, 480}}</string>
+					<string>{{502, 320}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>SendingSampleAppDelegate</string>
+					<string>ReceivingSampleAppDelegate</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -326,49 +221,34 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">22</int>
+			<int key="maxID">13</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
-					<string key="className">SendingSampleAppDelegate</string>
+					<string key="className">ReceivingSampleAppDelegate</string>
 					<string key="superclassName">NSObject</string>
-					<object class="NSMutableDictionary" key="actions">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>done</string>
-							<string>send</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-						</object>
-					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>doneButton</string>
-							<string>loremIpsumView</string>
+							<string>textView</string>
 							<string>window</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UIBarButtonItem</string>
 							<string>UITextView</string>
 							<string>UIWindow</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/SendingSampleAppDelegate.h</string>
+						<string key="minorKey">Classes/ReceivingSampleAppDelegate.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">SendingSampleAppDelegate</string>
+					<string key="className">ReceivingSampleAppDelegate</string>
 					<string key="superclassName">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
@@ -492,7 +372,7 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="948129033">
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="897354842">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">UIKit.framework/Headers/UIResponder.h</string>
 					</object>
@@ -524,7 +404,7 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">UINavigationBar</string>
 					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="203628880">
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="67341888">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">UIKit.framework/Headers/UINavigationBar.h</string>
 					</object>
@@ -532,12 +412,12 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">UINavigationItem</string>
 					<string key="superclassName">NSObject</string>
-					<reference key="sourceIdentifier" ref="203628880"/>
+					<reference key="sourceIdentifier" ref="67341888"/>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">UIResponder</string>
 					<string key="superclassName">NSObject</string>
-					<reference key="sourceIdentifier" ref="948129033"/>
+					<reference key="sourceIdentifier" ref="897354842"/>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">UIScrollView</string>
@@ -553,14 +433,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">UIKit.framework/Headers/UITextView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UIToolbar</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">UIKit.framework/Headers/UIToolbar.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -594,7 +466,7 @@
 			<integer value="3100" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">SendingSample.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">ReceivingSample.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<string key="IBCocoaTouchPluginVersion">3.1</string>
 	</data>

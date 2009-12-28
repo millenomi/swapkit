@@ -8,15 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SendingSampleAppDelegate : NSObject <UIApplicationDelegate> {
+@interface SendingSampleAppDelegate : NSObject <UIApplicationDelegate, UITextViewDelegate> {
     UIWindow *window;
 	
 	IBOutlet UITextView* loremIpsumView;
+	IBOutlet UIBarButtonItem* doneButton;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 
 - (IBAction) send;
+- (IBAction) done;
 
 @end
 

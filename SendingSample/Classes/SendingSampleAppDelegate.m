@@ -19,6 +19,7 @@
 
     // Override point for customization after application launch
     [window makeKeyAndVisible];
+	doneButton.enabled = NO;
 }
 
 
@@ -31,6 +32,21 @@
 {
 	ILSwapSendingController* sender = [ILSwapSendingController controllerForSendingItems:[NSArray arrayWithObject:loremIpsumView.text] ofType:(id) kUTTypeUTF8PlainText forAction:nil];
 	[sender send];
+}
+
+- (IBAction) done;
+{
+	[loremIpsumView resignFirstResponder];
+}
+
+- (void) textViewDidBeginEditing:(UITextView *)textView;
+{
+	doneButton.enabled = YES;
+}
+
+- (void) textViewDidEndEditing:(UITextView *)textView;
+{
+	doneButton.enabled = NO;
 }
 
 @end

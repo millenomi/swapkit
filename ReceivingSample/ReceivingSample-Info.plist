@@ -4,18 +4,18 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
-	<key>CFBundleDisplayName</key>
-	<string>Sending</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>com.yourcompany.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>net.infinitelabs.SwapKit.ReceiverSample</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>${PRODUCT_NAME}</string>
+	<key>CFBundleDisplayName</key>
+	<string>Receiving</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
@@ -26,5 +26,27 @@
 	<true/>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
+	<key>ILSwapRegistration</key>
+	<dict>
+		<key>ILAppReceiveItemURLScheme</key>
+		<string>x-swapkit-receiver-sample</string>
+		<key>ILAppSupportedReceivedItemsUTIs</key>
+		<array>
+			<string>public.utf8-plain-text</string>
+		</array>
+		<key>ILAppSupportsReceivingMultipleItems</key>
+		<false/>
+	</dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>net.infinite-labs.SwapKit.ReceiverSample</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>x-swapkit-receiver-sample</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
