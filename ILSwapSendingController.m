@@ -11,30 +11,54 @@
 
 @interface ILSwapSendingController () <UIActionSheetDelegate>
 
+- (void) updateDestinations;
+
 @end
 
+L0UniquePointerConstant(kILSwapSendingControllerObservationContext);
 
 @implementation ILSwapSendingController
 
-- (id) initWithItems:(NSArray*) i ofType:(id) t forAction:(NSString*) a;
+- (id) init;
 {
 	if (!(self = [super init]))
+		return nil;
+
+	[self addObserver:self forKeyPath:@"items" options:0 context:kILSwapSendingControllerObservationContext];
+	[self addObserver:self forKeyPath:@"type" options:0 context:kILSwapSendingControllerObservationContext];
+	[self addObserver:self forKeyPath:@"action" options:0 context:kILSwapSendingControllerObservationContext];
+	
+	return self;
+}
+
+- (id) initWithItems:(NSArray*) i ofType:(id) t forAction:(NSString*) a;
+{
+	if (!(self = [self init]))
 		return nil;
 	
 	items = [i copy];
 	type = [t copy];
 	action = [a copy];
+	[self updateDestinations];
 	
 	return self;
 }
 
+@synthesize items, type, action;
+
 - (void) dealloc
 {
+	[self removeObserver:self forKeyPath:@"items"];
+	[self removeObserver:self forKeyPath:@"type"];
+	[self removeObserver:self forKeyPath:@"action"];
+	
 	[destinations release];
 	
 	[items release];
 	[type release];
 	[action release];
+	
+	[sendButtonItem release];
 	
 	[super dealloc];
 }
@@ -42,6 +66,56 @@
 + (id) controllerForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
 {
 	return [[[self alloc] initWithItems:items ofType:uti forAction:action] autorelease];
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
+{
+	if (context == kILSwapSendingControllerObservationContext)
+		[self updateDestinations];
+}
+
+- (void) updateDestinations;
+{
+	[destinations release]; destinations = nil;
+	if (!self.items || !self.type)
+		return;
+	
+	NSMutableArray* dests = [NSMutableArray array];
+
+	ILSwapService* s = [ILSwapService sharedService];
+	NSArray* candidates = [s allApplicationRegistrationsForSendingItems:items ofType:type forAction:action];
+	
+	if ([candidates count] == 0)
+		return;
+	
+	for (NSDictionary* app in candidates) {
+		if (![app objectForKey:kILAppVisibleName])
+			continue;
+		
+		[dests addObject:app];
+	}
+
+	destinations = [dests copy];
+	
+	if (sendButtonItem)
+		sendButtonItem.enabled = self.canSend;
+}
+
+- (BOOL) canSend;
+{
+	return destinations && [destinations count] > 0;
+}
+- (NSSet*) keyPathsForValuesAffectingCanSend;
+{
+	return [NSSet setWithObjects:@"items", @"type", @"action", nil];
+}
+
+- (UIBarButtonItem*) sendButtonItem;
+{
+	if (!sendButtonItem)
+		sendButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(send)];
+	
+	return sendButtonItem;
 }
 
 - (void) send;
@@ -52,36 +126,18 @@
 
 - (void) send:(UIView*) v;
 {
-	ILSwapService* s = [ILSwapService sharedService];
-	NSArray* candidates = [s allApplicationRegistrationsForSendingItems:items ofType:type forAction:action];
-	
-	if ([candidates count] == 0)
+	if (!self.canSend)
 		return;
 	
-//	if ([d count] == 1) {
-//		[s sendItems:items ofType:type forAction:action toApplicationWithIdentifier:[[d objectAtIndex:0] objectForKey:kILAppIdentifier]];
-//		return;
-//	}
-	
-	[destinations release]; destinations = nil;
-	NSMutableArray* dests = [NSMutableArray array];
-
 	[self retain];
 	UIActionSheet* sheet = [[UIActionSheet new] autorelease];
 	sheet.delegate = self;
 	
-	for (NSDictionary* app in candidates) {
-		if (![app objectForKey:kILAppVisibleName])
-			continue;
-		
-		[dests addObject:app];
+	for (NSDictionary* app in destinations)
 		[sheet addButtonWithTitle:[app objectForKey:kILAppVisibleName]];
-	}
-	
+
 	// TODO Decent localization.
 	sheet.cancelButtonIndex = [sheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")];
-	
-	destinations = [dests copy];
 	
 	if ([v isKindOfClass:[UITabBar class]])
 		[sheet showFromTabBar:(id) v];

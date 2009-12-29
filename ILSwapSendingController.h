@@ -25,7 +25,12 @@ Memory management is similar to UIAlertViews and UIActionSheets; you don't need 
 	NSArray* items;
 	id type;
 	NSString* action;
+	
+	UIBarButtonItem* sendButtonItem;
 }
+
+/** Creates a new sending controller. Designated initializer. */
+- (id) init;
 
 /**
 Creates a new sending controller that will allow users to pick an application able to receive items for the given item type and action.
@@ -40,13 +45,33 @@ Creates a new sending controller that will allow users to pick an application ab
 /** Convenience method for returning an autoreleased sending controller initialized by ILSwapSendingController#initWithItems:ofType:forAction:. */
 + (id) controllerForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
 
+/** The items to send. Must not be modified while sending. */
+@property(copy) NSArray* items;
+
+/** The type of the items to send as a UTI. Must not be modified while sending. */
+@property(copy) id type;
+
+/** The action to use. If nil, @ref kILSwapDefaultAction will be used. Must not be modified while sending. */
+@property(copy) NSString* action;
+
+/** Whether it's possible to send items to another application.
+ 
+ This property will be NO while there is no destination available or while the items and type properties are nil. If YES, calling #send or #send: will show the sending user interface; if NO, these methods will have no effect. */
+@property(readonly) BOOL canSend;
+
+/** A "share" button item that can be added to any button bar. It will use the system "Action" ('share') icon.
+ 
+ This item will be enabled or disabled as you change this object's properties, and will call -send when touched.
+ You can change any property of this object, except .enabled.
+ */
+@property(readonly) UIBarButtonItem* sendButtonItem;
+
 /**
 Performs the sending. If no applications are found, this method will do nothing; otherwise, it will show a list of destination applications in an action sheet. (Currently, it shows the list even if there is a single possible application, to give the user a opportunity to confirm the app switch.)
 
 This method shows the action sheet in the key window. To specify what window or view to use, see ILSwapSendingController#send:.
 */
 - (void) send;
-
 
 /**
 Performs the sending. If no applications are found, this method will do nothing; otherwise, it will show a list of destination applications in an action sheet. (Currently, it shows the list even if there is a single possible application, to give the user a opportunity to confirm the app switch.)
