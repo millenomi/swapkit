@@ -8,60 +8,104 @@
 
 #import <UIKit/UIKit.h>
 
-// These constants are the keys in an app registration -- a dictionary that says what an app can do. You can -- indeed, if you use SwapKit, you're expected to -- add a registration for your app, and you can query the services for all registrations on the system.
-// These constants are used:
-// - in Info.plist, in a dictionary under the ILSwapRegistration key, if you're using +didFinishLaunchingWithOptions: (much easier), or
-// - as an argument to -registerWithAttributes:, if you are using it, less commonly, or
-// - in the dictionaries returned by -applicationRegistrations and related methods (and in dictionaries passed to any ...Registration: argument).
+/**
+\addtogroup ILSwapKitRegistrationKeys App Registration Keys
 
-// String. A unique identifier for your app. Automatically taken from CFBundleIdentifier if not given.
+ These constants are the keys in an app registration -- a dictionary that says what an app can do. You can -- indeed, if you use SwapKit, you're expected to -- add a registration for your app, and you can query the services for all registrations on the system.
+ These constants are used:
+
+ - in Info.plist, in a dictionary under the ILSwapRegistration key, if you're using ILSwapService#didFinishLaunchingWithOptions: (much easier), or
+ - as an argument to ILSwapService#registerWithAttributes:, if you are using it, less commonly, or
+ - in the dictionaries returned by ILSwapService#applicationRegistrations and related methods (and in dictionaries passed to any ...Registration: argument).
+ 
+ Note that if a key is marked "optional" below, and it has a default value, then you can expect to find it in dictionaries returned by ILSwapService#applicationRegistrations and ILSwapService#registrationForApplicationWithIdentifier: with the default value set. Keys marked as optional without a default may be missing from those dictionaries if unspecified.
+ 
+ @{
+*/
+/// String. A unique identifier for your app. Automatically taken from CFBundleIdentifier if not given.
 #define kILAppIdentifier @"ILAppIdentifier"
 
-// String. Localized, user-visible name for your app. Automatically taken from CFBundleDisplayName or CFBundleName or the bundle's name on the filesystem if not present.
+/// String. Localized, user-visible name for your app. Automatically taken from CFBundleDisplayName or CFBundleName or the bundle's name on the filesystem if not present.
 #define kILAppVisibleName @"ILAppVisibleName"
 
-// String. The URL scheme that can be used to send items to this application.
+/// String. The URL scheme that can be used to send items to this application.
 #define kILAppReceiveItemURLScheme @"ILAppReceiveItemURLScheme"
 
-// Array of strings, 'actions'. An action marks the intended use of the received data for the receiving application. For example, an application may receive text to be made into a message, or a mood message change, so it can define two actions for that. The default action is "ILReceive" (that is, "Do your thing, whatever it is"), thus making the default value of this key '(ILReceive)'.
-// PLEASE NOTE: If you specify custom actions AND you also want to receive stuff for the default action, you have to mention it explicitly. Example: '(ILReceive, new-tweet, new-direct-message)'.
-// TODO: A better architecture to specify which actions apply to which types.
+/** 
+Array of strings, 'actions'. An action marks the intended use of the received data for the receiving application. For example, an application may receive text to be made into a message, or a mood message change, so it can define two actions for that. The default action is "ILReceive" (that is, "Do your thing, whatever it is"), thus making the default value of this key '(ILReceive)'.
+
+PLEASE NOTE: If you specify custom actions AND you also want to receive stuff for the default action, you have to mention it explicitly. Example: '(ILReceive, new-tweet, new-direct-message)'.
+TODO: A better architecture to specify which actions apply to which types.
+*/
 #define kILAppSupportedActions @"ILAppSupportedActions"
 
-// Array of strings. UTIs advertised as accepted for receiving. Default is ('public.data') (ie. anything).
-// TODO: The current stack does not look at type conformance, so you need to specify the EXACT UTIs you support. Saying 'public.image' is not enough; you have to add 'public.jpeg' and 'public.png', for example, to receive images in both formats.
+/** 
+Array of strings. UTIs advertised as accepted for receiving. Default is ('public.data') (ie. anything).
+
+TODO: The current stack does not look at type conformance, so you need to specify the EXACT UTIs you support. Saying 'public.image' is not enough; you have to add 'public.jpeg' and 'public.png', for example, to receive images in both formats.
+*/
 #define kILAppSupportedReceivedItemsUTIs @"ILAppSupportedReceivedItemsUTIs" 
 
-// Boolean (NSNumber). If YES, sending multiple items is meaningful. If NO (default), sending multiple items will only cause the first item to be received.
+/// Boolean (NSNumber). If YES, sending multiple items is meaningful. If NO (default), sending multiple items will only cause the first item to be received.
 #define kILAppSupportsReceivingMultipleItems @"ILAppSupportsReceivingMultipleItems"
 
-// String. Used to avoid registering multiple times. Will be ignored and overwritten by the internal registration machinery if given.
+/// String. Used to avoid registering multiple times. Will be ignored and overwritten by the internal registration machinery if given during registration, but will be returned by ILSwapRegistration#applicationRegistrations and related methods.
 #define kILAppRegistrationUUID @"ILAppRegistrationUUID"
 
-// Property list object. The bundle version (CFBundleVersion in Info.plist). Used to update the registration after an app update. Will be ignored and overwritten by the internal registration machinery if given.
+/// Property list object. The bundle version (CFBundleVersion in Info.plist). Used to update the registration after an app update. Will be ignored and overwritten by the internal registration machinery if given during registration, but will be returned by ILSwapRegistration#applicationRegistrations and related methods.
 #define kILAppVersion @"ILAppVersion"
+
+/** @} */
 
 // -- - --
 
-// The key in Info.plist the swap service will look for when autoregistering in didFinishLaunchingWithOptions:.
+/**
+\addtogroup ILSwapKitConstants Other Constants
+*/
+
+/**
+\ingroup ILSwapKitConstants
+
+This is the key in Info.plist the swap service will look for when autoregistering in didFinishLaunchingWithOptions:. It must contain a registration dictionary (see @ref ILSwapKitRegistrationKeys for more information on the contents of a registration dictionary).
+*/
 #define kILSwapServiceRegistrationInfoDictionaryKey @"ILSwapRegistration"
 
-// The name of the default action.
+/**
+\ingroup ILSwapKitConstants
+
+This is the default action, that is, a generic "I can receive items of this type" action without strings attached. It's the action used if you specify <code>nil</code> in ILSwapService#sendItems:ofType:forAction:toApplicationWithIdentifier: and other methods that take an action.
+*/
 #define kILSwapDefaultAction @"ILReceive"
 
 // -- - --
 
-// These keys are used in the attributes array that's passed to -sendRequestWithAttributes:toApplicationWithRegistration: and -swapServiceDidReceiveItemsInPasteboard:attributes:.
-// Those dictionaries can contain any custom key, so long that it does not have the @"swap." prefix.
+/**
+\addtogroup ILSwapKitRequestAttributes Request Attributes
 
-#define kILSwapServicePasteboardNameKey @"swap.pasteboard"
+Request attributes are keys attached to a particular request, usually accessed through @ref ILSwapServiceDelegate's <code>attributes:...</code> arguments. Usually, the only key you will care about is @ref kILSwapServiceActionKey, which is the key that contains the action that was used to produce this request, but you can produce your own custom requests by specifying a dictionary containing these keys to the ILSwapService#sendRequestWithAttributes:toApplicationWithRegistration: method.
+
+@{
+*/
+
+/// String. The action that was specified by the application that produced this request.
 #define kILSwapServiceActionKey @"swap.action"
+
+/// String. The name for the pasteboard that contains the data for this request. You shouldn't use this key directly; instead, implement the ILSwapServiceDelegate#swapServiceDidReceiveItemsInPasteboard:attributes: method in your delegate. This allows SwapKit to dispose of the pasteboard correctly once it's no longer useful.
+#define kILSwapServicePasteboardNameKey @"swap.pasteboard"
+
+/** @} */
 
 // -- - --
 
 @protocol ILSwapServiceDelegate;
 
+/**
+ILSwapService is a singleton class whose instance (referred to as simply the 'swap service') manages interactions between applications, including the registration of metadata in the shared application catalog and sending and receiving requests based on that metadata.
+
+TODO: More detailed information.
+*/
 @interface ILSwapService : NSObject {
+@private
 	UIPasteboard* appCatalog;
 	id <ILSwapServiceDelegate> delegate;
 	NSDictionary* registrationAttributes;
@@ -72,47 +116,67 @@
 
 @property(assign) id <ILSwapServiceDelegate> delegate;
 
-// Registers this app to Swap Services. Most methods of this class DO NOT WORK unless this method is called first with valid attributes. Methods that only work after registration are noted in their comments below.
+/**
+Registers this app to Swap Services. Most methods of this class DO NOT WORK unless this method is called first with valid attributes. Methods that only work after registration are noted in their documentation.
+
+Usually, you don't call this method directly. Instead, you use the #didFinishLaunchingWithOptions: method from the application:didFinishLaunchingWithOptions: method of your app delegate, which automatically registers your app using registration attributes found in your Info.plist file at the @ref kILSwapServiceRegistrationInfoDictionaryKey.
+
+@see #didFinishLaunchingWithOptions:
+*/
 - (void) registerWithAttributes:(NSDictionary*) a;
 
-// Called to perform appropriate delegate method calls based on the URL. Returns YES if it has performed any action based on the URL (such as calling a delegate method), NO otherwise. Calling delegate methods require having called -registerWithAttributes: since the app launched.
+/**
+Called to perform appropriate delegate method calls based on the given URL. Returns YES if it has performed any action based on the URL (such as calling a delegate method), NO otherwise. Calling delegate methods requires having called #registerWithAttributes: since the app launched; otherwise, this method will always return NO.
+
+Usually, you don't call this method directly. Instead, you use the #didFinishLaunchingWithOptions: method from the application:didFinishLaunchingWithOptions: method of your app delegate, and the #handleOpenURL: method from the application:handleOpenURL: method of your app delegate, which automatically call this method if needed.
+
+@see #didFinishLaunchingWithOptions:
+@see #handleOpenURL:
+*/
 - (BOOL) performActionsForURL:(NSURL*) u;
 
-// Convenience method:
-// - sets .delegate to the UIApplication delegate (if it conforms to ILSwapServiceDelegate), and
-// - calls registerWithAttributes with the dictionary at the ILSwapRegistration key of Info.plist if present, and
-// - if it's a URL being opened, calls performActionsForURL: (which may call appropriate delegate methods).
-// Returns YES if performActionsForURL: acted upon the URL, NO otherwise. (This allows you to ignore SwapKit-handled URLs.)
+/**
+ Convenience method for performing startup actions. It will perform the following upon the swap service instance:
+ - sets the #delegate to the UIApplication delegate, and
+ - calls #registerWithAttributes: with the dictionary at the @ref kILSwapServiceRegistrationInfoDictionaryKey key of Info.plist if present, and
+ - if the passed-in options indicate a URL being opened, calls #performActionsForURL: (which may call appropriate delegate methods).
+ Returns YES if #performActionsForURL: acted upon the URL, NO otherwise. (This allows you to ignore SwapKit-handled URLs.)
 
-// options must be the same dictionary that is passed to application:didFinishLaunchingWithOptions:.
-
+@param options The same dictionary that was passed to the application:didFinishLaunchingWithOptions: call on the application delegate.
+*/
 + (BOOL) didFinishLaunchingWithOptions:(NSDictionary*) options;
 
-// Convenience method.
-// Calls performActionsForURL: on the shared service instance. Useful as a mnemonic.
-// Returns YES if performActionsForURL: acted upon the URL, NO otherwise. (This allows you to ignore SwapKit-handled URLs.)
-
+/// Convenience method that calls #performActionsForURL: on the swap service instance.
+/// Returns YES if performActionsForURL: acted upon the URL, NO otherwise. (This allows you to ignore SwapKit-handled URLs.)
 + (BOOL) handleOpenURL:(NSURL*) u;
 
 // -- - --
 
 // INTERACTING WITH OTHER APPLICATIONS
 
-// Returns all application registrations. These contain any number of kILApp... keys as specified above, and may contain the registration for this app.
+/**
+Returns all application registrations. The returned dictionary uses application identifiers as keys, and registration dictionaries as their associated values. These contain any number of registration keys as specified in @ref ILSwapKitRegistrationKeys, and may contain the registration for this app if #registerWithAttributes: was called at least once from it.
+*/
 - (NSDictionary*) applicationRegistrations;
 
-// Returns the registration info for the given application.
+/// Returns the registration info for the given application identifier, or <code>nil</code> if it's unavailable.
 - (NSDictionary*) registrationForApplicationWithIdentifier:(NSString*) appID;
 
-// Sends the given item(s) to the application with the given ID.
-// Behavior:
-// - if an app ID is specified (non-nil), its registration will be used to send the items to it.
-// - if no app ID is specified, the first app that supports receiving their item type for the given action will receive them. If there's more than one item, and there is an app that has kILAppSupportsReceivingMultipleItems is YES, it is preferred; otherwise, only the first one will be sent to the first app that supports that type, if any. Note that apps that do not support the given action are not taken in consideration.
-// Passing nil for the action is the same as passing kILSwapDefaultAction.
-// Returns YES if the item was dispatched to an app, NO otherwise.
+/**
+ Sends the given items to the application with the given identifier.
+ This method behaves as follows:
+ - if an app ID is specified (non-nil), its registration will be used to send the items to it.
+ - if no app ID is specified, the first app that supports receiving their item type for the given action will receive them. If there's more than one item, and there is an app that has @ref kILAppSupportsReceivingMultipleItems is YES, it is preferred; otherwise, only the first one will be sent to the first app that supports that type, if any. Note that apps that do not support the given action are not taken in consideration.
+ 
+Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
 
-// items is an array of property list values, NSURLs, or NSData objects of a type identified for all items by the same UTI.
-// type is said UTI.
+@return YES if the item was dispatched to an app, NO otherwise.
+
+@param items An array of property list values, NSURLs, or NSData objects of a type identified for all items by the same UTI.
+@param uti The UTI for the type of all items in the items parameter array.
+@param action The action to be performed upon the items by the target application. Can be nil; @ref kILSwapDefaultAction will be used in that case.
+@param ident The application identifier for the target application, or nil to send to the first app that can handle the specified items, type and action.
+*/
 - (BOOL) sendItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) ident;
 
 // Searches registrations as specified above in the case of nil app identifier. Returns the most appropriate registration if found, or nil otherwise.
