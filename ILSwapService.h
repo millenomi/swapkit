@@ -186,9 +186,6 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
 */
 - (BOOL) sendItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) ident;
 
-// Searches registrations as specified above in the case of nil app identifier. Returns the most appropriate registration if found, or nil otherwise.
-// Passing nil for the action is the same as passing kILSwapDefaultAction.
-
 /**
  Searches for a registered application that can receive the given items and perform the given action. This is the same algorithm described for the #sendItems:ofType:forAction:toApplicationWithIdentifier: method when the application identifier is nil.
  
