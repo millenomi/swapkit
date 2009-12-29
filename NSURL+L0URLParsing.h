@@ -8,13 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-
+/// @internal
 @interface NSURL (L0URLParsing)
 
 - (NSDictionary*) dictionaryByDecodingQueryString;
 
 @end
 
+/// @internal
 @interface NSDictionary (L0URLParsing)
 
 - (NSString*) queryString;

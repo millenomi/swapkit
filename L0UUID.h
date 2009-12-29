@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreFoundation/CoreFoundation.h>
 
+/// @internal
 @interface L0UUID : NSObject <NSCopying, NSCoding> {
 	__strong CFUUIDRef uuid;
 }

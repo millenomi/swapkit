@@ -142,19 +142,27 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				15F4E14810E0052100C17BF0 /* SwapKit.h */,
+				15F4E0E410DFD02F00C17BF0 /* ILSwapService.h */,
+				15F4E0E510DFD02F00C17BF0 /* ILSwapService.m */,
 				157B24CD10E51B3C001DE5CC /* ILSwapSendingController.h */,
 				157B24CE10E51B3C001DE5CC /* ILSwapSendingController.m */,
 				157B24C910E518A3001DE5CC /* ILSwapCommonActions.h */,
 				157B24CA10E518A3001DE5CC /* ILSwapCommonActions.m */,
+				15FAD3A810EA44950061A99D /* Internal use only. */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		15FAD3A810EA44950061A99D /* Internal use only. */ = {
+			isa = PBXGroup;
+			children = (
 				15F4E0EC10DFD19300C17BF0 /* NSURL+L0URLParsing.h */,
 				15F4E0ED10DFD19300C17BF0 /* NSURL+L0URLParsing.m */,
 				15F4E0E810DFD16800C17BF0 /* L0UUID.h */,
 				15F4E0E910DFD16800C17BF0 /* L0UUID.m */,
-				15F4E0E410DFD02F00C17BF0 /* ILSwapService.h */,
-				15F4E0E510DFD02F00C17BF0 /* ILSwapService.m */,
-				15F4E14810E0052100C17BF0 /* SwapKit.h */,
 			);
-			name = Classes;
+			name = "Internal use only.";
 			sourceTree = "<group>";
 		};
 		32C88DFF0371C24200C91783 /* Other Sources */ = {

@@ -73,7 +73,7 @@ This is the key in Info.plist the swap service will look for when autoregisterin
 /**
 \ingroup ILSwapKitConstants
 
-This is the default action, that is, a generic "I can receive items of this type" action without strings attached. It's the action used if you specify <code>nil</code> in ILSwapService#sendItems:ofType:forAction:toApplicationWithIdentifier: and other methods that take an action.
+This is the default action, that is, a generic "I can receive items of this type" action without strings attached. It's the action used if you specify nil in ILSwapService#sendItems:ofType:forAction:toApplicationWithIdentifier: and other methods that take an action.
 */
 #define kILSwapDefaultAction @"ILReceive"
 
@@ -82,7 +82,7 @@ This is the default action, that is, a generic "I can receive items of this type
 /**
 \addtogroup ILSwapKitRequestAttributes Request Attributes
 
-Request attributes are keys attached to a particular request, usually accessed through @ref ILSwapServiceDelegate's <code>attributes:...</code> arguments. Usually, the only key you will care about is @ref kILSwapServiceActionKey, which is the key that contains the action that was used to produce this request, but you can produce your own custom requests by specifying a dictionary containing these keys to the ILSwapService#sendRequestWithAttributes:toApplicationWithRegistration: method.
+Request attributes are keys attached to a particular request, usually accessed through @ref ILSwapServiceDelegate's 'attributes:' arguments. Usually, the only key you will care about is @ref kILSwapServiceActionKey, which is the key that contains the action that was used to produce this request, but you can produce your own custom requests by specifying a dictionary containing these keys to the ILSwapService#sendRequestWithAttributes:toApplicationWithRegistration: method.
 
 @{
 */
@@ -100,6 +100,11 @@ Request attributes are keys attached to a particular request, usually accessed t
 @protocol ILSwapServiceDelegate;
 
 /**
+ \addtogroup ILSwapKit SwapKit Classes and Protocols
+ */
+
+/**
+ \ingroup ILSwapKit
 ILSwapService is a singleton class whose instance (referred to as simply the 'swap service') manages interactions between applications, including the registration of metadata in the shared application catalog and sending and receiving requests based on that metadata.
 
 TODO: More detailed information.
@@ -112,12 +117,14 @@ TODO: More detailed information.
 	NSDictionary* appRegistrations;
 }
 
+/// Returns the shared instance of this class.
 + sharedService;
 
+/// Sets or retrieves the delegate. The object set through this property receives callbacks when SwapKit finds that certain events have happened (for example, that an array of items was received).
 @property(assign) id <ILSwapServiceDelegate> delegate;
 
 /**
-Registers this app to Swap Services. Most methods of this class DO NOT WORK unless this method is called first with valid attributes. Methods that only work after registration are noted in their documentation.
+Registers this app with the swap service. Most methods of this class DO NOT WORK unless this method is called first with valid attributes. Methods that only work after registration are noted in their documentation.
 
 Usually, you don't call this method directly. Instead, you use the #didFinishLaunchingWithOptions: method from the application:didFinishLaunchingWithOptions: method of your app delegate, which automatically registers your app using registration attributes found in your Info.plist file at the @ref kILSwapServiceRegistrationInfoDictionaryKey.
 
@@ -159,7 +166,7 @@ Returns all application registrations. The returned dictionary uses application 
 */
 - (NSDictionary*) applicationRegistrations;
 
-/// Returns the registration info for the given application identifier, or <code>nil</code> if it's unavailable.
+/// Returns the registration info for the given application identifier, or nil if it's unavailable.
 - (NSDictionary*) registrationForApplicationWithIdentifier:(NSString*) appID;
 
 /**
@@ -181,30 +188,61 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
 
 // Searches registrations as specified above in the case of nil app identifier. Returns the most appropriate registration if found, or nil otherwise.
 // Passing nil for the action is the same as passing kILSwapDefaultAction.
+
+/**
+ Searches for a registered application that can receive the given items and perform the given action. This is the same algorithm described for the #sendItems:ofType:forAction:toApplicationWithIdentifier: method when the application identifier is nil.
+ 
+ If you specify nil for the action, @ref kILSwapDefaultAction will be used.
+ 
+ @return The registration dictionary for the right application, if found, or nil if no such application is registered with SwapKit.
+ @see #sendItems:ofType:forAction:toApplicationWithIdentifier:
+ */
 - (NSDictionary*) applicationRegistrationForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
 
-// As above, but returns all applicable registrations.
+/**
+ Searches for a set of registered applications that can receive the given items and perform the given action. This is similar to #applicationRegistrationForSendingItems:ofType:forAction:, but returns all possible matches rather than a single one. The order of matches returned is currently arbitrary, but this may change in a future release of SwapKit.
+ 
+ If you specify nil for the action, @ref kILSwapDefaultAction will be used.
+
+ @return An array of registration dictionaries for all found applications. If none is found, an empty array will be returned.
+ @see #applicationRegistrationForSendingItems:ofType:forAction:
+ @see #sendItems:ofType:forAction:toApplicationWithIdentifier:
+*/
 - (NSArray*) allApplicationRegistrationsForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
 
-// Sends a request with the given attributes to the app with the given registration, which cannot be nil.
-// This method does no checking -- it is assumed that this method is called with an attributes dictionary that will be successfully parsed by another app. Note that this at the moment means that it must contain the kILSwapServicePasteboardNameKey pointing to an actual persistent pasteboard. -sendItems:ofType:forAction:toApplicationWithIdentifier: uses this method to send appropriately-formatted requests.
-// Returns YES if the item was dispatched to the app, NO otherwise. (This only happens in cases of force majeoure -- eg the app does not have a URL scheme for receiving.)
+/**
+ This is the primitive request-sending method. It will send a request with the given attributes to the application whose registration dictionary is passed in.
+ 
+ This method does no checking -- it is assumed that this method is called with an attributes dictionary that will be successfully parsed by another app, either via its delegate method or via SwapKit's built-in checks. #sendItems:ofType:forAction:toApplicationWithIdentifier: uses this method to send appropriately-formatted requests; it is preferred that you use that method, as it also takes care of placing the items in external storage (such as a pasteboard) and manages that storage's lifetime.
+ 
+ @return YES if the request was dispatched, NO otherwise. (This only happens in cases of force majeoure -- eg the app does not have a URL scheme for receiving because the registration contains incorrect data.)
+ */
 - (BOOL) sendRequestWithAttributes:(NSDictionary*) attributes toApplicationWithRegistration:(NSDictionary*) reg;
 
 @end
 
-
+/**
+ This is the delegate protocol that SwapKit expects its delegate to have. The delegate can be set by changing the ILSwapService#delegate property, and ILSwapService#didFinishLaunchingWithOptions: will set it by default to be the same as UIApplication's delegate.
+ */
 @protocol ILSwapServiceDelegate <NSObject>
 
 @optional
 
-// Called whenever somebody calls our receive URL scheme for requests sent by -sendItems:ofType:toApplicationWithIdentifier:. The pasteboard contains the passed-in items.
-// Please note: the pasteboard will be automatically invalidated and deleted after this call. You must copy or retain any data you wish to keep.
-// 'attributes' contains the attributes that were passed to -sendRequestWithAttributes:toApplicationWithRegistration:. Usually, the most interesting key in there is kILSwapServiceActionKey, which contains the action the other app intended for your data.
+/**
+ Called whenever SwapKit detects that another application sent us a request through ILSwapService#sendItems:ofType:forAction:toApplicationWithIdentifier: or an equivalent method.
+ 
+ @param pasteboard Contains the received items.
+ @param attributes Contains additional attributes for this action. Its keys may be any of the keys listed under @ref ILSwapKitRequestAttributes; in particular, @ref kILSwapServiceActionKey will be the key for the action requested by the sender.
+ */
 - (void) swapServiceDidReceiveItemsInPasteboard:(UIPasteboard*) pasteboard attributes:(NSDictionary*) attributes;
 
-// Called whenever somebody calls our receive URL scheme for requests not caught by the above delegate method. Can be used to receive custom requests sent through -sendRequestWithAttributes:toApplicationWithRegistration:.
-- (void) swapServiceDidReceiveRequestWithAttributes:(NSDictionary*) dictionary;
+
+/**
+ Called whenever SwapKit detects a request not matching any of the usual patterns (that is, not associated with any other methods in this protocol). This is usually called when ILSwapService#sendRequestWithAttributes:toApplicationWithRegistration: is used by another application for sending custom requests.
+ 
+ @param attricutres Contains the attributes for this request, the same ones that were passed to ILSwapService#sendRequestWithAttributes:.
+ */
+- (void) swapServiceDidReceiveRequestWithAttributes:(NSDictionary*) attricutres;
 
 @end
 
