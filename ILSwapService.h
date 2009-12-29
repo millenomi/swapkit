@@ -173,7 +173,7 @@ Returns all application registrations. The returned dictionary uses application 
  Sends the given items to the application with the given identifier.
  This method behaves as follows:
  - if an app ID is specified (non-nil), its registration will be used to send the items to it.
- - if no app ID is specified, the first app that supports receiving their item type for the given action will receive them. If there's more than one item, and there is an app that has @ref kILAppSupportsReceivingMultipleItems is YES, it is preferred; otherwise, only the first one will be sent to the first app that supports that type, if any. Note that apps that do not support the given action are not taken in consideration.
+ - if no app ID is specified, the first app that supports receiving their item type for the given action will receive the items. If there's more than one item, and there is an app that has the @ref kILAppSupportsReceivingMultipleItems set to YES, it's preferred; otherwise, only the first item will be sent to the first app that supports that type, if any. Note that apps that do not support the given action are not considered.
  
 Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
 
