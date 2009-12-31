@@ -278,10 +278,21 @@ L0ObjCSingletonMethod(sharedService)
 		if (![r objectForKey:kILAppReceiveItemURLScheme])
 			continue;
 		
-		if (![[r objectForKey:kILAppSupportedActions] containsObject:action])
+		if (![L0As(NSArray, [r objectForKey:kILAppSupportedActions]) containsObject:action])
 			continue;
 		
-		if (![L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]) containsObject:uti])
+		NSArray* supportedUTIs = L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]);
+		BOOL hasUTI = [supportedUTIs containsObject:uti];
+		if (!hasUTI) {
+			for (NSString* supportedUTI in supportedUTIs) {
+				if (UTTypeConformsTo((CFStringRef) uti, (CFStringRef) supportedUTI)) {
+					hasUTI = YES;
+					break;
+				}
+			}
+		}
+		
+		if (!hasUTI)
 			continue;
 		
 		if (isMany && ![L0As(NSNumber, [r objectForKey:kILAppSupportsReceivingMultipleItems]) boolValue])
@@ -297,10 +308,21 @@ L0ObjCSingletonMethod(sharedService)
 			if (![r objectForKey:kILAppReceiveItemURLScheme])
 				continue;
 			
-			if (![[r objectForKey:kILAppSupportedActions] containsObject:action])
+			if (![L0As(NSArray, [r objectForKey:kILAppSupportedActions]) containsObject:action])
 				continue;
 			
-			if (![L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]) containsObject:uti])
+			NSArray* supportedUTIs = L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]);
+			BOOL hasUTI = [supportedUTIs containsObject:uti];
+			if (!hasUTI) {
+				for (NSString* supportedUTI in supportedUTIs) {
+					if (UTTypeConformsTo((CFStringRef) uti, (CFStringRef) supportedUTI)) {
+						hasUTI = YES;
+						break;
+					}
+				}
+			}
+			
+			if (!hasUTI)
 				continue;
 			
 			reg = r;
