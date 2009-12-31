@@ -22,6 +22,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		1546D79410ECC8DE00DDDFE2 /* ILSwapKitGuards.h in Headers */ = {isa = PBXBuildFile; fileRef = 1546D79210ECC8DE00DDDFE2 /* ILSwapKitGuards.h */; };
+		1546D79510ECC8DE00DDDFE2 /* ILSwapKitGuards.m in Sources */ = {isa = PBXBuildFile; fileRef = 1546D79310ECC8DE00DDDFE2 /* ILSwapKitGuards.m */; };
 		157B24CB10E518A3001DE5CC /* ILSwapCommonActions.h in Headers */ = {isa = PBXBuildFile; fileRef = 157B24C910E518A3001DE5CC /* ILSwapCommonActions.h */; };
 		157B24CC10E518A3001DE5CC /* ILSwapCommonActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 157B24CA10E518A3001DE5CC /* ILSwapCommonActions.m */; };
 		157B24CF10E51B3C001DE5CC /* ILSwapSendingController.h in Headers */ = {isa = PBXBuildFile; fileRef = 157B24CD10E51B3C001DE5CC /* ILSwapSendingController.h */; };
@@ -72,6 +74,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1546D79210ECC8DE00DDDFE2 /* ILSwapKitGuards.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapKitGuards.h; sourceTree = "<group>"; };
+		1546D79310ECC8DE00DDDFE2 /* ILSwapKitGuards.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapKitGuards.m; sourceTree = "<group>"; };
 		157B24C910E518A3001DE5CC /* ILSwapCommonActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapCommonActions.h; sourceTree = "<group>"; };
 		157B24CA10E518A3001DE5CC /* ILSwapCommonActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapCommonActions.m; sourceTree = "<group>"; };
 		157B24CD10E51B3C001DE5CC /* ILSwapSendingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapSendingController.h; sourceTree = "<group>"; };
@@ -143,6 +147,8 @@
 			isa = PBXGroup;
 			children = (
 				15F4E14810E0052100C17BF0 /* SwapKit.h */,
+				1546D79210ECC8DE00DDDFE2 /* ILSwapKitGuards.h */,
+				1546D79310ECC8DE00DDDFE2 /* ILSwapKitGuards.m */,
 				15F4E0E410DFD02F00C17BF0 /* ILSwapService.h */,
 				15F4E0E510DFD02F00C17BF0 /* ILSwapService.m */,
 				157B24CD10E51B3C001DE5CC /* ILSwapSendingController.h */,
@@ -197,6 +203,7 @@
 				15F4E14910E0052100C17BF0 /* SwapKit.h in Headers */,
 				157B24CB10E518A3001DE5CC /* ILSwapCommonActions.h in Headers */,
 				157B24CF10E51B3C001DE5CC /* ILSwapSendingController.h in Headers */,
+				1546D79410ECC8DE00DDDFE2 /* ILSwapKitGuards.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +311,7 @@
 				15F4E0EF10DFD19300C17BF0 /* NSURL+L0URLParsing.m in Sources */,
 				157B24CC10E518A3001DE5CC /* ILSwapCommonActions.m in Sources */,
 				157B24D010E51B3C001DE5CC /* ILSwapSendingController.m in Sources */,
+				1546D79510ECC8DE00DDDFE2 /* ILSwapKitGuards.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,6 +412,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Tools/Common/iPhone/UIKit.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = SwapKit;
 			};

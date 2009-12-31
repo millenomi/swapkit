@@ -16,6 +16,8 @@
 #import "L0UUID.h"
 #import "NSURL+L0URLParsing.h"
 
+#import "ILSwapKitGuards.h"
+
 @implementation ILSwapService
 
 + (BOOL) didFinishLaunchingWithOptions:(NSDictionary*) options;
@@ -71,14 +73,14 @@ L0ObjCSingletonMethod(sharedService)
 		registrationAttributes = nil;
 	}
 	
+	NSInteger previousNumberOfItems = appCatalog.numberOfItems;
+	
 	// 1. Check to see if we're already registered and, if so, if we're out of date.
 	
-	BOOL hasAppID = YES;
 	NSString* appID = [a objectForKey:kILAppIdentifier];
-	if (!appID) {
-		hasAppID = NO;
+	BOOL hasAppID = (appID != nil);
+	if (!appID)
 		appID = [[NSBundle mainBundle] bundleIdentifier];
-	}
 	
 	id currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
 	NSString* currentUUID = L0As(NSString, [[NSUserDefaults standardUserDefaults] objectForKey:kILSwapServiceLastRegistrationUUIDDefaultsKey]);
@@ -87,6 +89,17 @@ L0ObjCSingletonMethod(sharedService)
 	
 	NSUInteger idx = [allRegistrationIndexes firstIndex];
 	for (id reg in [appCatalog valuesForPasteboardType:kILSwapServiceRegistrationUTI inItemSet:allRegistrationIndexes]) {
+		if ([reg isKindOfClass:[NSData class]]) {
+			NSPropertyListFormat notInteresting;
+			NSString* error = nil;
+			reg = [NSPropertyListSerialization propertyListFromData:reg mutabilityOption:NSPropertyListImmutable format:&notInteresting errorDescription:&error];
+
+			if (!reg && error) {
+				NSLog(@"Could not read data from one of the app catalog entries: %@", error);
+				[error release];
+			}
+		}
+		
 		if ([reg isKindOfClass:[NSDictionary class]] && [[reg objectForKey:kILAppIdentifier] isEqual:appID]) {
 			
 			NSString* UUID = [reg objectForKey:kILAppRegistrationUUID];
@@ -104,6 +117,8 @@ L0ObjCSingletonMethod(sharedService)
 	}
 	
 	// 2. Add or update the registration. (idx == NSNotFound if it must be added, the actual index if it must be updated.)
+	
+	NSInteger expectedNumberOfItems = (idx == NSNotFound? previousNumberOfItems + 1 : previousNumberOfItems);
 	
 	// Add the UUID and the defaults if needed
 	NSMutableDictionary* reg = [NSMutableDictionary dictionaryWithDictionary:a];
@@ -136,18 +151,19 @@ L0ObjCSingletonMethod(sharedService)
 			[reg setObject:[NSArray arrayWithObject:kILSwapDefaultAction] forKey:kILAppSupportedActions];
 	}
 	
-	NSArray* registrationItemArray = [NSArray arrayWithObject:
-								 [NSDictionary dictionaryWithObject:reg forKey:kILSwapServiceRegistrationUTI]];
-	
-	if (idx == NSNotFound)
+	if (idx == NSNotFound) {
+		NSArray* registrationItemArray = [NSArray arrayWithObject:
+										  [NSDictionary dictionaryWithObject:reg forKey:kILSwapServiceRegistrationUTI]];		
 		[appCatalog addItems:registrationItemArray];
-	else {
+	} else {
 		NSMutableArray* items = [NSMutableArray arrayWithArray:appCatalog.items];
-		[items replaceObjectAtIndex:idx withObject:registrationItemArray];
+		[items replaceObjectAtIndex:idx withObject:reg];
 		appCatalog.items = items;
 	}
 	
 	[[NSUserDefaults standardUserDefaults] setObject:newUUID forKey:kILSwapServiceLastRegistrationUUIDDefaultsKey];
+	
+	ILSwapKitGuardWrongNumberOfItemsAfterRegistration(expectedNumberOfItems, appCatalog.numberOfItems);
 	
 	registrationAttributes = [reg copy];
 }
