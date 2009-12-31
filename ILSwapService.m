@@ -282,7 +282,7 @@ L0ObjCSingletonMethod(sharedService)
 			continue;
 		
 		NSArray* supportedUTIs = L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]);
-		BOOL hasUTI = [supportedUTIs containsObject:uti];
+		BOOL hasUTI = [supportedUTIs containsObject:(id) kUTTypeData] || [supportedUTIs containsObject:uti];
 		if (!hasUTI) {
 			for (NSString* supportedUTI in supportedUTIs) {
 				if (UTTypeConformsTo((CFStringRef) uti, (CFStringRef) supportedUTI)) {
@@ -312,7 +312,7 @@ L0ObjCSingletonMethod(sharedService)
 				continue;
 			
 			NSArray* supportedUTIs = L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]);
-			BOOL hasUTI = [supportedUTIs containsObject:uti];
+			BOOL hasUTI = [supportedUTIs containsObject:(id) kUTTypeData] || [supportedUTIs containsObject:uti];
 			if (!hasUTI) {
 				for (NSString* supportedUTI in supportedUTIs) {
 					if (UTTypeConformsTo((CFStringRef) uti, (CFStringRef) supportedUTI)) {
