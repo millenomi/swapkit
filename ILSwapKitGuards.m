@@ -8,6 +8,8 @@
 
 #import "ILSwapKitGuards.h"
 
+#define ILSwapKitGuardLog(x, ...) NSLog(@"<SwapKit> " x, ## __VA_ARGS__)
+
 static void ILSwapKitGuardTripped(NSString* exceptionMessage, const char* guardFunctionName) {
 	NSString* message = [NSString stringWithFormat:@"<SwapKit> Postcondition mismatch. %@ (to catch in your code, place a breakpoint on '%s'.)", exceptionMessage, guardFunctionName];
 	
@@ -35,7 +37,7 @@ BOOL ILSwapKitGuardsShouldBeVerbose() {
 
 extern void ILSwapKitGuardWrongNumberOfItemsAfterRegistration(NSInteger expected, NSInteger actual) {
 	if (ILSwapKitGuardsShouldBeVerbose())
-		NSLog(@"Performed app registration. Expected items in app catalog = %d, Actual = %d", expected, actual);
+		ILSwapKitGuardLog(@"Performed app registration. Expected items in app catalog = %d, Actual = %d", expected, actual);
 	
 	if (expected != actual) {
 		NSString* message = [NSString stringWithFormat:@"Expected a different number of items after registration than what was found (found %d, expected %d). This is probably an indication of a bug in the app catalog registration code ([ILSwapKit registerWithAttributes:]).", actual, expected];
