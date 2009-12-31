@@ -66,8 +66,6 @@ TODO: A better architecture to specify which actions apply to which types.
 
 /** 
 Array of strings. UTIs advertised as accepted for receiving. Default is ('public.data') (ie. anything).
-
-TODO: The current stack does not look at type conformance, so you need to specify the EXACT UTIs you support. Saying 'public.image' is not enough; you have to add 'public.jpeg' and 'public.png', for example, to receive images in both formats.
 */
 #define kILAppSupportedReceivedItemsUTIs @"ILAppSupportedReceivedItemsUTIs" 
 
