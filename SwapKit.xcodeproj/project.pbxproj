@@ -218,7 +218,7 @@
 				15A75A9210E600940028C0EE /* Resources */,
 				15A75A9310E600940028C0EE /* Sources */,
 				15A75A9410E600940028C0EE /* Frameworks */,
-				15C20A1910E6032400B455F1 /* ShellScript */,
+				15C20A1910E6032400B455F1 /* Build Framework Binary */,
 			);
 			buildRules = (
 			);
@@ -279,18 +279,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		15C20A1910E6032400B455F1 /* ShellScript */ = {
+		15C20A1910E6032400B455F1 /* Build Framework Binary */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Build Framework Binary";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cd \"$BUILT_PRODUCTS_DIR\" || exit 1\n\nif [ -f \"$CONTENTS_FOLDER_PATH\"/SwapKit ]; then\n\trm \"$CONTENTS_FOLDER_PATH\"/SwapKit || exit 1\nfi\n\nlipo ../Debug-iphoneos/libSwapKit.a ../Debug-iphonesimulator/libSwapKit.a -create -output \"$CONTENTS_FOLDER_PATH\"/SwapKit\n\nif [ ! -f \"$CONTENTS_FOLDER_PATH\"/SwapKit ]; then\n\texit 1\nfi\n\nif [ ! -L \"$WRAPPER_NAME\"/SwapKit ]; then\n\tcd \"$WRAPPER_NAME\"\n\tln -s Versions/Current/SwapKit SwapKit || exit 1\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
