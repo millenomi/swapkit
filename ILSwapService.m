@@ -30,6 +30,10 @@
  
  */
 
+enum {
+	kILSwapPasteboardThisSessionOnly,
+};
+typedef NSInteger ILSwapPasteboardLifetime;
 
 #import "ILSwapService.h"
 #import <MobileCoreServices/MobileCoreServices.h>
@@ -38,15 +42,27 @@
 #define kILSwapServiceLastRegistrationUUIDDefaultsKey @"ILSwapServiceLastRegistrationUUID"
 #define kILSwapServiceRegistrationUTI @"net.infinite-labs.SwapKit.Registration"
 
+#define kILSwapServiceThisSessionOnlyPasteboardsDefaultsKey @"ILSwapServiceThisSessionOnlyPasteboardsDefaultsKey"
+
 #import "L0UUID.h"
 #import "NSURL+L0URLParsing.h"
 
 #import "ILSwapKitGuards.h"
 
+@interface ILSwapService (ILSwapPasteboardLifetime)
+
+- (void) deleteInvalidatedPasteboards;
+- (void) managePasteboard:(UIPasteboard*) pb withLifetimePeriod:(ILSwapPasteboardLifetime) lt;
+
+@end
+
+
 @implementation ILSwapService
 
 + (BOOL) didFinishLaunchingWithOptions:(NSDictionary*) options;
 {
+	BOOL didAnythingWithTheURL = NO;
+	
 	ILSwapService* me = [self sharedService];
 	// set delegate
 	id a = [[UIApplication sharedApplication] delegate];
@@ -58,9 +74,10 @@
 	
 	NSURL* u = [options objectForKey:UIApplicationLaunchOptionsURLKey];
 	if (u)
-		return [me performActionsForURL:u];
-	else
-		return NO;
+		didAnythingWithTheURL = [me performActionsForURL:u];
+
+	[me deleteInvalidatedPasteboards];
+	return didAnythingWithTheURL;
 }
 
 + (BOOL) handleOpenURL:(NSURL*) u;
@@ -87,6 +104,7 @@ L0ObjCSingletonMethod(sharedService)
 {
 	[registrationAttributes release];
 	[appCatalog release];
+	[thisSessionOnlyPasteboards release];
 	[super dealloc];
 }
 
@@ -393,9 +411,12 @@ L0ObjCSingletonMethod(sharedService)
 						   action, kILSwapServiceActionKey,
 						   nil];
 	
+	[self managePasteboard:pb withLifetimePeriod:kILSwapPasteboardThisSessionOnly];
+	
 	BOOL done = [self sendRequestWithAttributes:attrs toApplicationWithRegistration:reg];
 	if (!done)
 		[UIPasteboard removePasteboardWithName:pb.name];
+	
 	return done;
 }
 
@@ -415,6 +436,45 @@ L0ObjCSingletonMethod(sharedService)
 		return NO;
 	
 	return [[UIApplication sharedApplication] openURL:u];
+}
+
+@end
+
+@implementation ILSwapService (ILSwapPasteboardLifetime)
+
+- (void) deleteInvalidatedPasteboards;
+{
+	for (id contentItem in L0As(NSArray, [[NSUserDefaults standardUserDefaults] objectForKey:kILSwapServiceThisSessionOnlyPasteboardsDefaultsKey])) {
+		
+		NSString* pasteboardName = L0As(NSString, contentItem);
+		if (pasteboardName &&
+			![thisSessionOnlyPasteboards containsObject:pasteboardName])
+			[UIPasteboard removePasteboardWithName:pasteboardName];
+		
+	}
+	
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kILSwapServiceThisSessionOnlyPasteboardsDefaultsKey];
+}
+
+- (void) managePasteboard:(UIPasteboard*) pb withLifetimePeriod:(ILSwapPasteboardLifetime) lt;
+{
+	// TODO other lifetimes.
+	if (lt != kILSwapPasteboardThisSessionOnly)
+		return;
+	
+	NSMutableArray* pasteboards = [NSMutableArray array];
+	NSArray* a = L0As(NSArray, [[NSUserDefaults standardUserDefaults] objectForKey:kILSwapServiceThisSessionOnlyPasteboardsDefaultsKey]);
+	if (a)
+		[pasteboards setArray:a];
+	
+	[pasteboards addObject:pb.name];
+	
+	if (!thisSessionOnlyPasteboards)
+		thisSessionOnlyPasteboards = [NSMutableSet new];
+	
+	[thisSessionOnlyPasteboards addObject:pb.name];
+	
+	[[NSUserDefaults standardUserDefaults] setObject:pasteboards forKey:kILSwapServiceThisSessionOnlyPasteboardsDefaultsKey];
 }
 
 @end

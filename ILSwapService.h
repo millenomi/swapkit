@@ -138,6 +138,7 @@ TODO: More detailed information.
 	id <ILSwapServiceDelegate> delegate;
 	NSDictionary* registrationAttributes;
 	NSDictionary* appRegistrations;
+	NSMutableSet* thisSessionOnlyPasteboards;
 }
 
 /// Returns the shared instance of this class.
