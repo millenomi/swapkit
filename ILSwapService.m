@@ -444,16 +444,36 @@ L0ObjCSingletonMethod(sharedService)
 
 - (void) deleteInvalidatedPasteboards;
 {
-	for (id contentItem in L0As(NSArray, [[NSUserDefaults standardUserDefaults] objectForKey:kILSwapServiceThisSessionOnlyPasteboardsDefaultsKey])) {
+	NSUserDefaults* ud = [NSUserDefaults standardUserDefaults];
+	
+	NSArray* a = L0As(NSArray, [ud objectForKey:kILSwapServiceThisSessionOnlyPasteboardsDefaultsKey]);
+	if (!a)
+		return;
+	
+	NSMutableArray* items = [NSMutableArray arrayWithArray:a];
+	
+	NSInteger i; for (i = 0; i < [items count]; i++) {
+		NSString* pasteboardName = L0As(NSString, [items objectAtIndex:i]);
+		BOOL shouldRemove = NO;
 		
-		NSString* pasteboardName = L0As(NSString, contentItem);
 		if (pasteboardName &&
-			![thisSessionOnlyPasteboards containsObject:pasteboardName])
+			![thisSessionOnlyPasteboards containsObject:pasteboardName]) {
 			[UIPasteboard removePasteboardWithName:pasteboardName];
+			shouldRemove = YES;
+		} else if (!pasteboardName) {
+			shouldRemove = YES;
+		}
 		
+		if (shouldRemove) {
+			[items removeObjectAtIndex:i];
+			i--;
+		}
 	}
 	
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kILSwapServiceThisSessionOnlyPasteboardsDefaultsKey];
+	if ([items count] == 0)
+		[ud removeObjectForKey:kILSwapServiceThisSessionOnlyPasteboardsDefaultsKey];
+	else
+		[ud setObject:items forKey:kILSwapServiceThisSessionOnlyPasteboardsDefaultsKey];
 }
 
 - (void) managePasteboard:(UIPasteboard*) pb withLifetimePeriod:(ILSwapPasteboardLifetime) lt;
