@@ -41,12 +41,16 @@
 	return handled;
 }
 
-- (void) swapServiceDidReceiveItemsInPasteboard:(UIPasteboard *)pasteboard attributes:(NSDictionary *)attributes;
-{
+- (void) swapServiceDidReceiveRequest:(ILSwapRequest*) request;
+{	
 	// we received items via SwapKit! do stuff with them!
-	NSString* text = pasteboard.string;
-	if (text)
+	id text = [request valueForType:(id) kUTTypeUTF8PlainText];
+	if (text && [text isKindOfClass:[NSString class]])
 		textView.text = text;
+	
+	NSLog(@"%@", [request dataForType:(id) kUTTypeUTF8PlainText]);
+	NSLog(@"%@", [request dataForItemsOfType:(id) kUTTypeUTF8PlainText]);
+	NSLog(@"%@", [request valuesForItemsOfType:(id) kUTTypeUTF8PlainText]);
 }
 
 - (void) dealloc;
@@ -54,6 +58,5 @@
     [window release];
     [super dealloc];
 }
-
 
 @end

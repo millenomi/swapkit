@@ -32,6 +32,7 @@
 
 
 #import <UIKit/UIKit.h>
+@class ILSwapRequest;
 
 /**
 \addtogroup ILSwapKitRegistrationKeys App Registration Keys
@@ -105,15 +106,15 @@ This is the default action, that is, a generic "I can receive items of this type
 /**
 \addtogroup ILSwapKitRequestAttributes Request Attributes
 
-Request attributes are keys attached to a particular request, usually accessed through @ref ILSwapServiceDelegate's 'attributes:' arguments. Usually, the only key you will care about is @ref kILSwapServiceActionKey, which is the key that contains the action that was used to produce this request, but you can produce your own custom requests by specifying a dictionary containing these keys to the ILSwapService#sendRequestWithAttributes:toApplicationWithRegistration: method.
+Request attributes are keys attached to a particular request, usually accessed through ILSwapRequest#attributes. Usually, the only key you will care about is @ref kILSwapServiceActionKey, which is the key that contains the action that was used to produce this request, but you can produce your own custom requests by specifying a dictionary containing these keys to the ILSwapService#sendRequestWithAttributes:toApplicationWithRegistration: method.
 
 @{
 */
 
-/// String. The action that was specified by the application that produced this request.
+/** String: the action that was specified by the application that produced this request. */
 #define kILSwapServiceActionKey @"swap.action"
 
-/// String. The name for the pasteboard that contains the data for this request. You shouldn't use this key directly; instead, implement the ILSwapServiceDelegate#swapServiceDidReceiveItemsInPasteboard:attributes: method in your delegate. This allows SwapKit to dispose of the pasteboard correctly once it's no longer useful.
+/** String: the name for the pasteboard that contains the data for this request. You shouldn't use this key directly; instead, implement the ILSwapServiceDelegate#swapServiceDidReceiveRequest: method in your delegate. This allows SwapKit to dispose of the pasteboard correctly once it's no longer useful (and, in the future, use means other than pasteboards to receive and send data). */
 #define kILSwapServicePasteboardNameKey @"swap.pasteboard"
 
 /** @} */
@@ -252,10 +253,9 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
 /**
  Called whenever SwapKit detects that another application sent us a request through ILSwapService#sendItems:ofType:forAction:toApplicationWithIdentifier: or an equivalent method.
  
- @param pasteboard Contains the received items.
- @param attributes Contains additional attributes for this action. Its keys may be any of the keys listed under @ref ILSwapKitRequestAttributes; in particular, @ref kILSwapServiceActionKey will be the key for the action requested by the sender.
+ @param request The request that was received.
  */
-- (void) swapServiceDidReceiveItemsInPasteboard:(UIPasteboard*) pasteboard attributes:(NSDictionary*) attributes;
+- (void) swapServiceDidReceiveRequest:(ILSwapRequest*) request;
 
 
 /**

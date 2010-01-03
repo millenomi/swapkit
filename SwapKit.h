@@ -35,5 +35,6 @@
 #import "ILSwapService.h"
 #import "ILSwapSendingController.h"
 #import "ILSwapCommonActions.h"
+#import "ILSwapResponse.h"
 
 #endif

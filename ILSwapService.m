@@ -38,6 +38,9 @@ typedef NSInteger ILSwapPasteboardLifetime;
 #import "ILSwapService.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
+#define kILSwapResponseAllowPrivateUse 1
+#import "ILSwapRequest.h"
+
 #define kILSwapServiceAppCatalogPasteboardName @"net.infinite-labs.SwapKit.AppCatalog"
 #define kILSwapServiceLastRegistrationUUIDDefaultsKey @"ILSwapServiceLastRegistrationUUID"
 #define kILSwapServiceRegistrationUTI @"net.infinite-labs.SwapKit.Registration"
@@ -224,7 +227,7 @@ L0ObjCSingletonMethod(sharedService)
 	NSDictionary* parts = [u dictionaryByDecodingQueryString];
 
 	if ([[u scheme] isEqual:recvScheme]) {
-		if ([delegate respondsToSelector:@selector(swapServiceDidReceiveItemsInPasteboard:attributes:)]) {
+		if ([delegate respondsToSelector:@selector(swapServiceDidReceiveRequest:)]) {
 		
 			NSString* pasteboardName = [parts objectForKey:kILSwapServicePasteboardNameKey];
 			
@@ -234,8 +237,9 @@ L0ObjCSingletonMethod(sharedService)
 				pb = [UIPasteboard pasteboardWithName:pasteboardName create:YES];
 			
 			if (pb.numberOfItems > 0) {
-				[delegate swapServiceDidReceiveItemsInPasteboard:pb attributes:parts];
-				[UIPasteboard removePasteboardWithName:pb.name];
+				ILSwapRequest* req = [[[ILSwapRequest alloc] initWithPasteboard:pb attributes:parts removePasteboardWhenDone:YES] autorelease];
+				
+				[delegate swapServiceDidReceiveRequest:req];
 				return YES;
 			}
 		}
