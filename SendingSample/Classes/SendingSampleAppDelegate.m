@@ -15,11 +15,15 @@
 @synthesize window;
 
 
-- (void)applicationDidFinishLaunching:(UIApplication *)application {    
+- (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
+{
 
-    // Override point for customization after application launch
-    [window makeKeyAndVisible];
+	[ILSwapService didFinishLaunchingWithOptions:launchOptions];
+    
+	[window makeKeyAndVisible];
 	doneButton.enabled = NO;
+	 
+	return YES;
 }
 
 
