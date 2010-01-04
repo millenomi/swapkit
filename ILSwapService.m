@@ -52,6 +52,9 @@ typedef NSInteger ILSwapPasteboardLifetime;
 
 #import "ILSwapKitGuards.h"
 
+#define kILSwapItemAllowPrivateUse 1
+#import "ILSwapItem.h"
+
 @interface ILSwapService (ILSwapPasteboardLifetime)
 
 - (void) deleteInvalidatedPasteboards;
@@ -434,7 +437,17 @@ L0ObjCSingletonMethod(sharedService)
 	
 	NSMutableArray* a = [NSMutableArray array];
 	for (id item in items) {
-		NSDictionary* d = [NSDictionary dictionaryWithObject:item forKey:uti];
+		NSDictionary* d;
+		if ([item isKindOfClass:[ILSwapItem class]]) 
+			d = [item pasteboardItemOfType:uti];
+		else
+			d = [NSDictionary dictionaryWithObject:item forKey:uti];
+		
+		if (!d) {
+			[NSException raise:@"ILSwapServiceCannotSendObject" format:@"Could not extract a value from object: %@", item];
+			return NO;
+		}
+		
 		[a addObject:d];
 		
 		if (handlesOnlyOne)
