@@ -189,7 +189,26 @@ Usually, you don't call this method directly. Instead, you use the #didFinishLau
 /**
 Returns all application registrations. The returned dictionary uses application identifiers as keys, and registration dictionaries as their associated values. These contain any number of registration keys as specified in @ref ILSwapKitRegistrationKeys, and may contain the registration for this app if #registerWithAttributes: was called at least once from it.
 */
-- (NSDictionary*) applicationRegistrations;
+@property(readonly) NSDictionary* applicationRegistrations;
+
+/**
+ \internal
+ Returns all application registration records in the application catalog. Items in this array are guaranteed to be registration dictionaries, but they are offered as-they-are, which means they may be missing required app registration keys, and there may be obsoleted or duplicate registrations in the catalog; this may not match what applicationRegistrations returns for the same applications.
+ 
+ This property may be useful as a debugging feature or for writing apps that inspect the contents of the catalog, but should never be used by a normal SwapKit client. Do not rely on this being here in the future (that is, it's NOT part of the stable API).
+ */
+@property(readonly) NSArray* internalApplicationRegistrationRecords;
+ 
+
+/**
+ \internal
+ Removes all application registration records and resets the application catalog to a clean state.
+ 
+ Note that the use of this method also removes the current app's registration, as though you never called #registerWithAttributes: this session. If you want to use any service that requires registration, you might need to call this again.
+ 
+ This method may be useful as a debugging feature or for writing apps that inspect the contents of the catalog, but should never be used by a normal SwapKit client. Do not rely on this being here in the future (that is, it's NOT part of the stable API).
+ */
+- (void) deleteAllApplicationRegistrations;
 
 /// Returns the registration info for the given application identifier, or nil if it's unavailable.
 - (NSDictionary*) registrationForApplicationWithIdentifier:(NSString*) appID;

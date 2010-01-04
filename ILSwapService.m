@@ -283,6 +283,38 @@ L0ObjCSingletonMethod(sharedService)
 	return appRegistrations;
 }
 
+- (NSArray*) internalApplicationRegistrationRecords;
+{
+	NSMutableArray* regs = [NSMutableArray array];
+	
+	NSIndexSet* s = [appCatalog itemSetWithPasteboardTypes:[NSArray arrayWithObject:kILSwapServiceRegistrationUTI]];
+	for (id x in [appCatalog valuesForPasteboardType:kILSwapServiceRegistrationUTI inItemSet:s]) {
+		if ([x isKindOfClass:[NSData class]]) {
+			NSPropertyListFormat f; NSString* e = nil;
+			x = [NSPropertyListSerialization propertyListFromData:x mutabilityOption:NSPropertyListImmutable format:&f errorDescription:&e];
+			
+			if (e) {
+				NSLog(@"<SwapKit> Error while deserializing part of the application catalog: %@", e);
+				[e release];
+			}
+		}
+		
+		if ([x isKindOfClass:[NSDictionary class]]) 
+			[regs addObject:x];
+	}
+	
+	return regs;
+}
+
+- (void) deleteAllApplicationRegistrations;
+{
+	[registrationAttributes release]; registrationAttributes = nil;
+	[appCatalog release]; appCatalog = nil;
+	[UIPasteboard removePasteboardWithName:kILSwapServiceAppCatalogPasteboardName];
+	
+	appCatalog = [[UIPasteboard pasteboardWithName:kILSwapServiceAppCatalogPasteboardName create:YES] retain];
+}
+
 - (NSDictionary*) registrationForApplicationWithIdentifier:(NSString*) appID;
 {
 	return [[self applicationRegistrations] objectForKey:appID];
