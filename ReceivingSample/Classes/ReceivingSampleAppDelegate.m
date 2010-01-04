@@ -45,7 +45,7 @@
 {	
 	// we received items via SwapKit! do stuff with them!
 	id text = request.item.stringValue;
-	if (text && [text isKindOfClass:[NSString class]])
+	if (text)
 		textView.text = text;
 }
 
