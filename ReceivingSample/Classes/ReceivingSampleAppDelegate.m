@@ -44,13 +44,9 @@
 - (void) swapServiceDidReceiveRequest:(ILSwapRequest*) request;
 {	
 	// we received items via SwapKit! do stuff with them!
-	id text = [request valueForType:(id) kUTTypeUTF8PlainText];
+	id text = request.item.stringValue;
 	if (text && [text isKindOfClass:[NSString class]])
 		textView.text = text;
-	
-	NSLog(@"%@", [request dataForType:(id) kUTTypeUTF8PlainText]);
-	NSLog(@"%@", [request dataForItemsOfType:(id) kUTTypeUTF8PlainText]);
-	NSLog(@"%@", [request valuesForItemsOfType:(id) kUTTypeUTF8PlainText]);
 }
 
 - (void) dealloc;

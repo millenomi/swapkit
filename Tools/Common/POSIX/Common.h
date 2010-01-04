@@ -105,3 +105,11 @@
 	static const uint8_t L0ConcatMacro(L0UniqueIntConstant, __LINE__) = 0;\
 	static void* name = (void*) &L0ConcatMacro(L0UniqueIntConstant, __LINE__)
 
+
+#if DEBUG
+#define L0DebugTrap(variableName) { \
+	volatile BOOL variableName = NO; while(!variableName) sleep(1); \
+}
+#else
+#define L0DebugTrap(variableName) L0__ERROR_DISABLE_DEBUG_TRAP_TO_BUILD__();
+#endif

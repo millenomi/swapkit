@@ -73,10 +73,10 @@
 	if (!self.type)
 		return nil;
 	
-	NSData* d = [pb dataForPasteboardType:self.type];
-	NSData* m = [pb dataForPasteboardType:kILSwapItemAttributesUTI];
+	NSData* d = [pb valueForPasteboardType:self.type];
+	NSData* m = [pb valueForPasteboardType:kILSwapItemAttributesUTI];
 	
-	return [ILSwapItem itemWithContentData:d attributes:[ILSwapItem attributesFromDataOrNil:m]];
+	return [ILSwapItem itemWithValue:d attributes:[ILSwapItem attributesFromPasteboardValue:m]];
 }
 
 - (NSUInteger) countOfItems;
@@ -88,21 +88,15 @@
 {
 	if (!items) {
 		NSMutableArray* a = [NSMutableArray array];
-		
-		NSIndexSet* s = [pb itemSetWithPasteboardTypes:[NSArray arrayWithObject:self.type]];
-		NSArray* dataArray = [pb dataForPasteboardType:self.type inItemSet:s];
-		NSArray* metaArray = [pb dataForPasteboardType:kILSwapItemAttributesUTI inItemSet:s];
-		NSUInteger i = 0;
-		for (id d in dataArray) {
-			if (![d isKindOfClass:[NSData class]])
-				continue;
-			
-			id m = L0As(NSData, [metaArray objectAtIndex:i]);
+		NSString* uti = self.type;
+
+		for (NSDictionary* item in pb.items) {
+			id d = [item objectForKey:uti];
+			id m = [item objectForKey:kILSwapItemAttributesUTI];
 			
 			[a addObject:
-			 [ILSwapItem itemWithContentData:d attributes:[ILSwapItem attributesFromDataOrNil:m]]
+			 [ILSwapItem itemWithValue:d attributes:[ILSwapItem attributesFromPasteboardValue:m]]
 			 ];
-			i++;
 		}
 		
 		items = [a copy];

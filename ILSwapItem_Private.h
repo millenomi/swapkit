@@ -8,6 +8,6 @@
 /** @internal */
 - (NSDictionary*) pasteboardItemOfType:(NSString*) type;
 
-+ (NSDictionary*) attributesFromDataOrNil:(NSData*) d;
++ (NSDictionary*) attributesFromPasteboardValue:(NSData*) d;
 
 @end

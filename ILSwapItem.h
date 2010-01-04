@@ -10,24 +10,25 @@
 
 @interface ILSwapItem : NSObject <NSCopying, NSMutableCopying> {
 @protected
-	NSData* contentData;
+	id <NSObject, NSCopying> value;
 	NSDictionary* attributes;
 }
 
 // Warning: no public constructors.
 // Use -[ILSwapItem copy] on a ILSwapMutableItem to create an immutable copy.
 
-@property(copy, readonly) NSData* contentData;
+@property(copy, readonly) id value;
 @property(copy, readonly) NSDictionary* attributes; // may contain any property list type.
 
-- (id) initWithContentData:(NSData*) d attributes:(NSDictionary*) a;
-+ itemWithContentData:(NSData*) d attributes:(NSDictionary*) a;
+// not the designated initializer.
+// subclasses use -init instead.
+- (id) initWithValue:(id) v attributes:(NSDictionary*) a;
++ itemWithValue:(id) v attributes:(NSDictionary*) a;
 
 @end
 
 @interface ILSwapMutableItem : ILSwapItem {}
 
-@property(copy) NSData* contentData;
 @property(copy) NSDictionary* attributes;
 
 - (id) init;
@@ -38,8 +39,9 @@
 
 @interface ILSwapItem (ILSwapItemCommonTypesAccess)
 
-@property(readonly) id propertyList;
-@property(readonly) NSString* string; // requires item to have been sent as kUTTypeUTF8PlainText.
-@property(readonly) UIImage* image;
+@property(readonly) id propertyListValue;
+@property(readonly) NSString* stringValue; // requires item to have been sent as kUTTypeUTF8PlainText.
+@property(readonly) UIImage* imageValue;
+@property(readonly) NSData* dataValue;
 
 @end
