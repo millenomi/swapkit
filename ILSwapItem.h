@@ -20,6 +20,9 @@
 @property(copy, readonly) NSData* contentData;
 @property(copy, readonly) NSDictionary* attributes; // may contain any property list type.
 
+- (id) initWithContentData:(NSData*) d attributes:(NSDictionary*) a;
++ itemWithContentData:(NSData*) d attributes:(NSDictionary*) a;
+
 @end
 
 @interface ILSwapMutableItem : ILSwapItem {}
@@ -30,8 +33,13 @@
 - (id) init;
 + item;
 
-- (id) initWithContentData:(NSData*) d attributes:(NSDictionary*) a;
-+ itemWithContentData:(NSData*) d attributes:(NSDictionary*) a;
-
 @end
 
+
+@interface ILSwapItem (ILSwapItemCommonTypesAccess)
+
+@property(readonly) id propertyList;
+@property(readonly) NSString* string; // requires item to have been sent as kUTTypeUTF8PlainText.
+@property(readonly) UIImage* image;
+
+@end

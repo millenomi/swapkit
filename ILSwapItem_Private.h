@@ -1,14 +1,13 @@
 
 #import "ILSwapItem.h"
 
-#define kILSwapItemattributesUTI @"net.infinite-labs.SwapKit.Itemattributes"
+#define kILSwapItemAttributesUTI @"net.infinite-labs.SwapKit.ItemAttributes"
 
 @interface ILSwapItem (ILSwapItemPasteboard)
 
 /** @internal */
 - (NSDictionary*) pasteboardItemOfType:(NSString*) type;
 
-/** @internal */
-- (id) initWithPasteboardItem:(NSDictionary*) d ofType:(NSString*) type;
++ (NSDictionary*) attributesFromDataOrNil:(NSData*) d;
 
 @end

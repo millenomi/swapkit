@@ -10,10 +10,10 @@
 #import "ILSwapRequest_Private.h"
 
 #import "ILSwapService.h"
+#import "ILSwapItem.h"
+#import "ILSwapItem_Private.h"
 
 @interface ILSwapRequest ()
-
-- (NSArray*) contentsForItemsOfType:(id) type selector:(SEL) sel expectedClass:(Class) c;
 
 @end
 
@@ -41,69 +41,74 @@
 		[UIPasteboard removePasteboardWithName:pb.name];
 	[pb release];
 
+	[type release];
 	[attributes release];
 
 	[super dealloc];
 }
 
-- (NSArray*) availableTypes;
-{
-	return [pb pasteboardTypes];
-}
-
-
-- (NSData*) dataForType:(id) type;
-{
-	return [pb.pasteboardTypes containsObject:type]? [pb dataForPasteboardType:type] : nil;
-}
-
-- (id) valueForType:(id) type;
-{
-	return [pb.pasteboardTypes containsObject:type]? [pb valueForPasteboardType:type] : nil;
-}
-
-- (id) valueForType:(id) type expectedClass:(Class) c;
-{
-	return L0AsClass(c, [self valueForType:type]);
-}
-
-
-- (NSUInteger) numberOfItemsOfType:(id) type;
-{
-	NSIndexSet* s = [pb itemSetWithPasteboardTypes:[NSArray arrayWithObject:type]];
-	return [s count];
-}
-
-- (NSArray*) dataForItemsOfType:(id) type;
-{
-	return [self contentsForItemsOfType:type selector:@selector(dataForPasteboardType:inItemSet:) expectedClass:[NSData class]];
-}
-
-- (NSArray*) valuesForItemsOfType:(id) type expectedClass:(Class) c;
-{
-	return [self contentsForItemsOfType:type selector:@selector(valuesForPasteboardType:inItemSet:) expectedClass:c];
-}
-
-- (NSArray*) valuesForItemsOfType:(id) type;
-{
-	return [self valuesForItemsOfType:type expectedClass:Nil];
-}
-
-- (NSArray*) contentsForItemsOfType:(id) type selector:(SEL) sel expectedClass:(Class) cls;
-{
-	NSIndexSet* s = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, pb.numberOfItems)];
-	NSMutableArray* a = [NSMutableArray array];
-	for (id x in [pb performSelector:sel withObject:type withObject:s]) {
-		if (!cls || [x isKindOfClass:[NSData class]])
-			[a addObject:x];
-	}
-	
-	return a;	
-}
-
 - (NSString*) action;
 {
 	return L0As(NSString, [attributes objectForKey:kILSwapServiceActionKey]);
+}
+
+#pragma mark Items management
+
+- (NSString*) type;
+{
+	if (!type) {
+		NSMutableArray* a = [NSMutableArray arrayWithArray:pb.pasteboardTypes];
+		[a removeObject:kILSwapItemAttributesUTI];
+		type = [a count] != 0? [[a objectAtIndex:0] copy] : nil;
+	}
+	
+	return type;
+}
+
+- (ILSwapItem*) item;
+{
+	if (pb.numberOfItems == 0)
+		return nil;
+	
+	if (!self.type)
+		return nil;
+	
+	NSData* d = [pb dataForPasteboardType:self.type];
+	NSData* m = [pb dataForPasteboardType:kILSwapItemAttributesUTI];
+	
+	return [ILSwapItem itemWithContentData:d attributes:[ILSwapItem attributesFromDataOrNil:m]];
+}
+
+- (NSUInteger) countOfItems;
+{
+	return [[pb itemSetWithPasteboardTypes:[NSArray arrayWithObject:self.type]] count];
+}
+
+- (NSArray*) items;
+{
+	if (!items) {
+		NSMutableArray* a = [NSMutableArray array];
+		
+		NSIndexSet* s = [pb itemSetWithPasteboardTypes:[NSArray arrayWithObject:self.type]];
+		NSArray* dataArray = [pb dataForPasteboardType:self.type inItemSet:s];
+		NSArray* metaArray = [pb dataForPasteboardType:kILSwapItemAttributesUTI inItemSet:s];
+		NSUInteger i = 0;
+		for (id d in dataArray) {
+			if (![d isKindOfClass:[NSData class]])
+				continue;
+			
+			id m = L0As(NSData, [metaArray objectAtIndex:i]);
+			
+			[a addObject:
+			 [ILSwapItem itemWithContentData:d attributes:[ILSwapItem attributesFromDataOrNil:m]]
+			 ];
+			i++;
+		}
+		
+		items = [a copy];
+	}
+	
+	return items;
 }
 
 @end

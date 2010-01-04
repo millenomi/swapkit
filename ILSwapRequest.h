@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class ILSwapItem;
 
 /**
  A request contains all information regarding a specific 'send' performed by another application. Requests that are sent through ILSwapService#sendItems:ofType:forAction:toApplicationWithIdentifier: and ILSwapSendingController will both arrive in the form of a ILSwapRequest instance through ILSwapServiceDelegate#swapServiceDidReceiveRequest:; it's up to you to get the items from within the request and parse them for your own use.
@@ -16,66 +17,35 @@
 @interface ILSwapRequest : NSObject {
 @private
 	UIPasteboard* pb;
+	NSString* type;
 	BOOL remove;
+	NSArray* items;
 
 	NSDictionary* attributes;
 }
 
 // Responses have private constructors only. Sorry!
 
-/** Contains all types associated to items sent with this request. Current versions of SwapKit support only a single type per request, so this array should usually contain no more than a single object, but future implementations may contain more than one. */
-@property(readonly) NSArray* availableTypes;
-
 /**
- Returns the number of items of the specified type that were sent with this request.
+ The type of data contained in this request. This is the same type that was passed to ILSwapService#sendItems:ofType:forAction:toApplicationWithIdentifier:.
  */
-- (NSUInteger) numberOfItemsOfType:(id) type;
+@property(readonly) NSString* type;
 
 /**
- Returns a NSData object for a single item of the specified type. If no items of this type are contained in this request, it will return nil.
- 
- This method only works with the first item in the request. Items past the first will be ignored.
+ The single item contained in this request. If multiple items are in the request, then this will contain the first item only. (In case a malformed request arrives, with no items in it, this method will return nil.)
  */
-- (NSData*) dataForType:(id) type;
+@property(readonly) ILSwapItem* item;
 
 /**
- Returns an array of NSData objects containing data for all items sent with this requests of the given type.
-
- Use of this method is appropriate only if you registered your app as being able to receive multiple items per request. See @ref kILAppSupportsReceivingMultipleItems for more information.
-*/
-- (NSArray*) dataForItemsOfType:(id) type;
-
-/**
- Returns an appropriate object for a single item of the specified type. If no items of this type are contained in this request, or if the appropriate object would not be of the given class, it will return nil.
- 
- This method only works with the first item in the request. Items past the first will be ignored.
+ The number of items contained in this request. Malformed requests with multiple items may arrive even if @ref kILAppSupportsReceivingMultipleItems is NO.
  */
-- (id) valueForType:(id) type expectedClass:(Class) c;
+@property(readonly) NSUInteger countOfItems;
 
 /**
- Returns an appropriate object for a single item of the specified type. If no items of this type are contained in this request it will return nil.
- 
- This method only works with the first item in the request. Items past the first will be ignored.
- 
- No type is guaranteed for any particular type — you should check the returned object's class before using it. You can use #valueForType:expectedClass: to signal to the implementation that you want a particular class returned. 
+ The items contained in this request. Use of this property makes sense only if @ref kILAppSupportsReceivingMultipleItems is YES for your app.
  */
-- (id) valueForType:(id) type;
+@property(readonly) NSArray* items;
 
-/**
- Returns an array of objects that are appropriate representations for items of the given type. All items will be considered, but if an item would have an appropriate object of a class other than the given one, the item will be skipped and this method will not return an object for it.
- 
- Use of this method is appropriate only if you registered your app as being able to receive multiple items per request. See @ref kILAppSupportsReceivingMultipleItems for more information.
- */
-- (NSArray*) valuesForItemsOfType:(id) type expectedClass:(Class) c;
-
-/**
- Returns an array of objects that are appropriate representations for all items of the specified type in the request.
- 
- No type is guaranteed for any particular type — you should check the returned object's class before using it. You can use #valuesForItemsOfType:expectedClass: to signal to the implementation that you want a particular class returned.
-
- Use of this method is appropriate only if you registered your app as being able to receive multiple items per request. See @ref kILAppSupportsReceivingMultipleItems for more information.
-*/
-- (NSArray*) valuesForItemsOfType:(id) type;
 
 /**
  Returns the attributes associated with this request. This is useful for custom requests, but you would usually use #action instead.

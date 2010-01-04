@@ -31,6 +31,11 @@
 	return self;
 }
 
++ itemWithContentData:(NSData*) data attributes:(NSDictionary*) dictionary;
+{
+	return [[[self alloc] initWithContentData:data attributes:dictionary] autorelease];
+}
+
 - (id) copyWithZone:(NSZone *)zone;
 {
 	return [[[ILSwapItem allocWithZone:zone] initWithContentData:self.contentData attributes:self.attributes] autorelease];
@@ -58,11 +63,6 @@
 
 @synthesize contentData, attributes;
 
-+ itemWithContentData:(NSData*) data attributes:(NSDictionary*) dictionary;
-{
-	return [[[self alloc] initWithContentData:data attributes:dictionary] autorelease];
-}
-
 + item;
 {
 	return [[self new] autorelease];
@@ -73,11 +73,6 @@
 - (id) init;
 {
 	return [super init];
-}
-
-- (id) initWithContentData:(NSData*) d attributes:(NSDictionary*) m;
-{
-	return [super initWithContentData:d attributes:m];
 }
 
 @end
@@ -92,38 +87,52 @@
 	
 	NSMutableDictionary* d = [NSMutableDictionary dictionaryWithObject:self.contentData forKey:type];
 	if (self.attributes && [self.attributes count] > 0)
-		[d setObject:self.attributes forKey:kILSwapItemattributesUTI];
+		[d setObject:self.attributes forKey:kILSwapItemAttributesUTI];
 	
 	return d;
 }
 
-- (id) initWithPasteboardItem:(NSDictionary*) d ofType:(NSString*) type;
++ (NSDictionary*) attributesFromDataOrNil:(NSData*) d;
 {
-	NSData* data = [d objectForKey:type];
-	id m = [d objectForKey:kILSwapItemattributesUTI];
-	if ([m isKindOfClass:[NSData class]]) {
-		NSPropertyListFormat format;
-		NSString* error = nil;
-		
-		m = [NSPropertyListSerialization propertyListFromData:m mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&error];
-		if (!m && error) {
-			NSLog(@"<SwapKit> An error occurred while deserializing item attributes from the pasteboard: %@", error);
-			[error release];
-		}
-		
-		m = L0As(NSDictionary, m);
+	NSPropertyListFormat format;
+	NSString* error = nil;
+	
+	id m = [NSPropertyListSerialization propertyListFromData:d mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&error];
+	if (!m && error) {
+		NSLog(@"<SwapKit> An error occurred while deserializing item attributes from the pasteboard: %@", error);
+		[error release];
 	}
 	
-	if (!(self = [self initWithContentData:data attributes:m]))
-		return nil;
-	
-	if (!self.contentData) {
-		[self release];
-		return nil;
-	}
-	
-	return self;
+	return L0As(NSDictionary, m);
 }
 
 @end
 
+
+@implementation ILSwapItem (ILSwapItemCommonTypesAccess)
+
+- (id) propertyList;
+{
+	NSPropertyListFormat format;
+	NSString* error = nil;
+
+	id m = [NSPropertyListSerialization propertyListFromData:self.contentData mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&error];
+	if (!m && error) {
+		NSLog(@"<SwapKit> An error occurred while deserializing item content as a property list: %@", error);
+		[error release];
+	}
+	
+	return m;
+}
+
+- (NSString*) string;
+{
+	return [[[NSString alloc] initWithData:self.contentData encoding:NSUTF8StringEncoding] autorelease];
+}
+
+- (UIImage*) image;
+{
+	return [UIImage imageWithData:self.contentData];
+}
+
+@end
