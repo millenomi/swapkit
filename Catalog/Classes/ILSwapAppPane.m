@@ -126,6 +126,8 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 	NSString* value = [[values objectAtIndex:[indexPath row]] description];
     cell.textLabel.text = key;
 	cell.detailTextLabel.text = value;
+	cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
+	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	
     return cell;
 }

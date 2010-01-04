@@ -27,14 +27,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 15923E1B10F1F6230011B29A /* SwapKit.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libSwapKit.a */;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = SwapKit;
 		};
 		15923E2A10F1F6340011B29A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 15923E1B10F1F6230011B29A /* SwapKit.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 15EAA0E610E690F100B7321A /* SwapKit (Source) */;
+			remoteGlobalIDString = 15EAA0E610E690F100B7321A;
 			remoteInfo = "SwapKit (Source)";
 		};
 /* End PBXContainerItemProxy section */
