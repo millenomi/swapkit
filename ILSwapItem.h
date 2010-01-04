@@ -35,19 +35,3 @@
 
 @end
 
-
-// Private. DO NOT USE.
-#if kILSwapItemAllowPrivateUse
-
-#define kILSwapItemattributesUTI @"net.infinite-labs.SwapKit.Itemattributes"
-
-@interface ILSwapItem (ILSwapItemPasteboard)
-
-/** @internal */
-- (NSDictionary*) pasteboardItemOfType:(NSString*) type;
-
-/** @internal */
-- (id) initWithPasteboardItem:(NSDictionary*) d ofType:(NSString*) type;
-
-@end
-#endif

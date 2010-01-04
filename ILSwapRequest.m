@@ -7,6 +7,8 @@
 //
 
 #import "ILSwapRequest.h"
+#import "ILSwapRequest_Private.h"
+
 #import "ILSwapService.h"
 
 @interface ILSwapRequest ()

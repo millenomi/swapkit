@@ -90,13 +90,3 @@
 @property(readonly) NSString* action;
 
 @end
-
-// Private. DO NOT USE.
-#if kILSwapResponseAllowPrivateUse
-@interface ILSwapRequest ()
-
-/** @internal */
-- (id) initWithPasteboard:(UIPasteboard*) pb attributes:(NSDictionary*) attributes removePasteboardWhenDone:(BOOL) remove;
-
-@end
-#endif

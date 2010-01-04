@@ -28,6 +28,8 @@
 		15140E2210F0E222006990BA /* ILSwapRequest.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 15140E1D10F0DC8D006990BA /* ILSwapRequest.h */; };
 		1546D79410ECC8DE00DDDFE2 /* ILSwapKitGuards.h in Headers */ = {isa = PBXBuildFile; fileRef = 1546D79210ECC8DE00DDDFE2 /* ILSwapKitGuards.h */; };
 		1546D79510ECC8DE00DDDFE2 /* ILSwapKitGuards.m in Sources */ = {isa = PBXBuildFile; fileRef = 1546D79310ECC8DE00DDDFE2 /* ILSwapKitGuards.m */; };
+		154B6E3210F293740060C05C /* ILSwapItem_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 154B6E3110F293740060C05C /* ILSwapItem_Private.h */; };
+		154B6E3510F2939F0060C05C /* ILSwapRequest_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 154B6E3410F2939F0060C05C /* ILSwapRequest_Private.h */; };
 		157B24CB10E518A3001DE5CC /* ILSwapCommonActions.h in Headers */ = {isa = PBXBuildFile; fileRef = 157B24C910E518A3001DE5CC /* ILSwapCommonActions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		157B24CC10E518A3001DE5CC /* ILSwapCommonActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 157B24CA10E518A3001DE5CC /* ILSwapCommonActions.m */; };
 		157B24CF10E51B3C001DE5CC /* ILSwapSendingController.h in Headers */ = {isa = PBXBuildFile; fileRef = 157B24CD10E51B3C001DE5CC /* ILSwapSendingController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -88,6 +90,8 @@
 		15140E1E10F0DC8D006990BA /* ILSwapRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapRequest.m; sourceTree = "<group>"; };
 		1546D79210ECC8DE00DDDFE2 /* ILSwapKitGuards.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapKitGuards.h; sourceTree = "<group>"; };
 		1546D79310ECC8DE00DDDFE2 /* ILSwapKitGuards.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapKitGuards.m; sourceTree = "<group>"; };
+		154B6E3110F293740060C05C /* ILSwapItem_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapItem_Private.h; sourceTree = "<group>"; };
+		154B6E3410F2939F0060C05C /* ILSwapRequest_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapRequest_Private.h; sourceTree = "<group>"; };
 		157B24C910E518A3001DE5CC /* ILSwapCommonActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapCommonActions.h; sourceTree = "<group>"; };
 		157B24CA10E518A3001DE5CC /* ILSwapCommonActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapCommonActions.m; sourceTree = "<group>"; };
 		157B24CD10E51B3C001DE5CC /* ILSwapSendingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapSendingController.h; sourceTree = "<group>"; };
@@ -161,10 +165,9 @@
 			isa = PBXGroup;
 			children = (
 				15F4E14810E0052100C17BF0 /* SwapKit.h */,
-				1546D79210ECC8DE00DDDFE2 /* ILSwapKitGuards.h */,
 				1598EACA10F26EA500E94EB2 /* ILSwapItem.h */,
+				154B6E3110F293740060C05C /* ILSwapItem_Private.h */,
 				1598EACB10F26EA500E94EB2 /* ILSwapItem.m */,
-				1546D79310ECC8DE00DDDFE2 /* ILSwapKitGuards.m */,
 				15F4E0E410DFD02F00C17BF0 /* ILSwapService.h */,
 				15F4E0E510DFD02F00C17BF0 /* ILSwapService.m */,
 				157B24CD10E51B3C001DE5CC /* ILSwapSendingController.h */,
@@ -172,6 +175,7 @@
 				157B24C910E518A3001DE5CC /* ILSwapCommonActions.h */,
 				157B24CA10E518A3001DE5CC /* ILSwapCommonActions.m */,
 				15140E1D10F0DC8D006990BA /* ILSwapRequest.h */,
+				154B6E3410F2939F0060C05C /* ILSwapRequest_Private.h */,
 				15140E1E10F0DC8D006990BA /* ILSwapRequest.m */,
 				15FAD3A810EA44950061A99D /* Internal use only. */,
 			);
@@ -181,6 +185,8 @@
 		15FAD3A810EA44950061A99D /* Internal use only. */ = {
 			isa = PBXGroup;
 			children = (
+				1546D79210ECC8DE00DDDFE2 /* ILSwapKitGuards.h */,
+				1546D79310ECC8DE00DDDFE2 /* ILSwapKitGuards.m */,
 				15F4E0EC10DFD19300C17BF0 /* NSURL+L0URLParsing.h */,
 				15F4E0ED10DFD19300C17BF0 /* NSURL+L0URLParsing.m */,
 				15F4E0E810DFD16800C17BF0 /* L0UUID.h */,
@@ -226,6 +232,8 @@
 				1546D79410ECC8DE00DDDFE2 /* ILSwapKitGuards.h in Headers */,
 				15140E1F10F0DC8D006990BA /* ILSwapRequest.h in Headers */,
 				1598EACC10F26EA500E94EB2 /* ILSwapItem.h in Headers */,
+				154B6E3210F293740060C05C /* ILSwapItem_Private.h in Headers */,
+				154B6E3510F2939F0060C05C /* ILSwapRequest_Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

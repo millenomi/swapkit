@@ -38,8 +38,8 @@ typedef NSInteger ILSwapPasteboardLifetime;
 #import "ILSwapService.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
-#define kILSwapResponseAllowPrivateUse 1
 #import "ILSwapRequest.h"
+#import "ILSwapRequest_Private.h"
 
 #define kILSwapServiceAppCatalogPasteboardName @"net.infinite-labs.SwapKit.AppCatalog"
 #define kILSwapServiceLastRegistrationUUIDDefaultsKey @"ILSwapServiceLastRegistrationUUID"
@@ -52,8 +52,8 @@ typedef NSInteger ILSwapPasteboardLifetime;
 
 #import "ILSwapKitGuards.h"
 
-#define kILSwapItemAllowPrivateUse 1
 #import "ILSwapItem.h"
+#import "ILSwapItem_Private.h"
 
 @interface ILSwapService (ILSwapPasteboardLifetime)
 

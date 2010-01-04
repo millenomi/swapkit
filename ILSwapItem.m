@@ -6,9 +6,8 @@
 //  Copyright 2010 Emanuele Vulcano (Infinite Labs). All rights reserved.
 //
 
-#define kILSwapItemAllowPrivateUse 1
 #import "ILSwapItem.h"
-
+#import "ILSwapItem_Private.h"
 
 @interface ILSwapItem ()
 
