@@ -44,9 +44,13 @@
 - (void) swapServiceDidReceiveRequest:(ILSwapRequest*) request;
 {	
 	// we received items via SwapKit! do stuff with them!
-	id text = request.item.stringValue;
+	NSString* text = request.item.stringValue;
 	if (text)
 		textView.text = text;
+	
+	id title = [request.item.attributes objectForKey:kILSwapItemTitleAttribute];
+	if (title && [title isKindOfClass:[NSString class]])
+		currentNavigationItem.title = title;
 }
 
 - (void) dealloc;

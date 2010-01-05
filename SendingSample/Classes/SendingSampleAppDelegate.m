@@ -34,7 +34,13 @@
 
 - (IBAction) send;
 {
-	ILSwapSendingController* sender = [ILSwapSendingController controllerForSendingItems:[NSArray arrayWithObject:loremIpsumView.text] ofType:(id) kUTTypeUTF8PlainText forAction:nil];
+	ILSwapMutableItem* item = [ILSwapMutableItem item];
+	item.value = loremIpsumView.text;
+	item.attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+					   @"From Sender…", kILSwapItemTitleAttribute,
+					   nil];
+	
+	ILSwapSendingController* sender = [ILSwapSendingController controllerForSendingItems:[NSArray arrayWithObject:item] ofType:(id) kUTTypeUTF8PlainText forAction:nil];
 	[sender send];
 }
 

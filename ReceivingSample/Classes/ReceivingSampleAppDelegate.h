@@ -11,6 +11,7 @@
 @interface ReceivingSampleAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
 	IBOutlet UITextView* textView;
+	IBOutlet UINavigationItem* currentNavigationItem;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;

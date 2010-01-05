@@ -229,6 +229,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ReceivingSample_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = "$(SWAPKIT)/build/Headers";
 				INFOPLIST_FILE = "ReceivingSample-Info.plist";
 				OTHER_LDFLAGS = (
