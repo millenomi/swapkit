@@ -9,6 +9,14 @@
 #import "ILSwapAppPane.h"
 #import <SwapKit/SwapKit.h>
 
+@interface ILSwapAppPane ()
+
+- (UITableViewCell*) valueOnlyCellWithText:(NSString*) text fromTable:(UITableView*) tv identifier:(NSString*) ident;
+- (UITableViewCell*) noValuesCellForTable:(UITableView*) tv identifier:(NSString*) ident;
+
+@end
+
+
 static NSArray* ILSwapAppPaneCanonicalOrderOfRegistrationKeys() {
 	static NSArray* a = nil; if (!a) {
 		a = [[NSArray alloc] initWithObjects:
@@ -16,8 +24,6 @@ static NSArray* ILSwapAppPaneCanonicalOrderOfRegistrationKeys() {
 			 kILAppVisibleName,
 			 kILAppVersion,
 			 kILAppReceiveItemURLScheme,
-			 kILAppSupportedActions,
-			 kILAppSupportedReceivedItemsUTIs,
 			 kILAppSupportsReceivingMultipleItems,
 			 kILAppRegistrationUUID,
 			 nil];
@@ -77,6 +83,8 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 		return nil;
 	
 	NSMutableArray* k = [NSMutableArray arrayWithArray:[r allKeys]];
+	[k removeObject:kILAppSupportedActions];
+	[k removeObject:kILAppSupportedReceivedItemsUTIs];
 	[k sortUsingFunction:&ILSwapAppPaneCompareRegistrationKeys context:NULL];
 	
 	NSMutableArray* v = [NSMutableArray arrayWithCapacity:[k count]];
@@ -85,6 +93,9 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 	
 	keys = [k copy];
 	values = [v copy];
+	
+	actions = [L0As(NSArray, [r objectForKey:kILAppSupportedActions]) mutableCopy];
+	types = [L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]) mutableCopy];
 	
 	self.title = [r objectForKey:kILAppVisibleName];
 	
@@ -95,6 +106,9 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 {
 	[keys release];
 	[values release];
+	[actions release];
+	[types release];
+	
 	[super dealloc];
 }
 
@@ -102,35 +116,119 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 3;
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [keys count];
+    switch (section) {
+		case 0:
+			return [keys count];			
+		
+		case 1:
+			return actions && [actions count] != 0? [actions count] : 1;
+
+		case 2:
+			return types && [types count] != 0? [types count] : 1;
+			
+		default:
+			return 0;
+	}
+	
 }
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"Cell";
+    static NSString* kILSwapAppKeyValueCell = @"keyValueCell";
+    static NSString* kILSwapAppValueOnlyCell = @"valueOnlyCell";
+    static NSString* kILSwapAppNoValuesCell = @"noValuesCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier] autorelease];
-    }
-    
-	NSString* key = ILSwapAppPaneLabelForRegistrationKey([keys objectAtIndex:[indexPath row]]);
-	NSString* value = [[values objectAtIndex:[indexPath row]] description];
-    cell.textLabel.text = key;
-	cell.detailTextLabel.text = value;
-	cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
+	if ([indexPath section] == 0) {
+	
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kILSwapAppKeyValueCell];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:kILSwapAppKeyValueCell] autorelease];
+		}
+		
+		NSString* key = ILSwapAppPaneLabelForRegistrationKey([keys objectAtIndex:[indexPath row]]);
+		NSString* value = [[values objectAtIndex:[indexPath row]] description];
+		cell.textLabel.text = key;
+		cell.detailTextLabel.text = value;
+		cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		
+		return cell;
+		
+	} else {
+		
+		NSArray* a;
+		switch ([indexPath section]) {
+			case 1:
+				a = actions;
+				break;
+			case 2:
+				a = types;
+				break;
+
+			default:
+				return nil; // Unsupported section
+		}
+		
+		if (!a || [a count] == 0)
+			return [self noValuesCellForTable:tableView identifier:kILSwapAppNoValuesCell];
+		
+		id obj = [a objectAtIndex:[indexPath row]];
+		
+		return [self valueOnlyCellWithText:[obj description] fromTable:tableView identifier:kILSwapAppValueOnlyCell];
+	}
+}
+
+- (UITableViewCell*) valueOnlyCellWithText:(NSString*) text fromTable:(UITableView*) tv identifier:(NSString*) ident;
+{
+	UITableViewCell* cell = [tv dequeueReusableCellWithIdentifier:ident];
+	
+	if (!cell)
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ident] autorelease];		
+	
+	cell.textLabel.text = text;
+	cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+	return cell;
+}
+
+
+- (UITableViewCell*) noValuesCellForTable:(UITableView*) tv identifier:(NSString*) ident;
+{
+	UITableViewCell* cell = [tv dequeueReusableCellWithIdentifier:ident];
+
+	if (!cell) 
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ident] autorelease];
+		
+	cell.textLabel.text = NSLocalizedString(@"No values", @"No values cell label");
+	cell.textLabel.textColor = [UIColor grayColor];
+	cell.textLabel.textAlignment = UITextAlignmentCenter;
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	
-    return cell;
+	return cell;
 }
+
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
+{
+	switch (section) {
+		case 1:
+			return NSLocalizedString(@"Actions", @"Actions section in app pane");
+		case 2:
+			return NSLocalizedString(@"Accepted types", @"UTI section in app pane");
+			
+		default:
+			return nil;
+	}
+}
+
+
 
 @end
 

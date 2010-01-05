@@ -12,6 +12,8 @@
 @interface ILSwapAppPane : UITableViewController {
 	NSArray* keys;
 	NSArray* values;
+	
+	NSArray* actions, * types;
 }
 
 - (id) initWithApplicationRegistrationRecord:(NSDictionary*) record;
