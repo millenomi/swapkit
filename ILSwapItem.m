@@ -11,6 +11,9 @@
 
 @interface ILSwapItem ()
 
+- (void) privatelySetValue:(id) value;
+- (void) privatelySetAttributes:(NSDictionary*) a;
+
 @end
 
 
@@ -52,11 +55,25 @@
 	[super dealloc];
 }
 
+- (void) privatelySetValue:(id) v;
+{
+	if (v != value) {
+		[value release];
+		value = [v copy];
+	}
+}
+
+- (void) privatelySetAttributes:(NSDictionary*) a;
+{
+	if (a != attributes) {
+		[attributes release];
+		attributes = [a copy];
+	}
+}
+
 @end
 
 @implementation ILSwapMutableItem
-
-@synthesize attributes, value;
 
 + item;
 {
@@ -68,6 +85,26 @@
 - (id) init;
 {
 	return [super init];
+}
+
+- (id) value;
+{
+	return [super value];
+}
+
+- (NSDictionary*) attributes;
+{
+	return [super attributes];
+}
+
+- (void) setValue:(id) v;
+{
+	[super privatelySetValue:v];
+}
+
+- (void) setAttributes:(NSDictionary *) a;
+{
+	[super privatelySetAttributes:a];
 }
 
 @end

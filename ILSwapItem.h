@@ -69,14 +69,14 @@
 /**
  The value for this item. It can be a NSData, NSString, NSArray (property list), NSDictionary (property list) object. Never nil (unless the item is mutable; but see ILSwapMutableItem for more information -- basically, if a method can take an immutable item, it's a violation of its contract to pass a mutable item with a nil value).
  */
-@property(copy, readonly) id value;
+@property(copy, nonatomic, readonly) id value;
 
 /**
  The attributes for this item. It can be nil, or, if non-nil, it's a NSDictionary instance containing only property list objects. This dictionary, if present, contains additional metadata for the item.
  
  @see ILSwapKitItems
  */
-@property(copy, readonly) NSDictionary* attributes; // may contain any property list type.
+@property(copy, nonatomic, readonly) NSDictionary* attributes; // may contain any property list type.
 
 /**
  Creates a new item with the given value and attributes.
@@ -107,13 +107,13 @@
 /**
  The value for this item. Can be modified. Can be nil, but it must be non-nil if you want to pass this object to anything that can also take an immutable ILSwapItem. The type of anything set through this property must be a valid value object as per ILSwapItem#value.
  */
-@property(copy) id value;
+@property(copy, nonatomic) id value;
 
 /**
  The attributes for this item. Can be modified.
  @see ILSwapItem#attributes
  */
-@property(copy) NSDictionary* attributes;
+@property(copy, nonatomic) NSDictionary* attributes;
 
 /**
  The designated initializer. Produces a mutable item with nil #value and #attributes properties.
