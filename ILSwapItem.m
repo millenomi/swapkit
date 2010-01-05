@@ -56,7 +56,7 @@
 
 @implementation ILSwapMutableItem
 
-@synthesize attributes;
+@synthesize attributes, value;
 
 + item;
 {
@@ -167,7 +167,11 @@
 
 - (NSData*) dataValue;
 {
-	return L0As(NSData, self.value);
+	id v = self.value;
+	if ([v isKindOfClass:[NSString class]])
+		return [v dataUsingEncoding:NSUTF8StringEncoding];
+	
+	return L0As(NSData, v);
 }
 
 @end
