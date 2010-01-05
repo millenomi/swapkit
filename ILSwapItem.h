@@ -8,7 +8,42 @@
 
 #import <Foundation/Foundation.h>
 
-/** \addtogroup ILSwapKitItems Items and data accessors. */
+/** \addtogroup ILSwapKitItems Items and data accessors.
+ @{
+ */
+
+/**
+ The key in an item's attributes dictionary reserved for the title of the item (a NSString). The title should be a concise description of the item, similar to a file name; however, it's not a file name (and as such it shouldn't contain an extension).
+ */
+#define kILSwapItemTitleAttribute @"ILSwapItemTitle"
+
+/**
+ The key in an item's attributes dictionary reserved for a description of the item (a NSString). A description is a short excerpt or summary of the contents of the item, and it should not exceed a length of 200 characters. This can be used by application as a textual preview of the object.
+ */
+#define kILSwapItemDescriptionAttribute @"ILSwapItemDescription"
+
+/**
+ The key in an item's attributes dictionary reserved for the item's icon, if any (a NSData object). The value should be image data encoded with any format UIKit can detect (usually PNG or JPEG), should be square, not exceed the size of 96 by 96 pixels, and should look nice over any backdrop (especially light or white backdrops). Final image size should be valued over image detail.
+ 
+ This icon should be used by applications whenever they want to represent the item with a thumbnail that is larger than 44x44 (such as in a image picker-like list of images, or *ahem* a table of user-manipulable slides). If this icon is absent but @ref kILSwapItemIcon29Attribute is set, the app should NOT scale up the small icon; it should instead adopt a default icon, inspect the item contents, or center the small icon to produce the final representation.
+ */
+#define kILSwapItemIcon96Attribute @"ILSwapItemIcon96"
+
+/**
+ The key in an item's attributes dictionary reserved for the item's small icon, if any (a NSData object). The value should be image data encoded with any format UIKit can detect (usually PNG or JPEG), should be square, not exceed the size of 29 by 29 pixels, and should look nice over any backdrop (especially light or white backdrops such as default table view cells). Final image size should be valued over image detail.
+ 
+ This icon should be used by application whenever they want to represent the item in a UITableView or in a similar context where screen space is at a premium. If this icon is absent but @ref kILSwapItemIcon96Attribute is set, apps may choose to scale down that image to produce a final icon.
+ */
+#define kILSwapItemIcon29Attribute @"ILSwapItemIcon29"
+
+/**
+ The key in an item's attributes dictionary reserved for the item's original file name (a NSString). This allows applications that deal with files to name the item correctly in such contexts. If the item comes from a file and the file name is meaningful (because it was, for example, chosen by the user or transferred from another outlet where file names are meaningful such as a remote computer), then it should be included verbatim.
+ 
+ If this attribute is present and has an extension, the app should use this extension when producing a file name for the item, favoring it over any other extension produced by the OS unless this would be undesirable for other reasons (eg. security). If this attribute is absent, the application should use the @ref kILSwapItemTitleAttribute and the information about the request's type (ILSwapRequest#type) to produce a file name, if needed.
+ */
+#define kILSwapItemOriginalFileNameAttribute @"ILSwapItemOriginalFileName"
+
+/** @} */
 
 /**
  \ingroup ILSwapKitItems
@@ -39,7 +74,7 @@
 /**
  The attributes for this item. It can be nil, or, if non-nil, it's a NSDictionary instance containing only property list objects. This dictionary, if present, contains additional metadata for the item.
  
- @see ILSwapKitCommonItemAttributeKeys
+ @see ILSwapKitItems
  */
 @property(copy, readonly) NSDictionary* attributes; // may contain any property list type.
 
@@ -118,3 +153,4 @@
 @property(readonly) NSData* dataValue;
 
 @end
+
