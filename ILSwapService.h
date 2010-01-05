@@ -221,9 +221,17 @@ Returns all application registrations. The returned dictionary uses application 
  
 Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
 
+ The items array can contain either ILSwapItem instances or "raw" values, which can be any value you could set a ILSwapItem#value to. In this second case, they will be wrapped into a metadata-less ILSwapItem when received by the other application. For reference, the following values are fine:
+ 
+ - NSData.
+ - NSString (in which case the type parameter must be kUTTypeUTF8PlainText).
+ - NSArray or NSDictionary containing property list objects only.
+ 
+ but see ILSwapItem#value's documentation for details.
+ 
 @return YES if the item was dispatched to an app, NO otherwise.
 
-@param items An array of property list values, NSURLs, or NSData objects of a type identified for all items by the same UTI.
+@param items An array of items, as specified above.
 @param uti The UTI for the type of all items in the items parameter array.
 @param action The action to be performed upon the items by the target application. Can be nil; @ref kILSwapDefaultAction will be used in that case.
 @param ident The application identifier for the target application, or nil to send to the first app that can handle the specified items, type and action.
