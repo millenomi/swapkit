@@ -7,14 +7,25 @@
 //
 
 #import "ILSwapAppPane.h"
+
 #import <SwapKit/SwapKit.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+
+#import "ILSwapSendText.h"
 
 @interface ILSwapAppPane ()
 
 - (UITableViewCell*) valueOnlyCellWithText:(NSString*) text fromTable:(UITableView*) tv identifier:(NSString*) ident;
 - (UITableViewCell*) noValuesCellForTable:(UITableView*) tv identifier:(NSString*) ident;
+- (UITableViewCell*) cellForType:(NSString*) type fromTable:(UITableView*) tv identifier:(NSString*) ident;
 
 @end
+
+enum {
+	kILSwapAppSectionInfo,
+	kILSwapAppSectionActions,
+	kILSwapAppSectionTypes,
+};
 
 
 static NSArray* ILSwapAppPaneCanonicalOrderOfRegistrationKeys() {
@@ -82,6 +93,8 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 	if (!(self = [self initWithNibName:@"ILSwapAppPane" bundle:nil]))
 		return nil;
 	
+	record = [r copy];
+	
 	NSMutableArray* k = [NSMutableArray arrayWithArray:[r allKeys]];
 	[k removeObject:kILAppSupportedActions];
 	[k removeObject:kILAppSupportedReceivedItemsUTIs];
@@ -104,6 +117,8 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 
 - (void) dealloc
 {
+	[record release];
+	
 	[keys release];
 	[values release];
 	[actions release];
@@ -123,13 +138,13 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
-		case 0:
+		case kILSwapAppSectionInfo:
 			return [keys count];			
 		
-		case 1:
+		case kILSwapAppSectionActions:
 			return actions && [actions count] != 0? [actions count] : 1;
 
-		case 2:
+		case kILSwapAppSectionTypes:
 			return types && [types count] != 0? [types count] : 1;
 			
 		default:
@@ -146,7 +161,7 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
     static NSString* kILSwapAppValueOnlyCell = @"valueOnlyCell";
     static NSString* kILSwapAppNoValuesCell = @"noValuesCell";
     
-	if ([indexPath section] == 0) {
+	if ([indexPath section] == kILSwapAppSectionInfo) {
 	
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kILSwapAppKeyValueCell];
 		if (cell == nil) {
@@ -164,25 +179,27 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 		
 	} else {
 		
-		NSArray* a;
 		switch ([indexPath section]) {
-			case 1:
-				a = actions;
-				break;
-			case 2:
-				a = types;
-				break;
+			case kILSwapAppSectionActions:
+				if (!actions || [actions count] == 0)
+					return [self noValuesCellForTable:tableView identifier:kILSwapAppNoValuesCell];
+				else {
+					id obj = [actions objectAtIndex:[indexPath row]];
+					return [self valueOnlyCellWithText:[obj description] fromTable:tableView identifier:kILSwapAppValueOnlyCell];
+				}
+					
+			case kILSwapAppSectionTypes:
+				if (!types || [types count] == 0)
+					return [self noValuesCellForTable:tableView identifier:kILSwapAppNoValuesCell];
+				else {
+					id obj = [types objectAtIndex:[indexPath row]];
+					return [self cellForType:[obj description] fromTable:tableView identifier:kILSwapAppValueOnlyCell];
+				}
 
 			default:
 				return nil; // Unsupported section
 		}
 		
-		if (!a || [a count] == 0)
-			return [self noValuesCellForTable:tableView identifier:kILSwapAppNoValuesCell];
-		
-		id obj = [a objectAtIndex:[indexPath row]];
-		
-		return [self valueOnlyCellWithText:[obj description] fromTable:tableView identifier:kILSwapAppValueOnlyCell];
 	}
 }
 
@@ -195,7 +212,20 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 	
 	cell.textLabel.text = text;
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
+	cell.accessoryType = UITableViewCellAccessoryNone;
 
+	return cell;
+}
+
+- (UITableViewCell*) cellForType:(NSString*) type fromTable:(UITableView*) tv identifier:(NSString*) ident;
+{
+	UITableViewCell* cell = [self valueOnlyCellWithText:type fromTable:tv identifier:ident];
+	
+	if ([type isEqual:(id) kUTTypeUTF8PlainText]) {
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+	}
+	
 	return cell;
 }
 
@@ -228,6 +258,20 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 	}
 }
 
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+	if ([indexPath section] == kILSwapAppSectionTypes) {
+		id obj = [types objectAtIndex:[indexPath row]];
+		
+		if ([obj isEqual:(id) kUTTypeUTF8PlainText]) {
+			
+			ILSwapSendText* t = [[[ILSwapSendText alloc] initWithApplicationIdentifier:[record objectForKey:kILAppIdentifier] type:obj] autorelease];
+			[self.navigationController pushViewController:t animated:YES];
+			
+		}
+	}
+}
 
 
 @end

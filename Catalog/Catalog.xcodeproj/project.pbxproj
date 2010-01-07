@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		157417ED10F68636006C1DC2 /* ILSwapSendText.m in Sources */ = {isa = PBXBuildFile; fileRef = 157417EB10F68636006C1DC2 /* ILSwapSendText.m */; };
+		157417F010F68652006C1DC2 /* ILSwapSendText.xib in Resources */ = {isa = PBXBuildFile; fileRef = 157417EF10F68652006C1DC2 /* ILSwapSendText.xib */; };
 		15923E2710F1F62A0011B29A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15923E2610F1F62A0011B29A /* MobileCoreServices.framework */; };
 		15923E2C10F1F63C0011B29A /* libSwapKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15923E2510F1F6230011B29A /* libSwapKit.a */; };
 		15923E8B10F1FC6D0011B29A /* ILSwapAppPane.m in Sources */ = {isa = PBXBuildFile; fileRef = 15923E8910F1FC6D0011B29A /* ILSwapAppPane.m */; };
@@ -40,6 +42,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		157417EA10F68636006C1DC2 /* ILSwapSendText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapSendText.h; sourceTree = "<group>"; };
+		157417EB10F68636006C1DC2 /* ILSwapSendText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapSendText.m; sourceTree = "<group>"; };
+		157417EF10F68652006C1DC2 /* ILSwapSendText.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ILSwapSendText.xib; sourceTree = "<group>"; };
 		15923E1B10F1F6230011B29A /* SwapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwapKit.xcodeproj; path = ../SwapKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 		15923E2610F1F62A0011B29A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		15923E8810F1FC6D0011B29A /* ILSwapAppPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapAppPane.h; sourceTree = "<group>"; };
@@ -81,6 +86,8 @@
 			children = (
 				15923E8810F1FC6D0011B29A /* ILSwapAppPane.h */,
 				15923E8910F1FC6D0011B29A /* ILSwapAppPane.m */,
+				157417EA10F68636006C1DC2 /* ILSwapSendText.h */,
+				157417EB10F68636006C1DC2 /* ILSwapSendText.m */,
 				28C286DF0D94DF7D0034E888 /* ILSwapCatalogPane.h */,
 				28C286E00D94DF7D0034E888 /* ILSwapCatalogPane.m */,
 				1D3623240D0F684500981E51 /* ILSwapCatalogAppDelegate.h */,
@@ -131,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				15923F1710F204960011B29A /* Icon.png */,
+				157417EF10F68652006C1DC2 /* ILSwapSendText.xib */,
 				28F335F01007B36200424DE2 /* ILSwapCatalogPane.xib */,
 				15923E8E10F1FCAC0011B29A /* ILSwapAppPane.xib */,
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
@@ -219,6 +227,7 @@
 				28F335F11007B36200424DE2 /* ILSwapCatalogPane.xib in Resources */,
 				15923E8F10F1FCAC0011B29A /* ILSwapAppPane.xib in Resources */,
 				15923F1810F204960011B29A /* Icon.png in Resources */,
+				157417F010F68652006C1DC2 /* ILSwapSendText.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,6 +242,7 @@
 				1D3623260D0F684500981E51 /* ILSwapCatalogAppDelegate.m in Sources */,
 				28C286E10D94DF7D0034E888 /* ILSwapCatalogPane.m in Sources */,
 				15923E8B10F1FC6D0011B29A /* ILSwapAppPane.m in Sources */,
+				157417ED10F68636006C1DC2 /* ILSwapSendText.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

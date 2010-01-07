@@ -10,6 +10,7 @@
 
 
 @interface ILSwapAppPane : UITableViewController {
+	NSDictionary* record;
 	NSArray* keys;
 	NSArray* values;
 	
