@@ -13,6 +13,48 @@
 
 #import "ILSwapSendText.h"
 
+@interface ILSwapPickKindActionSheet : UIActionSheet
+{
+	NSString* sendingType;
+}
+
+- (id) initWithSendingType:(NSString*) sendingType;
+@property(readonly) NSString* sendingType;
+
+@end
+
+@implementation ILSwapPickKindActionSheet
+
+- (id) initWithSendingType:(NSString*) t;
+{
+	if (!(self = [super init]))
+		return nil;
+	
+	sendingType = [t copy];
+	
+	self.title = [NSString stringWithFormat:
+			   NSLocalizedString(@"Choose what to send as an item of type '%@':", @"Format for item kind action sheet title"), t];
+	
+	// kILSwapSendText
+	[self addButtonWithTitle:NSLocalizedString(@"Text (NSString)", @"Text button in item kind action sheet")];
+	
+	self.cancelButtonIndex = [self addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")];
+	
+	return self;
+}
+
+@synthesize sendingType;
+
+- (void) dealloc
+{
+	[sendingType release];
+	[super dealloc];
+}
+
+@end
+
+
+
 @interface ILSwapAppPane ()
 
 - (UITableViewCell*) valueOnlyCellWithText:(NSString*) text fromTable:(UITableView*) tv identifier:(NSString*) ident;
@@ -25,6 +67,11 @@ enum {
 	kILSwapAppSectionInfo,
 	kILSwapAppSectionActions,
 	kILSwapAppSectionTypes,
+};
+
+enum {
+	kILSwapSendText,
+	// kILSwapSendImage,
 };
 
 
@@ -221,11 +268,10 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 {
 	UITableViewCell* cell = [self valueOnlyCellWithText:type fromTable:tv identifier:ident];
 	
-	if ([type isEqual:(id) kUTTypeUTF8PlainText]) {
+	if ([type isEqual:(id) kUTTypeUTF8PlainText])
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-	}
 	
+	cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 	return cell;
 }
 
@@ -262,17 +308,40 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
 	if ([indexPath section] == kILSwapAppSectionTypes) {
-		id obj = [types objectAtIndex:[indexPath row]];
+		NSString* obj = L0As(NSString, [types objectAtIndex:[indexPath row]]);
 		
 		if ([obj isEqual:(id) kUTTypeUTF8PlainText]) {
 			
 			ILSwapSendText* t = [[[ILSwapSendText alloc] initWithApplicationIdentifier:[record objectForKey:kILAppIdentifier] type:obj] autorelease];
 			[self.navigationController pushViewController:t animated:YES];
 			
+		} else if (obj) {
+			ILSwapPickKindActionSheet* s = [[[ILSwapPickKindActionSheet alloc] initWithSendingType:obj] autorelease];
+			s.delegate = self;
+			[s showInView:self.view];
 		}
 	}
 }
 
+- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex;
+{
+	switch (buttonIndex) {
+		case kILSwapSendText: {
+			ILSwapPickKindActionSheet* a = (ILSwapPickKindActionSheet*) actionSheet;
+			
+			ILSwapSendText* t = [[[ILSwapSendText alloc] initWithApplicationIdentifier:[record objectForKey:kILAppIdentifier] type:a.sendingType] autorelease];
+			[self.navigationController pushViewController:t animated:YES];			
+		} 
+			break;
+			
+		default:
+			break;
+	}
+	
+	NSIndexPath* p = [self.tableView indexPathForSelectedRow];
+	if (p)
+		[self.tableView deselectRowAtIndexPath:p animated:YES];
+}
 
 @end
 

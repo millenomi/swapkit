@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ILSwapAppPane : UITableViewController {
+@interface ILSwapAppPane : UITableViewController <UIActionSheetDelegate> {
 	NSDictionary* record;
 	NSArray* keys;
 	NSArray* values;
