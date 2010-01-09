@@ -14,10 +14,17 @@
 - (void) privatelySetValue:(id) value;
 - (void) privatelySetAttributes:(NSDictionary*) a;
 
++ (BOOL) canBeInitializedWithNilItem;
+
 @end
 
 
 @implementation ILSwapItem
+
++ (BOOL) canBeInitializedWithNilItem;
+{
+	return NO;
+}
 
 - (id) initWithValue:(id) v attributes:(NSDictionary*) a;
 {
@@ -25,6 +32,11 @@
 		return nil;
 	
 	value = [v copy];
+	if (!value && ![[self class] canBeInitializedWithNilItem]) {
+		[self release];
+		return nil;
+	}
+	
 	attributes = [a copy];
 	
 	return self;
@@ -74,6 +86,12 @@
 @end
 
 @implementation ILSwapMutableItem
+
++ (BOOL) canBeInitializedWithNilItem;
+{
+	return YES;
+}
+
 
 + item;
 {
