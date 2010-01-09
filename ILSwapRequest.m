@@ -94,6 +94,9 @@
 			id d = [item objectForKey:uti];
 			id m = [item objectForKey:kILSwapItemAttributesUTI];
 			
+			if (!d)
+				continue;
+			
 			[a addObject:
 			 [ILSwapItem itemWithValue:d attributes:[ILSwapItem attributesFromPasteboardValue:m]]
 			 ];
