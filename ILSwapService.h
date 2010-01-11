@@ -249,6 +249,16 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
 - (NSDictionary*) applicationRegistrationForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
 
 /**
+ Returns YES if there is at least one app that can receive the given items and action, NO otherwise.
+ 
+ If you specify nil for the action, @ref kILSwapDefaultAction will be used.
+ 
+ @return The registration dictionary for the right application, if found, or nil if no such application is registered with SwapKit.
+ @see #sendItems:ofType:forAction:toApplicationWithIdentifier:
+ */
+- (BOOL) canSendItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
+
+/**
  Searches for a set of registered applications that can receive the given items and perform the given action. This is similar to #applicationRegistrationForSendingItems:ofType:forAction:, but returns all possible matches rather than a single one. The order of matches returned is currently arbitrary, but this may change in a future release of SwapKit.
  
  If you specify nil for the action, @ref kILSwapDefaultAction will be used.

@@ -62,6 +62,13 @@ typedef NSInteger ILSwapPasteboardLifetime;
 
 @end
 
+@interface ILSwapService ()
+
+- (NSArray*) findApplicationRegistrationsForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action stopAtTheFirstMatch:(BOOL) oneOnly;
+
+@end
+
+
 
 @implementation ILSwapService
 
@@ -390,7 +397,17 @@ L0ObjCSingletonMethod(sharedService)
 	return reg;
 }
 
+- (BOOL) canSendItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
+{
+	return [[self findApplicationRegistrationsForSendingItems:items ofType:uti forAction:action stopAtTheFirstMatch:YES] count] != 0;
+}
+
 - (NSArray*) allApplicationRegistrationsForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
+{
+	return [self findApplicationRegistrationsForSendingItems:items ofType:uti forAction:action stopAtTheFirstMatch:NO];
+}
+
+- (NSArray*) findApplicationRegistrationsForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action stopAtTheFirstMatch:(BOOL) oneOnly;
 {
 	if (!action)
 		action = kILSwapDefaultAction;
@@ -408,6 +425,9 @@ L0ObjCSingletonMethod(sharedService)
 			continue;
 		
 		[candidates addObject:r];
+		
+		if (oneOnly)
+			break;
 	}	
 	
 	return candidates;
