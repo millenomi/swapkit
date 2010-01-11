@@ -249,7 +249,7 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
 - (NSDictionary*) applicationRegistrationForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
 
 /**
- Returns YES if there is at least one app that can receive the given items and action, NO otherwise.
+ Returns YES if there is at least one app that can receive the given items and action, NO otherwise. Using this method is more efficient than inspecting the return value of #applicationRegistrationForSendingItems:ofType:forAction: and #allApplicationRegistrationsForSendingItems:ofType:forAction:.
  
  If you specify nil for the action, @ref kILSwapDefaultAction will be used.
  
