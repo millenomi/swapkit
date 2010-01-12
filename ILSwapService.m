@@ -337,7 +337,12 @@ L0ObjCSingletonMethod(sharedService)
 	
 	NSDictionary* reg = nil;
 	BOOL isMany = [items count] > 1;
+	NSString* me = [[NSBundle mainBundle] bundleIdentifier];
+
 	for (NSString* candidateAppID in [self applicationRegistrations]) {
+		if ([candidateAppID isEqual:me])
+			continue;
+		
 		NSDictionary* r = [[self applicationRegistrations] objectForKey:candidateAppID];
 		if (![r objectForKey:kILAppReceiveItemURLScheme])
 			continue;
@@ -413,7 +418,12 @@ L0ObjCSingletonMethod(sharedService)
 		action = kILSwapDefaultAction;
 	
 	NSMutableArray* candidates = [NSMutableArray array];
+	NSString* me = [[NSBundle mainBundle] bundleIdentifier];
+
 	for (NSString* candidateAppID in [self applicationRegistrations]) {
+		if ([candidateAppID isEqual:me])
+			continue;
+		
 		NSDictionary* r = [[self applicationRegistrations] objectForKey:candidateAppID];
 		if (![r objectForKey:kILAppReceiveItemURLScheme])
 			continue;
