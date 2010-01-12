@@ -243,13 +243,15 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
  
  If you specify nil for the action, @ref kILSwapDefaultAction will be used.
  
+ The returned registration is guaranteed to never refer to the currently running application.
+ 
  @return The registration dictionary for the right application, if found, or nil if no such application is registered with SwapKit.
  @see #sendItems:ofType:forAction:toApplicationWithIdentifier:
  */
 - (NSDictionary*) applicationRegistrationForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
 
 /**
- Returns YES if there is at least one app that can receive the given items and action, NO otherwise. Using this method is more efficient than inspecting the return value of #applicationRegistrationForSendingItems:ofType:forAction: and #allApplicationRegistrationsForSendingItems:ofType:forAction:.
+ Returns YES if there is at least one app, other than the current one, that can receive the given items and action, NO otherwise. Using this method is more efficient than inspecting the return value of #applicationRegistrationForSendingItems:ofType:forAction: and #allApplicationRegistrationsForSendingItems:ofType:forAction:.
  
  If you specify nil for the action, @ref kILSwapDefaultAction will be used.
  
@@ -262,6 +264,8 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
  Searches for a set of registered applications that can receive the given items and perform the given action. This is similar to #applicationRegistrationForSendingItems:ofType:forAction:, but returns all possible matches rather than a single one. The order of matches returned is currently arbitrary, but this may change in a future release of SwapKit.
  
  If you specify nil for the action, @ref kILSwapDefaultAction will be used.
+ 
+ The returned array never contains the currently running application. If you want to get the currently running application's registration, use #registrationForApplicationWithIdentifier: with the current app's identifier instead.
 
  @return An array of registration dictionaries for all found applications. If none is found, an empty array will be returned.
  @see #applicationRegistrationForSendingItems:ofType:forAction:
