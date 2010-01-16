@@ -214,6 +214,11 @@ Returns all application registrations. The returned dictionary uses application 
 - (NSDictionary*) registrationForApplicationWithIdentifier:(NSString*) appID;
 
 /**
+ Sends one item to the application with the given identifier. This is a convenience method for #sendItems:ofType:forAction:toApplicationWithIdentifier: for sending a single item; see the docs for that method for more information.
+*/
+- (BOOL) sendItem:(id) item ofType:(id) uti forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) appID;
+
+/**
  Sends the given items to the application with the given identifier.
  This method behaves as follows:
  - if an app ID is specified (non-nil), its registration will be used to send the items to it.

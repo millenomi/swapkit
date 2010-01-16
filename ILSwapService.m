@@ -443,6 +443,11 @@ L0ObjCSingletonMethod(sharedService)
 	return candidates;
 }
 
+- (BOOL) sendItem:(id) item ofType:(id) uti forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) appID;
+{
+	return [self sendItems:[NSArray arrayWithObject:item] ofType:uti forAction:action toApplicationWithIdentifier:appID];
+}
+
 - (BOOL) sendItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) appID;
 {
 	if ([items count] == 0)
