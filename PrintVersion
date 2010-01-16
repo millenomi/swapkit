@@ -1,0 +1,95 @@
+#!/usr/bin/env ruby
+
+
+require 'yaml'
+require 'fileutils'
+require 'optparse'
+
+
+DESIGNATION_ABBREVIATIONS = {
+    'beta' => 'b',
+    'development' => 'd-',
+}
+
+def sh(*args)
+    IO.popen('-') do |f|
+        return f.read if f
+        exec(*args)
+    end
+end
+
+def git_revision()
+    git_repo = File.join File.dirname(__FILE__), '.git'
+    sh 'git', '--git-dir', git_repo, 'rev-parse', '--short', 'HEAD'
+end
+
+def long(w)
+    s = "#{w['major']}.#{w['minor']}"
+    a = DESIGNATION_ABBREVIATIONS[w['designation']]
+    s << "#{a}#{w['designation_identifier']}" if a
+    
+    s
+end
+
+# Options reading
+
+variant = nil
+xcconfig = false
+key = 'long'
+OptionParser.new do |o|
+    o.banner = "Usage: #{$0} [options]"
+    
+    o.on('-a', '--variant VARIANT', 'Use the VARIANT: subsection in Version.yaml for this print') do |v|
+        variant = v
+    end
+    
+    o.on('-x', '--xcconfig', 'Output a .xcconfig file with the data from the version. The key will not be used in this case.') do |x|
+        xcconfig = x
+    end
+    
+    o.on('-k', '--key KEY', 'Outputs the given KEY. Defaults to "long". Ignored by --xcconfig.') do |k|
+        key = k
+    end
+end.parse!
+
+# Load the file and set defaults/variants.
+
+w = YAML::load_file(File.join File.dirname(__FILE__), 'Version.yaml')
+
+if variant and w[variant] and not w[variant].kind_of? Hash
+    $stderr.puts "Variant #{variant} is not an hash in Version.yaml."
+    exit 1
+end
+
+w['designation'] ||= (variant || 'development')
+variant_hash = w[variant] || {}
+w.merge!(variant_hash)
+w['designation_identifier'] = git_revision if w['designation'] == 'development'
+
+# Xcconfig?
+
+if xcconfig
+   puts "ILABS_SWAPKIT_VERSION_MAJOR = #{w['major']}"
+   puts "ILABS_SWAPKIT_VERSION_MINOR = #{w['minor']}"
+   puts "ILABS_SWAPKIT_VERSION_COMPATIBILITY_SPAN = #{w['compatibility_span']}"
+   puts "ILABS_SWAPKIT_VERSION_DESIGNATION = #{w['designation']}"
+   puts "ILABS_SWAPKIT_VERSION_DESIGNATION_IDENTIFIER = #{w['designation_identifier']}"
+   puts "ILABS_SWAPKIT_VERSION_LONG = #{long(w)}"
+   
+   exit 0 
+end
+
+
+# Otherwise, print just the one key.
+
+if key == 'long'
+    w['long'] = long(w)
+end
+
+unless w[key]
+    $stderr.puts "Key not found in Version.yaml: #{ARGV[0]}"
+    exit 1
+end
+
+puts w[key]
+
