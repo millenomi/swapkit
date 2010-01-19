@@ -26,6 +26,11 @@
 	return YES;
 }
 
+- (BOOL) application:(UIApplication *)application handleOpenURL:(NSURL *)url;
+{
+	return [ILSwapService handleOpenURL:url];
+}
+
 
 - (void)dealloc {
     [window release];

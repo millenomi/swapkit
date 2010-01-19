@@ -2,6 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>net.infinite-labs.SwapKit.SendingSample</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>x-swapkit-sending-sample</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
@@ -26,5 +37,10 @@
 	<true/>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
+	<key>ILSwapRegistration</key>
+	<dict>
+		<key>ILAppReceiveItemURLScheme</key>
+		<string>x-swapkit-sending-sample</string>
+	</dict>
 </dict>
 </plist>
