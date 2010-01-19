@@ -13,3 +13,4 @@ extern BOOL ILSwapKitGuardsShouldBeVerbose();
 
 extern void ILSwapKitGuardWrongNumberOfItemsAfterRegistration(NSInteger expected, NSInteger actual);
 
+extern void ILSwapKitGuardBundleNotFoundInResources();
