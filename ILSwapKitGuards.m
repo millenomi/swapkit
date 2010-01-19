@@ -35,7 +35,7 @@ BOOL ILSwapKitGuardsShouldBeVerbose() {
 #endif
 }
 
-extern void ILSwapKitGuardWrongNumberOfItemsAfterRegistration(NSInteger expected, NSInteger actual) {
+void ILSwapKitGuardWrongNumberOfItemsAfterRegistration(NSInteger expected, NSInteger actual) {
 	if (ILSwapKitGuardsShouldBeVerbose())
 		ILSwapKitGuardLog(@"Performed app registration. Expected items in app catalog = %d, Actual = %d", expected, actual);
 	
@@ -44,3 +44,8 @@ extern void ILSwapKitGuardWrongNumberOfItemsAfterRegistration(NSInteger expected
 		ILSwapKitGuardTripped(message, __func__);
 	}
 }
+
+void ILSwapKitGuardBundleNotFoundInResources() {
+	ILSwapKitGuardTripped(@"Expected to find SwapKit resource bundle, but couldn't. You should have embedded SwapKit.bundle or SwapKit.framework in your application (usually by copying it as a resource), or used ILSwapKitSetBundle() to set where the bundle is.", __func__);
+}
+
