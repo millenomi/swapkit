@@ -30,7 +30,7 @@
 		1546D79510ECC8DE00DDDFE2 /* ILSwapKitGuards.m in Sources */ = {isa = PBXBuildFile; fileRef = 1546D79310ECC8DE00DDDFE2 /* ILSwapKitGuards.m */; };
 		154B6E3210F293740060C05C /* ILSwapItem_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 154B6E3110F293740060C05C /* ILSwapItem_Private.h */; };
 		154B6E3510F2939F0060C05C /* ILSwapRequest_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 154B6E3410F2939F0060C05C /* ILSwapRequest_Private.h */; };
-		15703DAD11060DCF00D719FE /* ILSwapKitBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 15703DAB11060DCF00D719FE /* ILSwapKitBundle.h */; };
+		15703DAD11060DCF00D719FE /* ILSwapKitBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 15703DAB11060DCF00D719FE /* ILSwapKitBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		15703DAE11060DCF00D719FE /* ILSwapKitBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 15703DAC11060DCF00D719FE /* ILSwapKitBundle.m */; };
 		157B24CB10E518A3001DE5CC /* ILSwapCommonActions.h in Headers */ = {isa = PBXBuildFile; fileRef = 157B24C910E518A3001DE5CC /* ILSwapCommonActions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		157B24CC10E518A3001DE5CC /* ILSwapCommonActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 157B24CA10E518A3001DE5CC /* ILSwapCommonActions.m */; };
@@ -44,6 +44,8 @@
 		15A75AA610E601800028C0EE /* ILSwapSendingController.h in Headers */ = {isa = PBXBuildFile; fileRef = 157B24CD10E51B3C001DE5CC /* ILSwapSendingController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		15A75AA710E601800028C0EE /* ILSwapService.h in Headers */ = {isa = PBXBuildFile; fileRef = 15F4E0E410DFD02F00C17BF0 /* ILSwapService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		15A75AA810E601800028C0EE /* SwapKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 15F4E14810E0052100C17BF0 /* SwapKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		15BF34AE110616BE0083AE7B /* ILSwapKitBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 15703DAB11060DCF00D719FE /* ILSwapKitBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		15BF34B3110616D50083AE7B /* ILSwapKitBundle.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 15703DAB11060DCF00D719FE /* ILSwapKitBundle.h */; };
 		15EAA0EF10E6910300B7321A /* ILSwapCommonActions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 157B24C910E518A3001DE5CC /* ILSwapCommonActions.h */; };
 		15EAA0F010E6910300B7321A /* ILSwapSendingController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 157B24CD10E51B3C001DE5CC /* ILSwapSendingController.h */; };
 		15EAA0F110E6910300B7321A /* ILSwapService.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 15F4E0E410DFD02F00C17BF0 /* ILSwapService.h */; };
@@ -76,6 +78,7 @@
 			dstPath = "$(SYMROOT)/Headers/SwapKit";
 			dstSubfolderSpec = 0;
 			files = (
+				15BF34B3110616D50083AE7B /* ILSwapKitBundle.h in CopyFiles */,
 				1598EAD410F26EC700E94EB2 /* ILSwapItem.h in CopyFiles */,
 				15EAA0EF10E6910300B7321A /* ILSwapCommonActions.h in CopyFiles */,
 				15EAA0F010E6910300B7321A /* ILSwapSendingController.h in CopyFiles */,
@@ -181,6 +184,8 @@
 				15140E1D10F0DC8D006990BA /* ILSwapRequest.h */,
 				154B6E3410F2939F0060C05C /* ILSwapRequest_Private.h */,
 				15140E1E10F0DC8D006990BA /* ILSwapRequest.m */,
+				15703DAB11060DCF00D719FE /* ILSwapKitBundle.h */,
+				15703DAC11060DCF00D719FE /* ILSwapKitBundle.m */,
 				15FAD3A810EA44950061A99D /* Internal use only. */,
 			);
 			name = Classes;
@@ -195,8 +200,6 @@
 				15F4E0ED10DFD19300C17BF0 /* NSURL+L0URLParsing.m */,
 				15F4E0E810DFD16800C17BF0 /* L0UUID.h */,
 				15F4E0E910DFD16800C17BF0 /* L0UUID.m */,
-				15703DAB11060DCF00D719FE /* ILSwapKitBundle.h */,
-				15703DAC11060DCF00D719FE /* ILSwapKitBundle.m */,
 			);
 			name = "Internal use only.";
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15BF34AE110616BE0083AE7B /* ILSwapKitBundle.h in Headers */,
 				1598EAD310F26EB200E94EB2 /* ILSwapItem.h in Headers */,
 				15A75AA510E601800028C0EE /* ILSwapCommonActions.h in Headers */,
 				15A75AA610E601800028C0EE /* ILSwapSendingController.h in Headers */,

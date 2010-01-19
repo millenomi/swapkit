@@ -37,5 +37,6 @@
 #import "ILSwapCommonActions.h"
 #import "ILSwapRequest.h"
 #import "ILSwapItem.h"
+#import "ILSwapKitBundle.h"
 
 #endif
