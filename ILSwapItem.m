@@ -49,12 +49,12 @@
 
 - (id) copyWithZone:(NSZone *)zone;
 {
-	return [[[ILSwapItem allocWithZone:zone] initWithValue:self.value attributes:self.attributes] autorelease];
+	return [[ILSwapItem allocWithZone:zone] initWithValue:self.value attributes:self.attributes];
 }
 
 - (id) mutableCopyWithZone:(NSZone *)zone;
 {
-	return [[[ILSwapMutableItem allocWithZone:zone] initWithValue:self.value attributes:self.attributes] autorelease];
+	return [[ILSwapMutableItem allocWithZone:zone] initWithValue:self.value attributes:self.attributes];
 }
 
 @synthesize value, attributes;
