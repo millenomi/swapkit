@@ -223,13 +223,17 @@ L0ObjCSingletonMethod(sharedService)
 	
 	if ([reg objectForKey:kILAppReceiveItemURLScheme]) {
 		if (![reg objectForKey:kILAppSupportedReceivedItemsUTIs])
-			[reg setObject:[NSArray arrayWithObject:(id) kUTTypeData] forKey:kILAppSupportedReceivedItemsUTIs];
+			[reg setObject:[NSArray array] forKey:kILAppSupportedReceivedItemsUTIs];
 		
 		if (![reg objectForKey:kILAppSupportsReceivingMultipleItems])
 			[reg setObject:[NSNumber numberWithBool:NO] forKey:kILAppSupportsReceivingMultipleItems];
 		
-		if (![reg objectForKey:kILAppSupportedActions])
-			[reg setObject:[NSArray arrayWithObject:kILSwapDefaultAction] forKey:kILAppSupportedActions];
+		// if the user specifies any UTIs, it's (public.data). Otherwise, ().
+		if (![reg objectForKey:kILAppSupportedActions]) {
+			NSArray* a = ([[reg objectForKey:kILAppSupportedReceivedItemsUTIs] count] != 0)?
+				[NSArray arrayWithObject:kILSwapDefaultAction] : [NSArray array];
+			[reg setObject:a forKey:kILAppSupportedActions];
+		}
 	}
 	
 	return reg;

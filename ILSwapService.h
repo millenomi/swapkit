@@ -58,7 +58,9 @@
 #define kILAppReceiveItemURLScheme @"ILAppReceiveItemURLScheme"
 
 /** 
-Array of strings, 'actions'. An action marks the intended use of the received data for the receiving application. For example, an application may receive text to be made into a message, or a mood message change, so it can define two actions for that. The default action is "ILReceive" (that is, "Do your thing, whatever it is"), thus making the default value of this key '(ILReceive)'.
+Array of strings, 'actions'. An action marks the intended use of the received data for the receiving application. For example, an application may receive text to be made into a message, or a mood message change, so it can define two actions for that. The default action is "ILReceive" (that is, "Do your thing, whatever it is").
+ 
+ The default for this key is '()' (the empty array) if you specify no types in the @ref kILAppSupportedReceivedItemsUTIs key (or if that key is missing), or '(ILReceive)' (just the default action) otherwise.
 
 PLEASE NOTE: If you specify custom actions AND you also want to receive stuff for the default action, you have to mention it explicitly. Example: '(ILReceive, new-tweet, new-direct-message)'.
 TODO: A better architecture to specify which actions apply to which types.
@@ -66,7 +68,7 @@ TODO: A better architecture to specify which actions apply to which types.
 #define kILAppSupportedActions @"ILAppSupportedActions"
 
 /** 
-Array of strings. UTIs advertised as accepted for receiving. Default is ('public.data') (ie. anything).
+Array of strings. UTIs advertised as accepted for receiving. Default is '()' (ie. nothing).
 */
 #define kILAppSupportedReceivedItemsUTIs @"ILAppSupportedReceivedItemsUTIs" 
 
