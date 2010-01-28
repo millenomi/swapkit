@@ -152,10 +152,13 @@ TODO: More detailed information.
 Registers this app with the swap service. Most methods of this class DO NOT WORK unless this method is called first with valid attributes. Methods that only work after registration are noted in their documentation.
 
 Usually, you don't call this method directly. Instead, you use the #didFinishLaunchingWithOptions: method from the application:didFinishLaunchingWithOptions: method of your app delegate, which automatically registers your app using registration attributes found in your Info.plist file at the @ref kILSwapServiceRegistrationInfoDictionaryKey.
+ 
+@param a A dictionary containing app registration keys and values. If values are not supplied for some app registration keys, defaults may be used during registration instead.
+@param update If YES, any current application's registration will be removed and replaced with this one. If NO, then the current registration will not be replaced, if it exists. Note that this method may try to perform maintenance operations upon the application catalog anyway (for instance, clearing unwanted multiple registrations for this app) even if this argument is set to NO.
 
 @see #didFinishLaunchingWithOptions:
 */
-- (void) registerWithAttributes:(NSDictionary*) a;
+- (void) registerWithAttributes:(NSDictionary*) a update:(BOOL) update;
 
 /**
 Called to perform appropriate delegate method calls based on the given URL. Returns YES if it has performed any action based on the URL (such as calling a delegate method), NO otherwise. Calling delegate methods requires having called #registerWithAttributes: since the app launched; otherwise, this method will always return NO.

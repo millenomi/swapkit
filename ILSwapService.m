@@ -64,6 +64,7 @@ typedef NSInteger ILSwapPasteboardLifetime;
 
 @interface ILSwapService ()
 
+- (NSDictionary*) registrationByApplyingDefaultsToAttributes:(NSDictionary*) a;
 - (NSArray*) findApplicationRegistrationsForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action stopAtTheFirstMatch:(BOOL) oneOnly;
 
 @end
@@ -83,7 +84,7 @@ typedef NSInteger ILSwapPasteboardLifetime;
 	
 	NSDictionary* d = L0As(NSDictionary, [[[NSBundle mainBundle] infoDictionary] objectForKey:kILSwapServiceRegistrationInfoDictionaryKey]);
 	if (d)
-		[me registerWithAttributes:d];
+		[me registerWithAttributes:d update:NO];
 	
 	NSURL* u = [options objectForKey:UIApplicationLaunchOptionsURLKey];
 	if (u)
@@ -122,19 +123,15 @@ L0ObjCSingletonMethod(sharedService)
 }
 
 
-- (void) registerWithAttributes:(NSDictionary*) a;
+- (void) registerWithAttributes:(NSDictionary*) a update:(BOOL) update;
 {
 	if (registrationAttributes) {
 		[registrationAttributes release];
 		registrationAttributes = nil;
 	}
 	
-	NSInteger previousNumberOfItems = appCatalog.numberOfItems;
-	
-	// 1. Check to see if we're already registered and, if so, if we're out of date.
-	
+	// check out if there's anything in the app catalog we have to fix.
 	NSString* appID = [a objectForKey:kILAppIdentifier];
-	BOOL hasAppID = (appID != nil);
 	if (!appID)
 		appID = [[NSBundle mainBundle] bundleIdentifier];
 	
@@ -143,13 +140,16 @@ L0ObjCSingletonMethod(sharedService)
 	
 	NSIndexSet* allRegistrationIndexes = [appCatalog itemSetWithPasteboardTypes:[NSArray arrayWithObject:kILSwapServiceRegistrationUTI]];
 	
+	NSMutableIndexSet* selfRegistrationIndexes = [NSMutableIndexSet indexSet];
+	NSDictionary* ourOwnFoundData = nil;
+	
 	NSUInteger idx = [allRegistrationIndexes firstIndex];
 	for (id reg in [appCatalog valuesForPasteboardType:kILSwapServiceRegistrationUTI inItemSet:allRegistrationIndexes]) {
 		if ([reg isKindOfClass:[NSData class]]) {
 			NSPropertyListFormat notInteresting;
 			NSString* error = nil;
 			reg = [NSPropertyListSerialization propertyListFromData:reg mutabilityOption:NSPropertyListImmutable format:&notInteresting errorDescription:&error];
-
+			
 			if (!reg && error) {
 				NSLog(@"Could not read data from one of the app catalog entries: %@", error);
 				[error release];
@@ -158,33 +158,58 @@ L0ObjCSingletonMethod(sharedService)
 		
 		if ([reg isKindOfClass:[NSDictionary class]] && [[reg objectForKey:kILAppIdentifier] isEqual:appID]) {
 			
-			NSString* UUID = [reg objectForKey:kILAppRegistrationUUID];
-			id thisVersion = [reg objectForKey:kILAppVersion];
-			if ([currentUUID isEqual:UUID] && [thisVersion isEqual:currentVersion]) {
-				// we extract info from the pasteboard rather than using the one passed in.
-				registrationAttributes = [reg copy];
-				return; // no need to update.
-			} else
-				break; // we found our spot and it's out of date.
-			
+			[selfRegistrationIndexes addIndex:idx];
+
+			if (!update) {
+				NSString* UUID = [reg objectForKey:kILAppRegistrationUUID];
+				id thisVersion = [reg objectForKey:kILAppVersion];
+				if ([currentUUID isEqual:UUID] && [thisVersion isEqual:currentVersion]) {
+					// we got our own data and were told not to update it.
+					// we save it as our registrationAttributes, then.
+					if (!ourOwnFoundData)
+						ourOwnFoundData = reg;
+					// and bail.
+					continue;
+				}				
+			}
 		}
 		
 		idx = [allRegistrationIndexes indexGreaterThanIndex:idx];
 	}
 	
-	// 2. Add or update the registration. (idx == NSNotFound if it must be added, the actual index if it must be updated.)
+	if (!update && ourOwnFoundData && [selfRegistrationIndexes count] == 1) {
+		registrationAttributes = [ourOwnFoundData copy];
+		return;
+	}
 	
-	NSInteger expectedNumberOfItems = (idx == NSNotFound? previousNumberOfItems + 1 : previousNumberOfItems);
+	NSMutableArray* items = [[appCatalog.items mutableCopy] autorelease];
+	[items removeObjectsAtIndexes:selfRegistrationIndexes];
 	
-	// Add the UUID and the defaults if needed
+	a = [self registrationByApplyingDefaultsToAttributes:a];
+	NSDictionary* item = [NSDictionary dictionaryWithObject:a forKey:kILSwapServiceRegistrationUTI];
+	[items addObject:item];
+	appCatalog.items = items;
+	
+	NSString* newUUID = [a objectForKey:kILAppRegistrationUUID];
+	[[NSUserDefaults standardUserDefaults] setObject:newUUID forKey:kILSwapServiceLastRegistrationUUIDDefaultsKey];
+	
+	registrationAttributes = [a copy];
+}
+
+- (NSDictionary*) registrationByApplyingDefaultsToAttributes:(NSDictionary*) a;
+{
 	NSMutableDictionary* reg = [NSMutableDictionary dictionaryWithDictionary:a];
+	
 	NSString* newUUID = [[L0UUID UUID] stringValue];
 	[reg setObject:newUUID forKey:kILAppRegistrationUUID];
 	
-	if (!hasAppID)
+	if (![reg objectForKey:kILAppIdentifier])
 		[reg setObject:[[NSBundle mainBundle] bundleIdentifier] forKey:kILAppIdentifier];
 	
-	[reg setObject:currentVersion forKey:kILAppVersion];
+	if (![reg objectForKey:kILAppVersion]) {
+		id currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+		[reg setObject:currentVersion forKey:kILAppVersion];
+	}
 	
 	if (![reg objectForKey:kILAppVisibleName]) {
 		id x = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
@@ -207,21 +232,7 @@ L0ObjCSingletonMethod(sharedService)
 			[reg setObject:[NSArray arrayWithObject:kILSwapDefaultAction] forKey:kILAppSupportedActions];
 	}
 	
-	if (idx == NSNotFound) {
-		NSArray* registrationItemArray = [NSArray arrayWithObject:
-										  [NSDictionary dictionaryWithObject:reg forKey:kILSwapServiceRegistrationUTI]];		
-		[appCatalog addItems:registrationItemArray];
-	} else {
-		NSMutableArray* items = [NSMutableArray arrayWithArray:appCatalog.items];
-		[items replaceObjectAtIndex:idx withObject:reg];
-		appCatalog.items = items;
-	}
-	
-	[[NSUserDefaults standardUserDefaults] setObject:newUUID forKey:kILSwapServiceLastRegistrationUUIDDefaultsKey];
-	
-	ILSwapKitGuardWrongNumberOfItemsAfterRegistration(expectedNumberOfItems, appCatalog.numberOfItems);
-	
-	registrationAttributes = [reg copy];
+	return reg;
 }
 
 
