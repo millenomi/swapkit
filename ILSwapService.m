@@ -62,6 +62,12 @@ typedef NSInteger ILSwapPasteboardLifetime;
 
 @end
 
+static BOOL ILSwapIsAppInstalled(NSDictionary* reg) {
+	NSString* s = [reg objectForKey:kILAppReceiveItemURLScheme];
+	return s && [UIApp canOpenURL:
+				 [NSURL URLWithString:[NSString stringWithFormat:@"%@:", s]]];
+}
+
 @interface ILSwapService ()
 
 - (NSDictionary*) registrationByApplyingDefaultsToAttributes:(NSDictionary*) a;
@@ -295,7 +301,7 @@ L0ObjCSingletonMethod(sharedService)
 				}
 			}
 			
-			if ([x isKindOfClass:[NSDictionary class]]) {
+			if ([x isKindOfClass:[NSDictionary class]] && ILSwapIsAppInstalled(x)) {
 				NSString* ident = [x objectForKey:kILAppIdentifier];
 				if (ident)
 					[regs setObject:x forKey:ident];
@@ -360,6 +366,9 @@ L0ObjCSingletonMethod(sharedService)
 		
 		NSDictionary* r = [[self applicationRegistrations] objectForKey:candidateAppID];
 		if (![r objectForKey:kILAppReceiveItemURLScheme])
+			continue;
+		
+		if (!ILSwapIsAppInstalled(r))
 			continue;
 		
 		if (![L0As(NSArray, [r objectForKey:kILAppSupportedActions]) containsObject:action])
@@ -441,6 +450,9 @@ L0ObjCSingletonMethod(sharedService)
 		
 		NSDictionary* r = [[self applicationRegistrations] objectForKey:candidateAppID];
 		if (![r objectForKey:kILAppReceiveItemURLScheme])
+			continue;
+		
+		if (!ILSwapIsAppInstalled(r))
 			continue;
 		
 		if (![[r objectForKey:kILAppSupportedActions] containsObject:action])
