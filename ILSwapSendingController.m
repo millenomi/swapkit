@@ -69,7 +69,7 @@ L0UniquePointerConstant(kILSwapSendingControllerObservationContext);
 	return self;
 }
 
-@synthesize items, type, action;
+@synthesize items, type, action, delegate;
 
 - (void) dealloc
 {
@@ -151,8 +151,10 @@ L0UniquePointerConstant(kILSwapSendingControllerObservationContext);
 
 - (void) send:(UIView*) v;
 {
-	if (!self.canSend)
+	if (!self.canSend) {
+		[self.delegate sendController:self didNotSendItemsWithCause:kILSwapNoKnownDestinationForSending];
 		return;
+	}
 	
 	[self retain];
 	UIActionSheet* sheet = [[UIActionSheet new] autorelease];
@@ -177,7 +179,8 @@ L0UniquePointerConstant(kILSwapSendingControllerObservationContext);
 	if (buttonIndex != actionSheet.cancelButtonIndex) {
 		NSDictionary* app = [destinations objectAtIndex:buttonIndex];
 		[[ILSwapService sharedService] sendItems:items ofType:type forAction:action toApplicationWithIdentifier:[app objectForKey:kILAppIdentifier]];
-	}
+	} else
+		[self.delegate sendController:self didNotSendItemsWithCause:kILSwapSendingCancelled];
 
 	actionSheet.delegate = nil;
 	[self autorelease];

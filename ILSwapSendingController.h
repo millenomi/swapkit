@@ -33,6 +33,8 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ILSwapSendControllerDelegate;
+
 /**
 \addtogroup ILSwapKit SwapKit Classes and Protocols
 */
@@ -52,10 +54,16 @@ Memory management is similar to UIAlertViews and UIActionSheets; you don't need 
 	NSString* action;
 	
 	UIBarButtonItem* sendButtonItem;
+	
+	id <ILSwapSendControllerDelegate> delegate;
 }
 
 /** Creates a new sending controller. Designated initializer. */
 - (id) init;
+
+/**
+ Sets the delegate of this instance. Not retained. */
+@property(assign) id <ILSwapSendControllerDelegate> delegate;
 
 /**
 Creates a new sending controller that will allow users to pick an application able to receive items for the given item type and action.
@@ -79,7 +87,7 @@ Creates a new sending controller that will allow users to pick an application ab
 /** The action to use. If nil, @ref kILSwapDefaultAction will be used. Must not be modified while sending. */
 @property(copy) NSString* action;
 
-/** Whether it's possible to send items to another application.
+/** Whether it's possible to send items to another application. You can use Key-Value Observing (KVO) to be notified of changes to this value.
  
  This property will be NO while there is no destination available or while the items and type properties are nil. If YES, calling #send or #send: will show the sending user interface; if NO, these methods will have no effect. */
 @property(readonly) BOOL canSend;
@@ -106,5 +114,37 @@ This method shows the action sheet in a way that is appropriate for the given vi
 @param v The view to take the action sheet style from, or to display the action sheet in. If it's a UIToolbar or UITabBar, it will use the UIActionSheet's showFromToolbar: or showFromTabBar: methods, and will style the action sheet accordingly to the toolbar or tab bar's current style. Otherwise, it will show the action sheet within this view.
 */
 - (void) send:(UIView*) v;
+
+@end
+
+/**
+ \addtogroup ILSwapKitConstants Other Constants
+ */
+
+/**
+ \ingroup ILSwapKitConstants
+ A set of possible causes for errors during sending. See ILSwapSendingController and ILSwapSendControllerDelegate for more information.
+*/
+enum ILSwapSendingErrorCause {
+	/// The user chose the Cancel button on a UI element displayed by the sending controller.
+	kILSwapSendingCancelled = 0,
+	
+	/// The sending controller was asked to send, but had no possible destinations for sending.
+	kILSwapNoKnownDestinationForSending = 1,
+};
+typedef NSInteger ILSwapSendingErrorCause;
+
+/**
+ This is the protocol for delegates of a ILSwapSendingController.
+ */
+@protocol ILSwapSendControllerDelegate <NSObject>
+
+/**
+ Called when sending (via ILSwapSendingController#send or ILSwapSendingController#send:) fails.
+ 
+ @param sendController The controller that failed.
+ @param cause Why the controller failed.
+*/
+- (void) sendController:(ILSwapSendingController*) sendController didNotSendItemsWithCause:(ILSwapSendingErrorCause) cause;
 
 @end
