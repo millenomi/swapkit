@@ -1,5 +1,5 @@
 //
-//  ILSwapSendingController.m
+//  ILSwapSendController.m
 //  SwapKit
 //
 //  Created by ∞ on 25/12/09.
@@ -31,27 +31,27 @@
  */
 
 
-#import "ILSwapSendingController.h"
+#import "ILSwapSendController.h"
 #import "ILSwapService.h"
 
-@interface ILSwapSendingController () <UIActionSheetDelegate>
+@interface ILSwapSendController () <UIActionSheetDelegate>
 
 - (void) updateDestinations;
 
 @end
 
-L0UniquePointerConstant(kILSwapSendingControllerObservationContext);
+L0UniquePointerConstant(kILSwapSendControllerObservationContext);
 
-@implementation ILSwapSendingController
+@implementation ILSwapSendController
 
 - (id) init;
 {
 	if (!(self = [super init]))
 		return nil;
 
-	[self addObserver:self forKeyPath:@"items" options:0 context:kILSwapSendingControllerObservationContext];
-	[self addObserver:self forKeyPath:@"type" options:0 context:kILSwapSendingControllerObservationContext];
-	[self addObserver:self forKeyPath:@"action" options:0 context:kILSwapSendingControllerObservationContext];
+	[self addObserver:self forKeyPath:@"items" options:0 context:kILSwapSendControllerObservationContext];
+	[self addObserver:self forKeyPath:@"type" options:0 context:kILSwapSendControllerObservationContext];
+	[self addObserver:self forKeyPath:@"action" options:0 context:kILSwapSendControllerObservationContext];
 	
 	return self;
 }
@@ -95,7 +95,7 @@ L0UniquePointerConstant(kILSwapSendingControllerObservationContext);
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
 {
-	if (context == kILSwapSendingControllerObservationContext)
+	if (context == kILSwapSendControllerObservationContext)
 		[self updateDestinations];
 }
 

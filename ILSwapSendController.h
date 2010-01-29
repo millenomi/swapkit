@@ -1,5 +1,5 @@
 //
-//  ILSwapSendingController.h
+//  ILSwapSendController.h
 //  SwapKit
 //
 //  Created by ∞ on 25/12/09.
@@ -41,11 +41,11 @@
 
 /**
 \ingroup ILSwapKit
-A ILSwapSendingController instance (a sending controller) provides a common "send to other application" user interface. Once invoked, it will search for appropriate destination applications for the given items, type and action, and present them to the user with an action sheet. Once chosen, it will send the items to that application.
+A ILSwapSendController instance (a sending controller) provides a common "send to other application" user interface. Once invoked, it will search for appropriate destination applications for the given items, type and action, and present them to the user with an action sheet. Once chosen, it will send the items to that application.
 
 Memory management is similar to UIAlertViews and UIActionSheets; you don't need to retain the instance explicitly if you just want to show it. You do have to retain it if you want to keep a reference to it alive, as per normal memory management rules.
 */
-@interface ILSwapSendingController : NSObject {
+@interface ILSwapSendController : NSObject {
 @private
 	NSArray* destinations;
 	
@@ -75,7 +75,7 @@ Creates a new sending controller that will allow users to pick an application ab
 */
 - (id) initWithItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
 
-/** Convenience method for returning an autoreleased sending controller initialized by ILSwapSendingController#initWithItems:ofType:forAction:. */
+/** Convenience method for returning an autoreleased sending controller initialized by ILSwapSendController#initWithItems:ofType:forAction:. */
 + (id) controllerForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
 
 /** The items to send. Must not be modified while sending. */
@@ -102,7 +102,7 @@ Creates a new sending controller that will allow users to pick an application ab
 /**
 Performs the sending. If no applications are found, this method will do nothing; otherwise, it will show a list of destination applications in an action sheet. (Currently, it shows the list even if there is a single possible application, to give the user a opportunity to confirm the app switch.)
 
-This method shows the action sheet in the key window. To specify what window or view to use, see ILSwapSendingController#send:.
+This method shows the action sheet in the key window. To specify what window or view to use, see ILSwapSendController#send:.
 */
 - (void) send;
 
@@ -123,7 +123,7 @@ This method shows the action sheet in a way that is appropriate for the given vi
 
 /**
  \ingroup ILSwapKitConstants
- A set of possible causes for errors during sending. See ILSwapSendingController and ILSwapSendControllerDelegate for more information.
+ A set of possible causes for errors during sending. See ILSwapSendController and ILSwapSendControllerDelegate for more information.
 */
 enum ILSwapSendingErrorCause {
 	/// The user chose the Cancel button on a UI element displayed by the sending controller.
@@ -135,16 +135,16 @@ enum ILSwapSendingErrorCause {
 typedef NSInteger ILSwapSendingErrorCause;
 
 /**
- This is the protocol for delegates of a ILSwapSendingController.
+ This is the protocol for delegates of a ILSwapSendController.
  */
 @protocol ILSwapSendControllerDelegate <NSObject>
 
 /**
- Called when sending (via ILSwapSendingController#send or ILSwapSendingController#send:) fails.
+ Called when sending (via ILSwapSendController#send or ILSwapSendController#send:) fails.
  
  @param sendController The controller that failed.
  @param cause Why the controller failed.
 */
-- (void) sendController:(ILSwapSendingController*) sendController didNotSendItemsWithCause:(ILSwapSendingErrorCause) cause;
+- (void) sendController:(ILSwapSendController*) sendController didNotSendItemsWithCause:(ILSwapSendingErrorCause) cause;
 
 @end

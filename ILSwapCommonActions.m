@@ -49,7 +49,7 @@ Example of use:
  UIImage* i = <# An image. #>;
  NSData* d = UIImagePNGRepresentation(i);
  
- ILSwapSendingController* ctl = [ILSwapSendingController
+ ILSwapSendController* ctl = [ILSwapSendController
 	controllerForSendingItems:[NSArray arrayWithObject:d]
 	ofType:(id) kUTTypePNG
 	forAction:kILSwapPrepareForTransferAction];

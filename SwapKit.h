@@ -33,7 +33,7 @@
 #import <UIKit/UIKit.h>
 
 #import "ILSwapService.h"
-#import "ILSwapSendingController.h"
+#import "ILSwapSendController.h"
 #import "ILSwapCommonActions.h"
 #import "ILSwapRequest.h"
 #import "ILSwapItem.h"

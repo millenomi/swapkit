@@ -10,7 +10,7 @@
 @class ILSwapItem;
 
 /**
- A request contains all information regarding a specific 'send' performed by another application. Requests that are sent through ILSwapService#sendItems:ofType:forAction:toApplicationWithIdentifier: and ILSwapSendingController will both arrive in the form of a ILSwapRequest instance through ILSwapServiceDelegate#swapServiceDidReceiveRequest:; it's up to you to get the items from within the request and parse them for your own use.
+ A request contains all information regarding a specific 'send' performed by another application. Requests that are sent through ILSwapService#sendItems:ofType:forAction:toApplicationWithIdentifier: and ILSwapSendController will both arrive in the form of a ILSwapRequest instance through ILSwapServiceDelegate#swapServiceDidReceiveRequest:; it's up to you to get the items from within the request and parse them for your own use.
  
  Requests do not have public constructors. Instead, you receive instances of this class as arguments to delegate classes. You can retain the requests and they will remain valid until deallocated, but a request "dies" in the same session it was received — it cannot be serialized.
  */

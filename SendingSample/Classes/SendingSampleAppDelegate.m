@@ -45,7 +45,7 @@
 					   @"From Sender…", kILSwapItemTitleAttribute,
 					   nil];
 	
-	ILSwapSendingController* sender = [ILSwapSendingController controllerForSendingItems:[NSArray arrayWithObject:item] ofType:(id) kUTTypeUTF8PlainText forAction:nil];
+	ILSwapSendController* sender = [ILSwapSendController controllerForSendingItems:[NSArray arrayWithObject:item] ofType:(id) kUTTypeUTF8PlainText forAction:nil];
 	[sender send];
 }
 
