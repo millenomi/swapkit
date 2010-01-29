@@ -163,7 +163,7 @@ Usually, you don't call this method directly. Instead, you use the #didFinishLau
 - (void) registerWithAttributes:(NSDictionary*) a update:(BOOL) update;
 
 /**
-Called to perform appropriate delegate method calls based on the given URL. Returns YES if it has performed any action based on the URL (such as calling a delegate method), NO otherwise. Calling delegate methods requires having called #registerWithAttributes: since the app launched; otherwise, this method will always return NO.
+Called to perform appropriate delegate method calls based on the given URL. Returns YES if it has performed any action based on the URL (such as calling a delegate method), NO otherwise. Calling delegate methods requires having called #registerWithAttributes:update: since the app launched; otherwise, this method will always return NO.
 
 Usually, you don't call this method directly. Instead, you use the #didFinishLaunchingWithOptions: method from the application:didFinishLaunchingWithOptions: method of your app delegate, and the #handleOpenURL: method from the application:handleOpenURL: method of your app delegate, which automatically call this method if needed.
 
@@ -175,7 +175,7 @@ Usually, you don't call this method directly. Instead, you use the #didFinishLau
 /**
  Convenience method for performing startup actions. It will perform the following upon the swap service instance:
  - sets the #delegate to the UIApplication delegate, and
- - calls #registerWithAttributes: with the dictionary at the @ref kILSwapServiceRegistrationInfoDictionaryKey key of Info.plist if present, and
+ - calls #registerWithAttributes:update: with the dictionary at the @ref kILSwapServiceRegistrationInfoDictionaryKey key of Info.plist if present, and
  - if the passed-in options indicate a URL being opened, calls #performActionsForURL: (which may call appropriate delegate methods).
  Returns YES if #performActionsForURL: acted upon the URL, NO otherwise. (This allows you to ignore SwapKit-handled URLs.)
 
@@ -192,7 +192,7 @@ Usually, you don't call this method directly. Instead, you use the #didFinishLau
 // INTERACTING WITH OTHER APPLICATIONS
 
 /**
-Returns all application registrations. The returned dictionary uses application identifiers as keys, and registration dictionaries as their associated values. These contain any number of registration keys as specified in @ref ILSwapKitRegistrationKeys, and may contain the registration for this app if #registerWithAttributes: was called at least once from it.
+Returns all application registrations. The returned dictionary uses application identifiers as keys, and registration dictionaries as their associated values. These contain any number of registration keys as specified in @ref ILSwapKitRegistrationKeys, and may contain the registration for this app if #registerWithAttributes:update: was called at least once from it.
 */
 @property(readonly) NSDictionary* applicationRegistrations;
 
@@ -209,7 +209,7 @@ Returns all application registrations. The returned dictionary uses application 
  \internal
  Removes all application registration records and resets the application catalog to a clean state.
  
- Note that the use of this method also removes the current app's registration, as though you never called #registerWithAttributes: this session. If you want to use any service that requires registration, you might need to call this again.
+ Note that the use of this method also removes the current app's registration, as though you never called #registerWithAttributes:update: this session. If you want to use any service that requires registration, you might need to call this again.
  
  This method may be useful as a debugging feature or for writing apps that inspect the contents of the catalog, but should never be used by a normal SwapKit client. Do not rely on this being here in the future (that is, it's NOT part of the stable API).
  */
