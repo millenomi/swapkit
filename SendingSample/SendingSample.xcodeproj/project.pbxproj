@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1570B40D10E7A87D0037DEB4 /* libSwapKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1570B40610E7A8750037DEB4 /* libSwapKit.a */; };
 		1570B41510E7A8C80037DEB4 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1570B41410E7A8C80037DEB4 /* MobileCoreServices.framework */; };
+		15FC68B61114657000426124 /* SwapKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 15FC68B51114656A00426124 /* SwapKit.bundle */; };
 		1D3623260D0F684500981E51 /* SendingSampleAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* SendingSampleAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -31,6 +32,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 15EAA0E610E690F100B7321A;
 			remoteInfo = "SwapKit (Source)";
+		};
+		15FC68B41114656A00426124 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1570B3FF10E7A8750037DEB4 /* SwapKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 15FC688C1114650D00426124;
+			remoteInfo = "SwapKit (Bundle)";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -78,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				1570B40610E7A8750037DEB4 /* libSwapKit.a */,
+				15FC68B51114656A00426124 /* SwapKit.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -184,6 +193,13 @@
 			remoteRef = 1570B40510E7A8750037DEB4 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		15FC68B51114656A00426124 /* SwapKit.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwapKit.bundle;
+			remoteRef = 15FC68B41114656A00426124 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -191,6 +207,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15FC68B61114657000426124 /* SwapKit.bundle in Resources */,
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -33,6 +33,7 @@
 
 #import "ILSwapSendController.h"
 #import "ILSwapService.h"
+#import "ILSwapKitBundle.h"
 
 @interface ILSwapSendController () <UIActionSheetDelegate>
 
@@ -164,7 +165,7 @@ L0UniquePointerConstant(kILSwapSendControllerObservationContext);
 		[sheet addButtonWithTitle:[app objectForKey:kILAppVisibleName]];
 
 	// TODO Decent localization.
-	sheet.cancelButtonIndex = [sheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")];
+	sheet.cancelButtonIndex = [sheet addButtonWithTitle:ILSwapLocalizedString(@"Cancel", @"Cancel button")];
 	
 	if ([v isKindOfClass:[UITabBar class]])
 		[sheet showFromTabBar:(id) v];

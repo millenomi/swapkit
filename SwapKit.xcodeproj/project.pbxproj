@@ -15,6 +15,7 @@
 			);
 			dependencies = (
 				15EAA0EA10E690F600B7321A /* PBXTargetDependency */,
+				15FC68991114655200426124 /* PBXTargetDependency */,
 			);
 			name = "SwapKit (Source)";
 			productName = "SwapKit (Source)";
@@ -58,6 +59,8 @@
 		15F4E0EF10DFD19300C17BF0 /* NSURL+L0URLParsing.m in Sources */ = {isa = PBXBuildFile; fileRef = 15F4E0ED10DFD19300C17BF0 /* NSURL+L0URLParsing.m */; };
 		15F4E0F110DFD31B00C17BF0 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15F4E0F010DFD31B00C17BF0 /* MobileCoreServices.framework */; };
 		15F4E14910E0052100C17BF0 /* SwapKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 15F4E14810E0052100C17BF0 /* SwapKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		15FC68821114646C00426124 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 15FC68811114646C00426124 /* Localizable.strings */; };
+		15FC68911114653100426124 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 15FC68811114646C00426124 /* Localizable.strings */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +71,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = SwapKit;
+		};
+		15FC68981114655200426124 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 15FC688B1114650D00426124;
+			remoteInfo = "SwapKit (Bundle)";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -105,7 +115,6 @@
 		157B24CE10E51B3C001DE5CC /* ILSwapSendController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapSendController.m; sourceTree = "<group>"; };
 		1598EACA10F26EA500E94EB2 /* ILSwapItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapItem.h; sourceTree = "<group>"; };
 		1598EACB10F26EA500E94EB2 /* ILSwapItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapItem.m; sourceTree = "<group>"; };
-		15A75A8710E5FE9B0028C0EE /* TODO.tasks */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.tasks; sourceTree = "<group>"; };
 		15A75A9610E600940028C0EE /* SwapKit (Framework)-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SwapKit (Framework)-Info.plist"; sourceTree = "<group>"; };
 		15F4E0E410DFD02F00C17BF0 /* ILSwapService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapService.h; sourceTree = "<group>"; };
 		15F4E0E510DFD02F00C17BF0 /* ILSwapService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapService.m; sourceTree = "<group>"; };
@@ -115,12 +124,23 @@
 		15F4E0ED10DFD19300C17BF0 /* NSURL+L0URLParsing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+L0URLParsing.m"; sourceTree = "<group>"; };
 		15F4E0F010DFD31B00C17BF0 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		15F4E14810E0052100C17BF0 /* SwapKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwapKit.h; sourceTree = "<group>"; };
+		15FC68831114647E00426124 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		15FC68841114647F00426124 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		15FC688C1114650D00426124 /* SwapKit.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwapKit.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		15FC688D1114650D00426124 /* SwapKitBundle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SwapKitBundle-Info.plist"; sourceTree = "<group>"; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libSwapKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSwapKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		15A75A9410E600940028C0EE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		15FC688A1114650D00426124 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -143,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				D2AAC07E0554694100DB518D /* libSwapKit.a */,
+				15FC688C1114650D00426124 /* SwapKit.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -150,11 +171,12 @@
 		0867D691FE84028FC02AAC07 /* SwapKit */ = {
 			isa = PBXGroup;
 			children = (
-				15A75A8710E5FE9B0028C0EE /* TODO.tasks */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
+				15FC687C1114643200426124 /* Resources */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
+				15FC688D1114650D00426124 /* SwapKitBundle-Info.plist */,
 			);
 			name = SwapKit;
 			sourceTree = "<group>";
@@ -202,6 +224,14 @@
 				15F4E0E910DFD16800C17BF0 /* L0UUID.m */,
 			);
 			name = "Internal use only.";
+			sourceTree = "<group>";
+		};
+		15FC687C1114643200426124 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				15FC68811114646C00426124 /* Localizable.strings */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
@@ -269,6 +299,23 @@
 			productName = "SwapKit (Framework)";
 			productType = "com.apple.product-type.framework";
 		};
+		15FC688B1114650D00426124 /* SwapKit (Bundle) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15FC68901114650E00426124 /* Build configuration list for PBXNativeTarget "SwapKit (Bundle)" */;
+			buildPhases = (
+				15FC68881114650D00426124 /* Resources */,
+				15FC68891114650D00426124 /* Sources */,
+				15FC688A1114650D00426124 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SwapKit (Bundle)";
+			productName = SwapKitBundle;
+			productReference = 15FC688C1114650D00426124 /* SwapKit.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 		D2AAC07D0554694100DB518D /* SwapKit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "SwapKit" */;
@@ -297,6 +344,14 @@
 			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "SwapKit" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				en,
+				it,
+			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* SwapKit */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
@@ -305,6 +360,7 @@
 				D2AAC07D0554694100DB518D /* SwapKit */,
 				15A75A9510E600940028C0EE /* SwapKit (Framework) */,
 				15EAA0E610E690F100B7321A /* SwapKit (Source) */,
+				15FC688B1114650D00426124 /* SwapKit (Bundle) */,
 			);
 		};
 /* End PBXProject section */
@@ -314,6 +370,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15FC68821114646C00426124 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		15FC68881114650D00426124 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15FC68911114653100426124 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +410,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		15FC68891114650D00426124 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2AAC07B0554694100DB518D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -369,7 +441,24 @@
 			target = D2AAC07D0554694100DB518D /* SwapKit */;
 			targetProxy = 15EAA0E910E690F600B7321A /* PBXContainerItemProxy */;
 		};
+		15FC68991114655200426124 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 15FC688B1114650D00426124 /* SwapKit (Bundle) */;
+			targetProxy = 15FC68981114655200426124 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		15FC68811114646C00426124 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				15FC68831114647E00426124 /* en */,
+				15FC68841114647F00426124 /* it */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		15A75A9710E600940028C0EE /* Debug */ = {
@@ -441,6 +530,58 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PRODUCT_NAME = "SwapKit (Source)";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		15FC688E1114650E00426124 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "SwapKitBundle-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = SwapKit;
+				SDKROOT = "";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		15FC688F1114650E00426124 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "SwapKitBundle-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = SwapKit;
+				SDKROOT = "";
+				WRAPPER_EXTENSION = bundle;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -524,6 +665,15 @@
 			buildConfigurations = (
 				15EAA0E710E690F100B7321A /* Debug */,
 				15EAA0E810E690F100B7321A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		15FC68901114650E00426124 /* Build configuration list for PBXNativeTarget "SwapKit (Bundle)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				15FC688E1114650E00426124 /* Debug */,
+				15FC688F1114650E00426124 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

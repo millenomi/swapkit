@@ -33,3 +33,11 @@ extern NSBundle* ILSwapKitBundle();
  @param bundle The bundle that will be searched for SwapKit resources. Can be <code>nil</code>; if so, the next invocation of ILSwapKitBundle() will repeat its default search.
  */
 extern void ILSwapKitSetBundle(NSBundle* bundle);
+
+/**
+ \ingroup ILSwapKitBundleManagement
+
+ Fetches a localized string from the SwapKit bundle.
+*/
+#define ILSwapLocalizedString(key, comment) \
+	[ILSwapKitBundle() localizedStringForKey:(key) value:@"" table:nil]
