@@ -19,5 +19,5 @@ compatibility_span: "A"
 # The designation identifier is the number after "beta" or "development".
 # For example, it's the 2 in 1.0b2. For dev versions, the identifier is '-' followed the short version of the git commit hash (eg. 1.0d-123abc).
 beta:
-    designation_identifier: 2
+    designation_identifier: 3
 
