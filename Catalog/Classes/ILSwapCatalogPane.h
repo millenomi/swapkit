@@ -10,6 +10,6 @@
 	NSArray* displayedApplications;
 }
 
-- (IBAction) deleteAllItems;
+- (IBAction) deleteAllItems:(id) sender;
 
 @end

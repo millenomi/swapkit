@@ -8,8 +8,12 @@
 
 #import "ILSwapCatalogAppDelegate.h"
 #import "ILSwapCatalogPane.h"
+#import "ILSwapAppPane.h"
 
 #import <SwapKit/SwapKit.h>
+
+
+#if kILSwapCatalogPlatform_iPhone
 
 @implementation ILSwapCatalogAppDelegate
 
@@ -33,6 +37,36 @@
 	// Save data if appropriate
 }
 
+- (BOOL) shouldSupportAdditionalOrientation:(UIInterfaceOrientation) o forViewController:(UIViewController*) vc;
+{
+	return NO; // only allow iPhonesque standard orientations.
+}
+
+- (void) showActionSheet:(UIActionSheet*) a invokedByBarButtonItem:(UIBarButtonItem*) item;
+{
+	[a showInView:self.window];
+}
+
+- (void) showActionSheet:(UIActionSheet*) a invokedByView:(UIView*) view;
+{
+	[a showInView:self.window];
+}
+
+- (void) displayApplicationRegistration:(NSDictionary*) reg;
+{
+	ILSwapAppPane* pane = [[[ILSwapAppPane alloc] initWithApplicationRegistrationRecord:reg] autorelease];
+	[self.navigationController pushViewController:pane animated:YES];
+}
+
+- (void) displaySendViewController:(UIViewController*) c;
+{
+	[self.navigationController pushViewController:c animated:YES];
+}
+
+- (void) displayImagePickerController:(UIImagePickerController*) c comingFromView:(UIView*) v withinViewController:(UIViewController*) p;
+{
+	[p presentModalViewController:c animated:YES];
+}
 
 #pragma mark -
 #pragma mark Memory management
@@ -45,3 +79,4 @@
 
 @end
 
+#endif

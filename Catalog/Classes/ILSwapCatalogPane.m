@@ -44,6 +44,12 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 }
 
 
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+{
+	return UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ||
+		[ILSwapCatalogApp() shouldSupportAdditionalOrientation:toInterfaceOrientation forViewController:self];
+}
+
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -81,12 +87,10 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 // Override to support row selection in the table view.
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSDictionary* record = [self.displayedApplications objectAtIndex:[indexPath row]];
-	
-	ILSwapAppPane* pane = [[[ILSwapAppPane alloc] initWithApplicationRegistrationRecord:record] autorelease];
-	[self.navigationController pushViewController:pane animated:YES];
+	[ILSwapCatalogApp() displayApplicationRegistration:record];
 }
 
-- (IBAction) deleteAllItems;
+- (IBAction) deleteAllItems:(id) sender;
 {
 	UIActionSheet* a = [[UIActionSheet new] autorelease];
 	a.title = NSLocalizedString(@"Do you really want to clear the app catalog for this device?", @"Prompt for delete all items");
@@ -94,7 +98,7 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 	a.cancelButtonIndex = [a addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")];
 	
 	a.delegate = self;
-	[a showInView:ILSwapCatalogApp().window];
+	[ILSwapCatalogApp() showActionSheet:a invokedByBarButtonItem:sender];
 }
 
 - (void) actionSheet:(UIActionSheet *)a clickedButtonAtIndex:(NSInteger)buttonIndex;

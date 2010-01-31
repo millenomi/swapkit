@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "L0Keyboard.h"
 
-
-@interface ILSwapSendText : UIViewController {
+@interface ILSwapSendText : UIViewController <L0KeyboardObserver> {
 	IBOutlet UITextView* textView;
 	
 	NSString* type;
@@ -17,5 +17,7 @@
 }
 
 - (id) initWithApplicationIdentifier:(NSString*) app type:(NSString*) type;
+
+- (void) dismissModal;
 
 @end

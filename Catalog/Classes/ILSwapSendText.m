@@ -10,6 +10,7 @@
 
 #import <SwapKit/SwapKit.h>
 
+#import "ILSwapCatalogAppDelegate.h"
 
 @implementation ILSwapSendText
 
@@ -35,8 +36,20 @@
 }
 
 
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+{
+	return UIInterfaceOrientationIsPortrait(toInterfaceOrientation) || [ILSwapCatalogApp() shouldSupportAdditionalOrientation:toInterfaceOrientation forViewController:self];
+}
+
+- (void) viewDidLoad;
+{
+	[super viewDidLoad];
+	textView.frame = self.view.bounds;
+}
+
 - (void) viewDidUnload;
 {
+	[super viewDidUnload];
 	[textView release];
 	textView = nil;
 }
@@ -44,42 +57,48 @@
 - (void) viewWillAppear:(BOOL)animated;
 {
 	[super viewWillAppear:animated];
+		
+	[[L0Keyboard sharedInstance] addObserver:self];
+	[textView becomeFirstResponder];
+}
+
+- (void) viewDidAppear:(BOOL)animated;
+{
 	if (animated)
 		[textView flashScrollIndicators];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-	
-	[textView becomeFirstResponder];
 }
 
 - (void) viewWillDisappear:(BOOL)animated;
 {
 	[super viewWillDisappear:animated];
-	
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+	[[L0Keyboard sharedInstance] removeObserver:self];
 }
 
-
-- (void) keyboardDidShow:(NSNotification*) n;
+- (void) keyboardWillAppear:(L0Keyboard *)k;
 {
-	CGPoint p = L0UIKeyboardGetOriginForKeyInView(n, UIKeyboardCenterEndUserInfoKey, textView);
+	//[k resizeViewToPreventCovering:textView originalFrame:self.view.bounds animated:YES];
+	[k beginViewAnimationsAlongsideKeyboard:nil context:NULL];
 	
-	CGRect f = textView.frame;
-	f.size.height = p.y;
+	CGRect f = self.view.bounds;
+	f.size.height -= k.bounds.size.height;
 	textView.frame = f;
+	
+	[UIView commitAnimations];
 }
 
-- (void) keyboardWillHide:(NSNotification*) n;
+- (void) keyboardWillDisappear:(L0Keyboard *)k;
 {
-	textView.frame = self.view.bounds;
+	[k resizeViewToPreventCovering:textView originalFrame:self.view.bounds animated:YES];
 }
-
 
 - (void) send;
 {
 	[[ILSwapService sharedService] sendItems:[NSArray arrayWithObject:textView.text] ofType:type forAction:nil toApplicationWithIdentifier:app];
+}
+
+- (void) dismissModal;
+{
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 @end

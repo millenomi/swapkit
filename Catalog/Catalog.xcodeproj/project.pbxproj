@@ -7,6 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1541E2EC1115735B00936240 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 15923F1710F204960011B29A /* Icon.png */; };
+		1541E2EF1115735B00936240 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		1541E2F01115735B00936240 /* ILSwapCatalogAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* ILSwapCatalogAppDelegate.m */; };
+		1541E2F11115735B00936240 /* ILSwapCatalogPane.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* ILSwapCatalogPane.m */; };
+		1541E2F21115735B00936240 /* ILSwapAppPane.m in Sources */ = {isa = PBXBuildFile; fileRef = 15923E8910F1FC6D0011B29A /* ILSwapAppPane.m */; };
+		1541E2F31115735B00936240 /* ILSwapSendText.m in Sources */ = {isa = PBXBuildFile; fileRef = 157417EB10F68636006C1DC2 /* ILSwapSendText.m */; };
+		1541E2F51115735B00936240 /* libSwapKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15923E2510F1F6230011B29A /* libSwapKit.a */; };
+		1541E2F61115735B00936240 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		1541E2F71115735B00936240 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		1541E2F81115735B00936240 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
+		1541E2F91115735B00936240 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15923E2610F1F62A0011B29A /* MobileCoreServices.framework */; };
+		1541E312111573BD00936240 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1541E311111573BD00936240 /* MainWindow.xib */; };
+		1541E31B1115754800936240 /* ILSwapCatalogAppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 1541E31A1115754800936240 /* ILSwapCatalogAppDelegate_iPad.m */; };
+		1541E321111575DB00936240 /* ILSwapCatalogPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F335F01007B36200424DE2 /* ILSwapCatalogPane.xib */; };
+		1541E322111575DD00936240 /* ILSwapAppPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15923E8E10F1FCAC0011B29A /* ILSwapAppPane.xib */; };
+		1541E323111575DF00936240 /* ILSwapSendText.xib in Resources */ = {isa = PBXBuildFile; fileRef = 157417EF10F68652006C1DC2 /* ILSwapSendText.xib */; };
+		1541E3371115780C00936240 /* ILAutorotatingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1541E3361115780C00936240 /* ILAutorotatingViewController.m */; };
+		1541E5271115914A00936240 /* L0Keyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 1541E5261115914A00936240 /* L0Keyboard.m */; };
+		1541E5281115914A00936240 /* L0Keyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 1541E5261115914A00936240 /* L0Keyboard.m */; };
+		1541E5FA11159DE500936240 /* ILSwapSendImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1541E5F911159DE500936240 /* ILSwapSendImage.m */; };
+		1541E5FB11159DE500936240 /* ILSwapSendImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1541E5F911159DE500936240 /* ILSwapSendImage.m */; };
 		157417ED10F68636006C1DC2 /* ILSwapSendText.m in Sources */ = {isa = PBXBuildFile; fileRef = 157417EB10F68636006C1DC2 /* ILSwapSendText.m */; };
 		157417F010F68652006C1DC2 /* ILSwapSendText.xib in Resources */ = {isa = PBXBuildFile; fileRef = 157417EF10F68652006C1DC2 /* ILSwapSendText.xib */; };
 		15923E2710F1F62A0011B29A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15923E2610F1F62A0011B29A /* MobileCoreServices.framework */; };
@@ -25,6 +46,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1541E2E71115735B00936240 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 15923E1B10F1F6230011B29A /* SwapKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 15EAA0E610E690F100B7321A;
+			remoteInfo = "SwapKit (Source)";
+		};
+		1541E3031115735C00936240 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 15923E1B10F1F6230011B29A /* SwapKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 15FC688C1114650D00426124 /* SwapKit.bundle */;
+			remoteInfo = "SwapKit (Bundle)";
+		};
 		15923E2410F1F6230011B29A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 15923E1B10F1F6230011B29A /* SwapKit.xcodeproj */;
@@ -42,6 +77,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1541E2FD1115735B00936240 /* Catalog-iPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Catalog-iPad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1541E311111573BD00936240 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		1541E3191115754800936240 /* ILSwapCatalogAppDelegate_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapCatalogAppDelegate_iPad.h; sourceTree = "<group>"; };
+		1541E31A1115754800936240 /* ILSwapCatalogAppDelegate_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapCatalogAppDelegate_iPad.m; sourceTree = "<group>"; };
+		1541E3351115780C00936240 /* ILAutorotatingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILAutorotatingViewController.h; sourceTree = "<group>"; };
+		1541E3361115780C00936240 /* ILAutorotatingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILAutorotatingViewController.m; sourceTree = "<group>"; };
+		1541E51911158FE700936240 /* Catalog-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Catalog-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.info-plist"; sourceTree = "<group>"; };
+		1541E5251115914A00936240 /* L0Keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = L0Keyboard.h; sourceTree = "<group>"; };
+		1541E5261115914A00936240 /* L0Keyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = L0Keyboard.m; sourceTree = "<group>"; };
+		1541E5F811159DE500936240 /* ILSwapSendImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapSendImage.h; sourceTree = "<group>"; };
+		1541E5F911159DE500936240 /* ILSwapSendImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapSendImage.m; sourceTree = "<group>"; };
 		157417EA10F68636006C1DC2 /* ILSwapSendText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapSendText.h; sourceTree = "<group>"; };
 		157417EB10F68636006C1DC2 /* ILSwapSendText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapSendText.m; sourceTree = "<group>"; };
 		157417EF10F68652006C1DC2 /* ILSwapSendText.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ILSwapSendText.xib; sourceTree = "<group>"; };
@@ -66,6 +112,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1541E2F41115735B00936240 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1541E2F51115735B00936240 /* libSwapKit.a in Frameworks */,
+				1541E2F61115735B00936240 /* Foundation.framework in Frameworks */,
+				1541E2F71115735B00936240 /* UIKit.framework in Frameworks */,
+				1541E2F81115735B00936240 /* CoreGraphics.framework in Frameworks */,
+				1541E2F91115735B00936240 /* MobileCoreServices.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1D60588F0D05DD3D006BFB54 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -84,22 +142,40 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				1541E3351115780C00936240 /* ILAutorotatingViewController.h */,
+				1541E3361115780C00936240 /* ILAutorotatingViewController.m */,
 				15923E8810F1FC6D0011B29A /* ILSwapAppPane.h */,
 				15923E8910F1FC6D0011B29A /* ILSwapAppPane.m */,
 				157417EA10F68636006C1DC2 /* ILSwapSendText.h */,
 				157417EB10F68636006C1DC2 /* ILSwapSendText.m */,
+				1541E5F811159DE500936240 /* ILSwapSendImage.h */,
+				1541E5F911159DE500936240 /* ILSwapSendImage.m */,
 				28C286DF0D94DF7D0034E888 /* ILSwapCatalogPane.h */,
 				28C286E00D94DF7D0034E888 /* ILSwapCatalogPane.m */,
 				1D3623240D0F684500981E51 /* ILSwapCatalogAppDelegate.h */,
 				1D3623250D0F684500981E51 /* ILSwapCatalogAppDelegate.m */,
+				1541E3191115754800936240 /* ILSwapCatalogAppDelegate_iPad.h */,
+				1541E31A1115754800936240 /* ILSwapCatalogAppDelegate_iPad.m */,
+				1541E5251115914A00936240 /* L0Keyboard.h */,
+				1541E5261115914A00936240 /* L0Keyboard.m */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		1541E310111573B200936240 /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+				1541E51911158FE700936240 /* Catalog-Info.plist */,
+				1541E311111573BD00936240 /* MainWindow.xib */,
+			);
+			path = iPad;
 			sourceTree = "<group>";
 		};
 		15923E1C10F1F6230011B29A /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				15923E2510F1F6230011B29A /* libSwapKit.a */,
+				1541E3041115735C00936240 /* SwapKit.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* Catalog.app */,
+				1541E2FD1115735B00936240 /* Catalog-iPad.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -137,6 +214,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				1541E310111573B200936240 /* iPad */,
 				15923F1710F204960011B29A /* Icon.png */,
 				157417EF10F68652006C1DC2 /* ILSwapSendText.xib */,
 				28F335F01007B36200424DE2 /* ILSwapCatalogPane.xib */,
@@ -160,6 +238,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1541E2E51115735B00936240 /* Catalog-iPad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1541E2FA1115735B00936240 /* Build configuration list for PBXNativeTarget "Catalog-iPad" */;
+			buildPhases = (
+				1541E2E81115735B00936240 /* Resources */,
+				1541E2EE1115735B00936240 /* Sources */,
+				1541E2F41115735B00936240 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1541E2E61115735B00936240 /* PBXTargetDependency */,
+			);
+			name = "Catalog-iPad";
+			productName = Catalog;
+			productReference = 1541E2FD1115735B00936240 /* Catalog-iPad.app */;
+			productType = "com.apple.product-type.application";
+		};
 		1D6058900D05DD3D006BFB54 /* Catalog */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Catalog" */;
@@ -204,11 +300,19 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Catalog */,
+				1541E2E51115735B00936240 /* Catalog-iPad */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		1541E3041115735C00936240 /* SwapKit.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwapKit.bundle;
+			remoteRef = 1541E3031115735C00936240 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		15923E2510F1F6230011B29A /* libSwapKit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -219,6 +323,18 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1541E2E81115735B00936240 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1541E2EC1115735B00936240 /* Icon.png in Resources */,
+				1541E312111573BD00936240 /* MainWindow.xib in Resources */,
+				1541E321111575DB00936240 /* ILSwapCatalogPane.xib in Resources */,
+				1541E322111575DD00936240 /* ILSwapAppPane.xib in Resources */,
+				1541E323111575DF00936240 /* ILSwapSendText.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -234,6 +350,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1541E2EE1115735B00936240 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1541E2EF1115735B00936240 /* main.m in Sources */,
+				1541E2F01115735B00936240 /* ILSwapCatalogAppDelegate.m in Sources */,
+				1541E2F11115735B00936240 /* ILSwapCatalogPane.m in Sources */,
+				1541E2F21115735B00936240 /* ILSwapAppPane.m in Sources */,
+				1541E2F31115735B00936240 /* ILSwapSendText.m in Sources */,
+				1541E31B1115754800936240 /* ILSwapCatalogAppDelegate_iPad.m in Sources */,
+				1541E3371115780C00936240 /* ILAutorotatingViewController.m in Sources */,
+				1541E5271115914A00936240 /* L0Keyboard.m in Sources */,
+				1541E5FB11159DE500936240 /* ILSwapSendImage.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1D60588E0D05DD3D006BFB54 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -243,12 +375,19 @@
 				28C286E10D94DF7D0034E888 /* ILSwapCatalogPane.m in Sources */,
 				15923E8B10F1FC6D0011B29A /* ILSwapAppPane.m in Sources */,
 				157417ED10F68636006C1DC2 /* ILSwapSendText.m in Sources */,
+				1541E5281115914A00936240 /* L0Keyboard.m in Sources */,
+				1541E5FA11159DE500936240 /* ILSwapSendImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1541E2E61115735B00936240 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SwapKit (Source)";
+			targetProxy = 1541E2E71115735B00936240 /* PBXContainerItemProxy */;
+		};
 		15923E2B10F1F6340011B29A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "SwapKit (Source)";
@@ -257,6 +396,48 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		1541E2FB1115735B00936240 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/../Tools/Common/iPhone/UIKit.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "kILSwapCatalogPlatform_iPad=1";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../build/Headers";
+				INFOPLIST_FILE = "iPad/Catalog-Info.plist";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
+				PRODUCT_NAME = "Catalog-iPad";
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		1541E2FC1115735B00936240 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/../Tools/Common/iPhone/UIKit.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "kILSwapCatalogPlatform_iPad=1";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../build/Headers";
+				INFOPLIST_FILE = "iPad/Catalog-Info.plist";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
+				PRODUCT_NAME = "Catalog-iPad";
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -266,6 +447,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../Tools/Common/iPhone/UIKit.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "kILSwapCatalogPlatform_iPhone=1";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../build/Headers";
 				INFOPLIST_FILE = "Catalog-Info.plist";
 				OTHER_LDFLAGS = (
@@ -273,6 +455,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Catalog;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -283,6 +466,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../Tools/Common/iPhone/UIKit.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "kILSwapCatalogPlatform_iPhone=1";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../build/Headers";
 				INFOPLIST_FILE = "Catalog-Info.plist";
 				OTHER_LDFLAGS = (
@@ -290,6 +474,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Catalog;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -322,6 +507,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1541E2FA1115735B00936240 /* Build configuration list for PBXNativeTarget "Catalog-iPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1541E2FB1115735B00936240 /* Debug */,
+				1541E2FC1115735B00936240 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Catalog" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
