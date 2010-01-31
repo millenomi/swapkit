@@ -26,20 +26,28 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 
 @implementation ILSwapCatalogPane
 
-@synthesize displayedApplications;
+@synthesize displayedApplications, lastSelection, keepsLastSelection;
 
 - (void) viewWillAppear:(BOOL)animated;
 {
+#if kILSwapCatalogPlatform_iPad
+	keepsLastSelection = YES;
+#endif
+	
 	self.title = NSLocalizedString(@"SwapKit Catalog", @"Title for the catalog pane");
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"\u21c4 Catalog", @"Back (shorter) title for the catalog pane") style:UIBarButtonItemStyleBordered target:nil action:NULL] autorelease];
 	
 	[self reloadData];
 	[super viewWillAppear:animated];
+	
+	if (keepsLastSelection && self.lastSelection)
+		[self.tableView selectRowAtIndexPath:self.lastSelection animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void) dealloc
 {
 	[displayedApplications release];
+	[lastSelection release];
 	[super dealloc];
 }
 
@@ -77,7 +85,9 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 	cell.textLabel.text = [d objectForKey:kILAppVisibleName];
 	cell.detailTextLabel.text = [d objectForKey:kILAppIdentifier];
 	
+#if !kILSwapCatalogPlatform_iPad
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+#endif
 
     return cell;
 }
@@ -88,6 +98,9 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSDictionary* record = [self.displayedApplications objectAtIndex:[indexPath row]];
 	[ILSwapCatalogApp() displayApplicationRegistration:record];
+	
+	if (keepsLastSelection)
+		self.lastSelection = indexPath;
 }
 
 - (IBAction) deleteAllItems:(id) sender;
