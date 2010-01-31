@@ -72,6 +72,41 @@
 }
 
 
+- (CGRect) frame;
+{
+	CGRect frame = self.bounds;
+	frame.origin = self.origin;
+	
+	if (UIInterfaceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
+		CGFloat t = frame.size.width;
+		frame.size.width = frame.size.height;
+		frame.size.height = t;
+	}
+	
+	NSString* desc = nil;
+	switch ([UIDevice currentDevice].orientation) {
+		case UIInterfaceOrientationPortrait:
+			desc = @"Portrait";
+			break;
+		case UIInterfaceOrientationLandscapeLeft:
+			desc = @"Landscape (Left)";
+			frame.origin.y -= [UIApplication sharedApplication].statusBarFrame.size.height;
+			break;
+		case UIInterfaceOrientationLandscapeRight:
+			desc = @"Landscape (Right)";
+			break;
+		case UIInterfaceOrientationPortraitUpsideDown:
+			desc = @"Upside Down";
+			frame.origin.y -= [UIApplication sharedApplication].statusBarFrame.size.height;
+			break;
+	}
+	
+	NSLog(@"Frame = %@ for orientation = %@", NSStringFromCGRect(frame), desc);
+	
+	return frame;
+}
+
+
 #define L0KeyboardDispatch(selector) \
 	for (id <L0KeyboardObserver> o in observers) { \
 		if ([o respondsToSelector:selector]) \
@@ -136,8 +171,7 @@
 		return original;
 	
 	NSAssert(v.superview, @"To calculate the intersection between a view and the keyboard, the view MUST be in a view hierarchy (added to a superview)!");
-	CGRect frame = self.bounds;
-	frame.origin = self.origin;
+	CGRect frame = self.frame;
 	frame.origin.y -= barHeight;
 	frame.size.height += barHeight;
 	

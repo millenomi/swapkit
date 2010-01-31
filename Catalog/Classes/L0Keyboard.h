@@ -49,6 +49,8 @@
 @property(readonly) CGPoint center;
 @property(readonly) CGPoint origin;
 
+@property(readonly) CGRect frame;
+
 @property(readonly) CGPoint animationStartCenter;
 @property(readonly) CGPoint animationStartOrigin;
 @property(readonly) NSTimeInterval animationDuration;
