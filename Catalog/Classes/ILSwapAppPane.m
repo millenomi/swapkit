@@ -314,6 +314,9 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
 	if ([indexPath section] == kILSwapAppSectionTypes) {
+		if ([types count] == 0)
+			return;
+		
 		NSString* obj = L0As(NSString, [types objectAtIndex:[indexPath row]]);
 		
 		if ([obj isEqual:(id) kUTTypeUTF8PlainText]) {
