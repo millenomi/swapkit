@@ -20,7 +20,7 @@
 		return nil;
 	
 	self.title = NSLocalizedString(@"Send Text", @"Send text pane title");
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Send", @"Send button") style:UIBarButtonItemStyleBordered target:self action:@selector(send)] autorelease];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Send", @"Send button") style:UIBarButtonItemStyleDone target:self action:@selector(send)] autorelease];
 	
 	app = [a copy];
 	type = [t copy];
