@@ -56,18 +56,19 @@
  * A NSData object containing arbitrary data for the item; or
  * A NSString, containing textual data; or
  * a NSArray or NSDictionary containing property lists objects; or
+ * a UIImage.
  
  You don't usually access the #value directly. Instead, you use one of the #propertyListValue, #stringValue, #imageValue, #dataValue and other accessor methods to specify how you want to access the data. (These methods will recognize and automatically convert the #value for you if inappropriate -- for example, if the #value is a NSData object containing a serialized property list, the #propertyListValue method will deserialize it for you.) It's up to you to know what accessor to use for the particular ILSwapRequest#type involved.
  
  */
 @interface ILSwapItem : NSObject <NSCopying, NSMutableCopying> {
 @protected
-	id <NSObject, NSCopying> value;
+	id value;
 	NSDictionary* attributes;
 }
 
 /**
- The value for this item. It can be a NSData, NSString, NSArray (property list), NSDictionary (property list) object. Never nil (unless the item is mutable; but see ILSwapMutableItem for more information -- basically, if a method can take an immutable item, it's a violation of its contract to pass a mutable item with a nil value).
+ The value for this item. It can be a NSData, NSString, NSArray (property list), NSDictionary (property list) object, or a UIImage. Never nil (unless the item is mutable; but see ILSwapMutableItem for more information -- basically, if a method can take an immutable item, it's a violation of its contract to pass a mutable item with a nil value).
  */
 @property(copy, nonatomic, readonly) id value;
 
@@ -106,6 +107,8 @@
 
 /**
  The value for this item. Can be modified. Can be nil, but it must be non-nil if you want to pass this object to anything that can also take an immutable ILSwapItem. The type of anything set through this property must be a valid value object as per ILSwapItem#value.
+ 
+ Please note: you CAN set a UIImage as the value despite this being a copy property. It will be treated correctly.
  */
 @property(copy, nonatomic) id value;
 
@@ -143,12 +146,14 @@
 @property(readonly) NSString* stringValue; // assumes the type is kUTTypeUTF8PlainText.
 
 /**
- Returns an image. This will happen only if the ILSwapItem#value is a NSData object containing valid image data that UIKit can detect, or nil will be returned otherwise.
+ Returns an image. This will happen only if the ILSwapItem#value is a NSData object containing valid image data that UIKit can detect, or a UIImage itself; nil will be returned otherwise.
  */
 @property(readonly) UIImage* imageValue;
 
 /**
  Returns a NSData value. This will happen only if the ILSwapItem#value is a NSData object, or if it's a NSString, in which case the UTF-8 encoding of the ILSwapItem#value will be returned. nil will be returned otherwise.
+ 
+ Please note: the data value may not be available if the value is a UIImage.
  */
 @property(readonly) NSData* dataValue;
 
