@@ -9,6 +9,8 @@
 #import "ILSwapItem.h"
 #import "ILSwapItem_Private.h"
 
+#define L0Keep(object) [object conformsToProtocol:@protocol(NSCopying)]? [object copy] : [object retain];
+
 @interface ILSwapItem ()
 
 - (void) privatelySetValue:(id) value;
@@ -31,7 +33,7 @@
 	if (!(self = [super init]))
 		return nil;
 	
-	value = [v copy];
+	value = L0Keep(v);
 	if (!value && ![[self class] canBeInitializedWithNilItem]) {
 		[self release];
 		return nil;
@@ -71,7 +73,7 @@
 {
 	if (v != value) {
 		[value release];
-		value = [v copy];
+		value = L0Keep(v);
 	}
 }
 
@@ -214,7 +216,9 @@
 - (UIImage*) imageValue;
 {
 	id v = self.value;
-	if ([v isKindOfClass:[NSData class]])
+	if ([v isKindOfClass:[UIImage class]])
+		return v;
+	else if ([v isKindOfClass:[NSData class]])
 		return [UIImage imageWithData:v];
 	else
 		return nil;
@@ -225,7 +229,6 @@
 	id v = self.value;
 	if ([v isKindOfClass:[NSString class]])
 		return [v dataUsingEncoding:NSUTF8StringEncoding];
-	
 	return L0As(NSData, v);
 }
 

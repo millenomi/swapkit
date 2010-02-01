@@ -236,6 +236,7 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
  - NSData.
  - NSString (in which case the type parameter must be kUTTypeUTF8PlainText).
  - NSArray or NSDictionary containing property list objects only.
+ - UIImage
  
  but see ILSwapItem#value's documentation for details.
  
