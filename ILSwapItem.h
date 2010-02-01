@@ -68,6 +68,11 @@
 }
 
 /**
+ Returns YES if the given object can be used as an item value, NO otherwise.
+*/
++ (BOOL) canUseAsItemValue:(id) v;
+
+/**
  The value for this item. It can be a NSData, NSString, NSArray (property list), NSDictionary (property list) object, or a UIImage. Never nil (unless the item is mutable; but see ILSwapMutableItem for more information -- basically, if a method can take an immutable item, it's a violation of its contract to pass a mutable item with a nil value).
  */
 @property(copy, nonatomic, readonly) id value;

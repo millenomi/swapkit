@@ -20,8 +20,19 @@
 
 @end
 
+static BOOL ILSwapIsPropertyListObject(id v) {
+	return CFPropertyListIsValid((CFPropertyListRef)v, kCFPropertyListBinaryFormat_v1_0);
+}
 
 @implementation ILSwapItem
+
++ (BOOL) canUseAsItemValue:(id) v;
+{
+	return [v isKindOfClass:[NSData class]] ||
+		[v isKindOfClass:[NSString class]] ||
+		(([v isKindOfClass:[NSArray class]] || [v isKindOfClass:[NSDictionary class]]) &&ILSwapIsPropertyListObject(v)) ||
+		[v isKindOfClass:[UIImage class]];
+}
 
 + (BOOL) canBeInitializedWithNilItem;
 {
