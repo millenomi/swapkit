@@ -33,29 +33,3 @@
 
 #import "ILSwapCommonActions.h"
 
-/**
- \addtogroup ILSwapKitCommonActions Common Actions
- */
-
-/**
- \ingroup ILSwapKitCommonActions
-This action is intended to be used by data transfer and messaging programs that can receive attachments. It instructs the application to create a new message or discrete upload, or otherwise prepare the item or items to be sent to a third party.
-
- Mover uses to this action to mean "Add to the table".
-
-Example of use:
-
- <code>
- UIImage* i = <# An image. #>;
- NSData* d = UIImagePNGRepresentation(i);
- 
- ILSwapSendController* ctl = [ILSwapSendController
-	controllerForSendingItems:[NSArray arrayWithObject:d]
-	ofType:(id) kUTTypePNG
-	forAction:kILSwapPrepareForTransferAction];
- 
- [ctl send];
- </code>
- 
- */
-#define kILSwapPrepareForTransferAction @"ILPrepareForTransfer"
