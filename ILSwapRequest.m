@@ -81,7 +81,7 @@
 
 - (NSUInteger) countOfItems;
 {
-	return [[pb itemSetWithPasteboardTypes:[NSArray arrayWithObject:self.type]] count];
+	return [self.items count];
 }
 
 - (NSArray*) items;
@@ -94,7 +94,7 @@
 			id d = [item objectForKey:uti];
 			id m = [item objectForKey:kILSwapItemAttributesUTI];
 			
-			if (!d)
+			if (!d || ![ILSwapItem canUseAsItemValue:d])
 				continue;
 			
 			[a addObject:
