@@ -35,6 +35,12 @@
 		15923E8B10F1FC6D0011B29A /* ILSwapAppPane.m in Sources */ = {isa = PBXBuildFile; fileRef = 15923E8910F1FC6D0011B29A /* ILSwapAppPane.m */; };
 		15923E8F10F1FCAC0011B29A /* ILSwapAppPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15923E8E10F1FCAC0011B29A /* ILSwapAppPane.xib */; };
 		15923F1810F204960011B29A /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 15923F1710F204960011B29A /* Icon.png */; };
+		15AE0731111ED598001AAD9F /* ILSwapMvrContactSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 15AE072F111ED598001AAD9F /* ILSwapMvrContactSupport.m */; };
+		15AE0732111ED598001AAD9F /* ILSwapMvrContactSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 15AE072F111ED598001AAD9F /* ILSwapMvrContactSupport.m */; };
+		15AE0737111ED60C001AAD9F /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15AE0736111ED60C001AAD9F /* AddressBook.framework */; };
+		15AE0739111ED60C001AAD9F /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15AE0738111ED60C001AAD9F /* AddressBookUI.framework */; };
+		15C87FAC111ED6480010D485 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15C87FAB111ED6480010D485 /* AddressBook.framework */; };
+		15C87FAE111ED6480010D485 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15C87FAD111ED6480010D485 /* AddressBookUI.framework */; };
 		1D3623260D0F684500981E51 /* ILSwapCatalogAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* ILSwapCatalogAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -97,6 +103,12 @@
 		15923E8910F1FC6D0011B29A /* ILSwapAppPane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapAppPane.m; sourceTree = "<group>"; };
 		15923E8E10F1FCAC0011B29A /* ILSwapAppPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ILSwapAppPane.xib; sourceTree = "<group>"; };
 		15923F1710F204960011B29A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		15AE072F111ED598001AAD9F /* ILSwapMvrContactSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapMvrContactSupport.m; sourceTree = "<group>"; };
+		15AE0730111ED598001AAD9F /* ILSwapMvrContactSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapMvrContactSupport.h; sourceTree = "<group>"; };
+		15AE0736111ED60C001AAD9F /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		15AE0738111ED60C001AAD9F /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		15C87FAB111ED6480010D485 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		15C87FAD111ED6480010D485 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* ILSwapCatalogAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapCatalogAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* ILSwapCatalogAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapCatalogAppDelegate.m; sourceTree = "<group>"; };
@@ -121,6 +133,8 @@
 				1541E2F71115735B00936240 /* UIKit.framework in Frameworks */,
 				1541E2F81115735B00936240 /* CoreGraphics.framework in Frameworks */,
 				1541E2F91115735B00936240 /* MobileCoreServices.framework in Frameworks */,
+				15C87FAC111ED6480010D485 /* AddressBook.framework in Frameworks */,
+				15C87FAE111ED6480010D485 /* AddressBookUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +147,8 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */,
 				15923E2710F1F62A0011B29A /* MobileCoreServices.framework in Frameworks */,
+				15AE0737111ED60C001AAD9F /* AddressBook.framework in Frameworks */,
+				15AE0739111ED60C001AAD9F /* AddressBookUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +158,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				15AE0730111ED598001AAD9F /* ILSwapMvrContactSupport.h */,
+				15AE072F111ED598001AAD9F /* ILSwapMvrContactSupport.m */,
 				1541E3351115780C00936240 /* ILAutorotatingViewController.h */,
 				1541E3361115780C00936240 /* ILAutorotatingViewController.m */,
 				15923E8810F1FC6D0011B29A /* ILSwapAppPane.h */,
@@ -199,6 +217,10 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				15923E2610F1F62A0011B29A /* MobileCoreServices.framework */,
+				15AE0736111ED60C001AAD9F /* AddressBook.framework */,
+				15AE0738111ED60C001AAD9F /* AddressBookUI.framework */,
+				15C87FAB111ED6480010D485 /* AddressBook.framework */,
+				15C87FAD111ED6480010D485 /* AddressBookUI.framework */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -363,6 +385,7 @@
 				1541E3371115780C00936240 /* ILAutorotatingViewController.m in Sources */,
 				1541E5271115914A00936240 /* L0Keyboard.m in Sources */,
 				1541E5FB11159DE500936240 /* ILSwapSendImage.m in Sources */,
+				15AE0732111ED598001AAD9F /* ILSwapMvrContactSupport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,6 +400,7 @@
 				157417ED10F68636006C1DC2 /* ILSwapSendText.m in Sources */,
 				1541E5281115914A00936240 /* L0Keyboard.m in Sources */,
 				1541E5FA11159DE500936240 /* ILSwapSendImage.m in Sources */,
+				15AE0731111ED598001AAD9F /* ILSwapMvrContactSupport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

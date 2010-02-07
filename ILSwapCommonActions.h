@@ -65,7 +65,7 @@
 
 /**
  \ingroup ILSwapKitCommonActions
- This action is intended to be used by messaging programs that want to make new messages. It instructs the application to create a new message whose content is the message received (or, if receiving multiple items is supported, multiple new messages). The user should be presented a composition UI to further edit or direct the message.
+ This action is intended to be used by messaging programs that want to make new messages. It instructs the application to create a new message whose content is the item received (or, if receiving multiple items is supported, multiple new messages). The user should be presented a composition UI to further edit or direct the message.
  
  This might create new e-mails, tweets, Facebook mail messages etc.
 */
