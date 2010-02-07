@@ -104,7 +104,7 @@
 
  A mutable item is similar to an item, but it allows modifications to its properties. You can use the <code>copy</code> method of NSObject to produce an immutable ILSwapItem copy, and ILSwapItem can produce a <code>mutableCopy</code> that responds to the messages of this class.
  
- Please note that while a mutable item with a nil #value can exist, an immutable item with a nil #value must not. Trying to produce an immutable item from such a mutable item has, in current releases of SwapKit, produces an undefined behavior.
+ Please note that while a mutable item with a nil #value can exist, an immutable item with a nil #value must not. Trying to produce an immutable item from such a mutable item produces, in current releases of SwapKit, an undefined behavior.
  
  @see ILSwapItem
  */
@@ -113,7 +113,7 @@
 /**
  The value for this item. Can be modified. Can be nil, but it must be non-nil if you want to pass this object to anything that can also take an immutable ILSwapItem. The type of anything set through this property must be a valid value object as per ILSwapItem#value.
  
- Please note: you CAN set a UIImage as the value despite this being a copy property. It will be treated correctly.
+ Please note: you CAN set a UIImage as the value. It will be treated correctly, but it will be retained rather than used as the basis for a new object. This should not affect the application, since UIImages are immutable.
  */
 @property(copy, nonatomic) id value;
 
