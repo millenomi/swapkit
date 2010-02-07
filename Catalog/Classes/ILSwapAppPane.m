@@ -322,6 +322,7 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 		} else if ([obj isEqual:kMvrContactAsPropertyListType]) {
 			
 			ABPeoplePickerNavigationController* peoplePicker = [[ABPeoplePickerNavigationController new] autorelease];
+			peoplePicker.navigationBar.tintColor = self.navigationController.navigationBar.tintColor;
 			peoplePicker.peoplePickerDelegate = self;
 			[self presentModalViewController:peoplePicker animated:YES];
 			
