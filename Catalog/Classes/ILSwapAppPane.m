@@ -10,8 +10,11 @@
 
 #import <SwapKit/SwapKit.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import <AddressBook/AddressBook.h>
+#import <AddressBookUI/AddressBookUI.h>
 
 #import "ILSwapSendText.h"
+#import "ILSwapMvrContactSupport.h"
 
 @interface ILSwapPickKindActionSheet : UIActionSheet
 {
@@ -55,7 +58,7 @@
 
 
 
-@interface ILSwapAppPane ()
+@interface ILSwapAppPane () <ABPeoplePickerNavigationControllerDelegate>
 
 - (UITableViewCell*) valueOnlyCellWithText:(NSString*) text fromTable:(UITableView*) tv identifier:(NSString*) ident;
 - (UITableViewCell*) noValuesCellForTable:(UITableView*) tv identifier:(NSString*) ident;
@@ -268,7 +271,8 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 {
 	UITableViewCell* cell = [self valueOnlyCellWithText:type fromTable:tv identifier:ident];
 	
-	if ([type isEqual:(id) kUTTypeUTF8PlainText])
+	if ([type isEqual:(id) kUTTypeUTF8PlainText] ||
+		[type isEqual:kMvrContactAsPropertyListType])
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
 	cell.selectionStyle = UITableViewCellSelectionStyleBlue;
@@ -315,6 +319,12 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 			ILSwapSendText* t = [[[ILSwapSendText alloc] initWithApplicationIdentifier:[record objectForKey:kILAppIdentifier] type:obj] autorelease];
 			[self.navigationController pushViewController:t animated:YES];
 			
+		} else if ([obj isEqual:kMvrContactAsPropertyListType]) {
+			
+			ABPeoplePickerNavigationController* peoplePicker = [[ABPeoplePickerNavigationController new] autorelease];
+			peoplePicker.peoplePickerDelegate = self;
+			[self presentModalViewController:peoplePicker animated:YES];
+			
 		} else if (obj) {
 			ILSwapPickKindActionSheet* s = [[[ILSwapPickKindActionSheet alloc] initWithSendingType:obj] autorelease];
 			s.delegate = self;
@@ -341,6 +351,28 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 	NSIndexPath* p = [self.tableView indexPathForSelectedRow];
 	if (p)
 		[self.tableView deselectRowAtIndexPath:p animated:YES];
+}
+
+#pragma mark People picking
+
+- (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker;
+{
+	[peoplePicker dismissModalViewControllerAnimated:YES];
+}
+
+- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person;
+{
+	[peoplePicker dismissModalViewControllerAnimated:YES];
+
+	ILSwapItem* i = [ILSwapItem moverContactItemFromPersonRecord:person];
+	[[ILSwapService sharedService] sendItem:i ofType:kMvrContactAsPropertyListType forAction:nil toApplicationWithIdentifier:[record objectForKey:kILAppIdentifier]];
+	
+	return NO;
+}
+
+- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier;
+{
+	return NO;
 }
 
 @end

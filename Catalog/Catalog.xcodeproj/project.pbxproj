@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		156E9EE2111ECE96003F6CBF /* ILSwapMvrContactSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 156E9EE1111ECE96003F6CBF /* ILSwapMvrContactSupport.m */; };
+		156E9EE4111ECEA5003F6CBF /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 156E9EE3111ECEA5003F6CBF /* AddressBook.framework */; };
+		156E9EF6111ECFDA003F6CBF /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 156E9EF5111ECFDA003F6CBF /* AddressBookUI.framework */; };
 		157417ED10F68636006C1DC2 /* ILSwapSendText.m in Sources */ = {isa = PBXBuildFile; fileRef = 157417EB10F68636006C1DC2 /* ILSwapSendText.m */; };
 		157417F010F68652006C1DC2 /* ILSwapSendText.xib in Resources */ = {isa = PBXBuildFile; fileRef = 157417EF10F68652006C1DC2 /* ILSwapSendText.xib */; };
 		15923E2710F1F62A0011B29A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15923E2610F1F62A0011B29A /* MobileCoreServices.framework */; };
@@ -25,6 +28,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		156E9EDE111ECE5E003F6CBF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 15923E1B10F1F6230011B29A /* SwapKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 15FC688C1114650D00426124 /* SwapKit.bundle */;
+			remoteInfo = "SwapKit (Bundle)";
+		};
 		15923E2410F1F6230011B29A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 15923E1B10F1F6230011B29A /* SwapKit.xcodeproj */;
@@ -42,6 +52,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		156E9EE0111ECE96003F6CBF /* ILSwapMvrContactSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapMvrContactSupport.h; sourceTree = "<group>"; };
+		156E9EE1111ECE96003F6CBF /* ILSwapMvrContactSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapMvrContactSupport.m; sourceTree = "<group>"; };
+		156E9EE3111ECEA5003F6CBF /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		156E9EF5111ECFDA003F6CBF /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		157417EA10F68636006C1DC2 /* ILSwapSendText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapSendText.h; sourceTree = "<group>"; };
 		157417EB10F68636006C1DC2 /* ILSwapSendText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapSendText.m; sourceTree = "<group>"; };
 		157417EF10F68652006C1DC2 /* ILSwapSendText.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ILSwapSendText.xib; sourceTree = "<group>"; };
@@ -75,6 +89,8 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */,
 				15923E2710F1F62A0011B29A /* MobileCoreServices.framework in Frameworks */,
+				156E9EE4111ECEA5003F6CBF /* AddressBook.framework in Frameworks */,
+				156E9EF6111ECFDA003F6CBF /* AddressBookUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +100,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				156E9EE0111ECE96003F6CBF /* ILSwapMvrContactSupport.h */,
+				156E9EE1111ECE96003F6CBF /* ILSwapMvrContactSupport.m */,
 				15923E8810F1FC6D0011B29A /* ILSwapAppPane.h */,
 				15923E8910F1FC6D0011B29A /* ILSwapAppPane.m */,
 				157417EA10F68636006C1DC2 /* ILSwapSendText.h */,
@@ -100,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				15923E2510F1F6230011B29A /* libSwapKit.a */,
+				156E9EDF111ECE5E003F6CBF /* SwapKit.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -122,6 +141,8 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				15923E2610F1F62A0011B29A /* MobileCoreServices.framework */,
+				156E9EE3111ECEA5003F6CBF /* AddressBook.framework */,
+				156E9EF5111ECFDA003F6CBF /* AddressBookUI.framework */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -209,6 +230,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		156E9EDF111ECE5E003F6CBF /* SwapKit.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwapKit.bundle;
+			remoteRef = 156E9EDE111ECE5E003F6CBF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		15923E2510F1F6230011B29A /* libSwapKit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -243,6 +271,7 @@
 				28C286E10D94DF7D0034E888 /* ILSwapCatalogPane.m in Sources */,
 				15923E8B10F1FC6D0011B29A /* ILSwapAppPane.m in Sources */,
 				157417ED10F68636006C1DC2 /* ILSwapSendText.m in Sources */,
+				156E9EE2111ECE96003F6CBF /* ILSwapMvrContactSupport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -71,6 +71,11 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 	cell.textLabel.text = [d objectForKey:kILAppVisibleName];
 	cell.detailTextLabel.text = [d objectForKey:kILAppIdentifier];
 	
+	NSString* scheme = [d objectForKey:kILAppReceiveItemURLScheme];
+	NSURL* u = !scheme? nil : [NSURL URLWithString:[NSString stringWithFormat:@"%@:", scheme]];
+	if (!u || ![[UIApplication sharedApplication] canOpenURL:u])
+		cell.textLabel.textColor = [UIColor grayColor];
+	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
