@@ -9,6 +9,20 @@
 #import "ILSwapCatalogAppDelegate_iPad.h"
 #import "ILSwapAppPane.h"
 
+UILabel* ILSwapCatalogNavigationBarTitleViewForString(NSString* s) {
+	UILabel* l = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+	l.text = s;
+	l.numberOfLines = 1;
+	l.font = [UIFont boldSystemFontOfSize:20];
+	l.textColor = [UIColor whiteColor];
+	l.shadowColor = [UIColor grayColor];
+	l.shadowOffset = CGSizeMake(0, -1);
+	[l sizeToFit];
+	l.opaque = NO;
+	l.backgroundColor = [UIColor clearColor];
+	return l;
+}
+
 @interface ILSwapCatalogAppDelegate_iPad ()
 
 - (void) updatePopverBarItem;
@@ -44,8 +58,13 @@
 
 - (void) displayApplicationRegistration:(NSDictionary *)reg;
 {
-	ILSwapAppPane* appPane = [[[ILSwapAppPane alloc] initWithApplicationRegistrationRecord:reg] autorelease];
-	detailsController.viewControllers = [NSArray arrayWithObject:appPane];
+	UIViewController* toDisplay;
+	if (reg)
+		toDisplay = [[[ILSwapAppPane alloc] initWithApplicationRegistrationRecord:reg] autorelease];
+	else
+		toDisplay = noItemController;
+	
+	detailsController.viewControllers = [NSArray arrayWithObject:toDisplay];
 	[self updatePopverBarItem];
 	
 	[popover dismissPopoverAnimated:YES];
@@ -76,6 +95,7 @@
 {
 	self.popover = pc;
 	self.popoverItem = barButtonItem;
+	self.popover.popoverContentSize = CGSizeMake(320, 500);
 	[self updatePopverBarItem];
 }
 

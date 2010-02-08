@@ -6,6 +6,9 @@
 //  Copyright __MyCompanyName__ 2010. All rights reserved.
 //
 
+#if kILSwapCatalogPlatform_iPad
+extern UILabel* ILSwapCatalogNavigationBarTitleViewForString(NSString* s);
+#endif
 
 @protocol ILSwapCatalogAppServices <NSObject>
 

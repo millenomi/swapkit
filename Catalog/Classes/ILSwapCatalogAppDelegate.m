@@ -54,8 +54,10 @@
 
 - (void) displayApplicationRegistration:(NSDictionary*) reg;
 {
-	ILSwapAppPane* pane = [[[ILSwapAppPane alloc] initWithApplicationRegistrationRecord:reg] autorelease];
-	[self.navigationController pushViewController:pane animated:YES];
+	if (reg) {
+		ILSwapAppPane* pane = [[[ILSwapAppPane alloc] initWithApplicationRegistrationRecord:reg] autorelease];
+		[self.navigationController pushViewController:pane animated:YES];
+	}
 }
 
 - (void) displaySendViewController:(UIViewController*) c;

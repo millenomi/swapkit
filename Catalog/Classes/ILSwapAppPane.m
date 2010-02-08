@@ -167,6 +167,9 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 	types = [L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]) mutableCopy];
 	
 	self.title = [r objectForKey:kILAppVisibleName];
+#if kILSwapCatalogPlatform_iPad
+	self.navigationItem.titleView = ILSwapCatalogNavigationBarTitleViewForString(self.title);
+#endif
 	
 	return self;
 }
@@ -346,10 +349,11 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 		} else if ([obj isEqual:kMvrContactAsPropertyListType]) {
 			
 			ABPeoplePickerNavigationController* peoplePicker = [[ABPeoplePickerNavigationController new] autorelease];
-			peoplePicker.navigationBar.tintColor = self.navigationController.navigationBar.tintColor;
 			peoplePicker.peoplePickerDelegate = self;
 #if kILSwapCatalogPlatform_iPad
 			peoplePicker.modalPresentationStyle = UIModalPresentationFormSheet;
+#else
+			peoplePicker.navigationBar.tintColor = self.navigationController.navigationBar.tintColor;
 #endif
 			[self presentModalViewController:peoplePicker animated:YES];
 			
@@ -415,6 +419,9 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 
 - (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker;
 {
+	NSIndexPath* p = [self.tableView indexPathForSelectedRow];
+	if (p)
+		[self.tableView deselectRowAtIndexPath:p animated:YES];
 	[peoplePicker dismissModalViewControllerAnimated:YES];
 }
 

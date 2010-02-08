@@ -35,6 +35,10 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 #endif
 	
 	self.title = NSLocalizedString(@"SwapKit Catalog", @"Title for the catalog pane");
+#if kILSwapCatalogPlatform_iPad
+	self.navigationItem.titleView = ILSwapCatalogNavigationBarTitleViewForString(self.title);
+#endif
+	
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"\u21c4 Catalog", @"Back (shorter) title for the catalog pane") style:UIBarButtonItemStyleBordered target:nil action:NULL] autorelease];
 	
 	[self reloadData];
@@ -125,6 +129,7 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 		return;
 	
 	[[ILSwapService sharedService] deleteAllApplicationRegistrations];
+	[ILSwapCatalogApp() displayApplicationRegistration:nil];
 	[self reloadData];
 }
 
