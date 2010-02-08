@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		153F90DF11202B1F00BAE43A /* Icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = 153F90DE11202B1F00BAE43A /* Icon72.png */; };
+		153F90E011202B1F00BAE43A /* Icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = 153F90DE11202B1F00BAE43A /* Icon72.png */; };
+		153F90E411202B6000BAE43A /* Icon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 153F90E311202B6000BAE43A /* Icon512.png */; };
+		153F90E511202B6000BAE43A /* Icon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 153F90E311202B6000BAE43A /* Icon512.png */; };
 		1541E2EC1115735B00936240 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 15923F1710F204960011B29A /* Icon.png */; };
 		1541E2EF1115735B00936240 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1541E2F01115735B00936240 /* ILSwapCatalogAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* ILSwapCatalogAppDelegate.m */; };
@@ -83,13 +87,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		153F90DE11202B1F00BAE43A /* Icon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon72.png; sourceTree = "<group>"; };
+		153F90E311202B6000BAE43A /* Icon512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon512.png; sourceTree = "<group>"; };
 		1541E2FD1115735B00936240 /* Catalog-iPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Catalog-iPad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1541E311111573BD00936240 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		1541E3191115754800936240 /* ILSwapCatalogAppDelegate_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapCatalogAppDelegate_iPad.h; sourceTree = "<group>"; };
 		1541E31A1115754800936240 /* ILSwapCatalogAppDelegate_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapCatalogAppDelegate_iPad.m; sourceTree = "<group>"; };
 		1541E3351115780C00936240 /* ILAutorotatingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILAutorotatingViewController.h; sourceTree = "<group>"; };
 		1541E3361115780C00936240 /* ILAutorotatingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILAutorotatingViewController.m; sourceTree = "<group>"; };
-		1541E51911158FE700936240 /* Catalog-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Catalog-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.info-plist"; sourceTree = "<group>"; };
+		1541E51911158FE700936240 /* Catalog-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Catalog-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		1541E5251115914A00936240 /* L0Keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = L0Keyboard.h; sourceTree = "<group>"; };
 		1541E5261115914A00936240 /* L0Keyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = L0Keyboard.m; sourceTree = "<group>"; };
 		1541E5F811159DE500936240 /* ILSwapSendImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapSendImage.h; sourceTree = "<group>"; };
@@ -183,6 +189,7 @@
 		1541E310111573B200936240 /* iPad */ = {
 			isa = PBXGroup;
 			children = (
+				153F90DE11202B1F00BAE43A /* Icon72.png */,
 				1541E51911158FE700936240 /* Catalog-Info.plist */,
 				1541E311111573BD00936240 /* MainWindow.xib */,
 			);
@@ -238,6 +245,7 @@
 			children = (
 				1541E310111573B200936240 /* iPad */,
 				15923F1710F204960011B29A /* Icon.png */,
+				153F90E311202B6000BAE43A /* Icon512.png */,
 				157417EF10F68652006C1DC2 /* ILSwapSendText.xib */,
 				28F335F01007B36200424DE2 /* ILSwapCatalogPane.xib */,
 				15923E8E10F1FCAC0011B29A /* ILSwapAppPane.xib */,
@@ -354,6 +362,8 @@
 				1541E321111575DB00936240 /* ILSwapCatalogPane.xib in Resources */,
 				1541E322111575DD00936240 /* ILSwapAppPane.xib in Resources */,
 				1541E323111575DF00936240 /* ILSwapSendText.xib in Resources */,
+				153F90DF11202B1F00BAE43A /* Icon72.png in Resources */,
+				153F90E411202B6000BAE43A /* Icon512.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,6 +376,8 @@
 				15923E8F10F1FCAC0011B29A /* ILSwapAppPane.xib in Resources */,
 				15923F1810F204960011B29A /* Icon.png in Resources */,
 				157417F010F68652006C1DC2 /* ILSwapSendText.xib in Resources */,
+				153F90E011202B1F00BAE43A /* Icon72.png in Resources */,
+				153F90E511202B6000BAE43A /* Icon512.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
