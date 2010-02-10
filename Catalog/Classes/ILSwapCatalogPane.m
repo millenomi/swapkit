@@ -30,14 +30,12 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 
 - (void) viewWillAppear:(BOOL)animated;
 {
-#if kILSwapCatalogPlatform_iPad
-	keepsLastSelection = YES;
-#endif
+	if (ILSwapIsiPad())
+		keepsLastSelection = YES;
 	
 	self.title = NSLocalizedString(@"SwapKit Catalog", @"Title for the catalog pane");
-#if kILSwapCatalogPlatform_iPad
-	self.navigationItem.titleView = ILSwapCatalogNavigationBarTitleViewForString(self.title);
-#endif
+	if (ILSwapIsiPad())
+		self.navigationItem.titleView = ILSwapCatalogNavigationBarTitleViewForString(self.title);
 	
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"\u21c4 Catalog", @"Back (shorter) title for the catalog pane") style:UIBarButtonItemStyleBordered target:nil action:NULL] autorelease];
 	

@@ -16,11 +16,7 @@
 @end
 
 
-@interface ILSwapSendImage : NSObject <UINavigationControllerDelegate, UIImagePickerControllerDelegate
-#if kILSwapCatalogPlatform_iPad
-	, UIPopoverControllerDelegate
-#endif
-> {
+@interface ILSwapSendImage : NSObject <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate> {
 	NSDictionary* application;
 	NSString* type;
 	NSString* actualImageType;
@@ -28,9 +24,7 @@
 	id <ILSwapSendImageDelegate> delegate;
 	
 	UIImagePickerController* imagePicker;
-#if kILSwapCatalogPlatform_iPad
 	UIPopoverController* popover;
-#endif
 }
 
 @property(copy) NSDictionary* application;

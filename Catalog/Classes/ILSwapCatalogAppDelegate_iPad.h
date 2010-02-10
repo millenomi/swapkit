@@ -10,19 +10,10 @@
 #import "ILSwapCatalogAppDelegate.h"
 
 @interface ILSwapCatalogAppDelegate_iPad : NSObject <UIApplicationDelegate, ILSwapCatalogAppServices, UISplitViewControllerDelegate> {
-	IBOutlet UISplitViewController* splitViewController;
-	IBOutlet UIWindow* window;
 	
-	IBOutlet UINavigationController* detailsController;
-	IBOutlet UIViewController* noItemController;
-	
-	UIPopoverController* popover;
-	UIBarButtonItem* popoverItem;
 }
 
 @property(nonatomic, retain) UIWindow* window;
 
-@property(nonatomic, retain) UIPopoverController* popover;
-@property(nonatomic, retain) UIBarButtonItem* popoverItem;
 
 @end

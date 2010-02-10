@@ -167,11 +167,16 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 	types = [L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]) mutableCopy];
 	
 	self.title = [r objectForKey:kILAppVisibleName];
-#if kILSwapCatalogPlatform_iPad
-	self.navigationItem.titleView = ILSwapCatalogNavigationBarTitleViewForString(self.title);
-#endif
+
+	if (ILSwapIsiPad())
+		self.navigationItem.titleView = ILSwapCatalogNavigationBarTitleViewForString(self.title);
 	
 	return self;
+}
+
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+{
+	return UIInterfaceOrientationIsPortrait(toInterfaceOrientation) || [ILSwapCatalogApp() shouldSupportAdditionalOrientation:toInterfaceOrientation forViewController:self];
 }
 
 - (void) dealloc
@@ -186,6 +191,13 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 	[super dealloc];
 }
 
+- (void) viewWillAppear:(BOOL)animated;
+{
+	[super viewWillAppear:animated];
+	NSIndexPath* p = [self.tableView indexPathForSelectedRow];
+	if (p)
+		[self.tableView deselectRowAtIndexPath:p animated:animated];
+}
 
 #pragma mark Table view methods
 
@@ -350,11 +362,12 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 			
 			ABPeoplePickerNavigationController* peoplePicker = [[ABPeoplePickerNavigationController new] autorelease];
 			peoplePicker.peoplePickerDelegate = self;
-#if kILSwapCatalogPlatform_iPad
-			peoplePicker.modalPresentationStyle = UIModalPresentationFormSheet;
-#else
-			peoplePicker.navigationBar.tintColor = self.navigationController.navigationBar.tintColor;
-#endif
+			
+			if (ILSwapIsiPad() && [peoplePicker respondsToSelector:@selector(modalPresentationStyle)])
+				peoplePicker.modalPresentationStyle = UIModalPresentationFormSheet;
+			else
+				peoplePicker.navigationBar.tintColor = self.navigationController.navigationBar.tintColor;
+
 			[self presentModalViewController:peoplePicker animated:YES];
 			
 		} else if (obj) {

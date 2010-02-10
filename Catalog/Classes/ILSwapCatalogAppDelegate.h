@@ -6,9 +6,8 @@
 //  Copyright __MyCompanyName__ 2010. All rights reserved.
 //
 
-#if kILSwapCatalogPlatform_iPad
 extern UILabel* ILSwapCatalogNavigationBarTitleViewForString(NSString* s);
-#endif
+extern BOOL ILSwapIsiPad();
 
 @protocol ILSwapCatalogAppServices <NSObject>
 
@@ -26,18 +25,22 @@ static inline id <ILSwapCatalogAppServices> ILSwapCatalogApp() {
 	return (id <ILSwapCatalogAppServices>) UIApp.delegate;
 }
 
-#if kILSwapCatalogPlatform_iPhone
-
 @interface ILSwapCatalogAppDelegate : NSObject
 <UIApplicationDelegate, UIActionSheetDelegate, ILSwapCatalogAppServices> {
-    
-    UIWindow *window;
-    UINavigationController *navigationController;
+    IBOutlet UIWindow* window;
+    IBOutlet UINavigationController* navigationController;
+		
+	IBOutlet UINavigationController* detailsController;
+	IBOutlet UIViewController* noItemController;
+	
+	UISplitViewController* splitController;
+	
+	UIPopoverController* popover;
+	UIBarButtonItem* popoverItem;
 }
 
-@property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
+@property(nonatomic, retain) UIPopoverController* popover;
+@property(nonatomic, retain) UIBarButtonItem* popoverItem;
 
 @end
 
-#endif

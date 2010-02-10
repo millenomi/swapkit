@@ -21,10 +21,8 @@
 	imagePicker.delegate = nil;	
 	[imagePicker release];
 	
-#if kILSwapCatalogPlatform_iPad
 	popover.delegate = nil;
 	[popover release];
-#endif
 	
 	[application release];
 	[type release];
@@ -43,37 +41,33 @@
 	imagePicker.delegate = self;
 	imagePicker.mediaTypes = [NSArray arrayWithObject:(id) kUTTypeImage];
 	
-#if kILSwapCatalogPlatform_iPad
-	if (popover)
-		return;
-	
-	popover = [[UIPopoverController alloc] initWithContentViewController:imagePicker];
-	popover.delegate = self;
-	[popover presentPopoverFromRect:v.bounds inView:v permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-#else
-	[c presentModalViewController:imagePicker animated:YES];
-#endif
+	if (ILSwapIsiPad() && NSClassFromString(@"UIPopoverController")) {
+		if (popover)
+			return;
+		
+		popover = [[UIPopoverController alloc] initWithContentViewController:imagePicker];
+		popover.delegate = self;
+		[popover presentPopoverFromRect:v.bounds inView:v permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	} else
+		[c presentModalViewController:imagePicker animated:YES];
 }
 
 - (void) finishPicking;
 {
 	imagePicker.delegate = nil;
-#if kILSwapCatalogPlatform_iPad
 	popover.delegate = nil;
-#endif
 	[delegate didFinishPickingImage:self];
 	[self autorelease];
 }	
 
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker;
 {
-#if kILSwapCatalogPlatform_iPad
-	popover.delegate = nil;
-	[popover dismissPopoverAnimated:YES];
-#else
-	[picker dismissModalViewControllerAnimated:YES];
-#endif
-
+	if (popover) {
+		popover.delegate = nil;
+		[popover dismissPopoverAnimated:YES];
+	} else
+		[picker dismissModalViewControllerAnimated:YES];
+	
 	[self finishPicking];
 }
 
@@ -84,25 +78,22 @@
 	if (i) {
 		// TODO check .actualImageType
 		NSData* d = UIImagePNGRepresentation(i);
-
+		
 		[[ILSwapService sharedService] sendItem:d ofType:(id) kUTTypePNG forAction:nil toApplicationWithIdentifier:[application objectForKey:kILAppIdentifier]];
 	}
 	
-#if kILSwapCatalogPlatform_iPad
-	popover.delegate = nil;
-	[popover dismissPopoverAnimated:YES];
-#else
-	[picker dismissModalViewControllerAnimated:YES];
-#endif	
-
+	if (popover) {
+		popover.delegate = nil;
+		[popover dismissPopoverAnimated:YES];
+	} else
+		[picker dismissModalViewControllerAnimated:YES];
+	
 	[self finishPicking];
 }
 
-#if kILSwapCatalogPlatform_iPad
 - (void) popoverControllerDidDismissPopover:(UIPopoverController *)popoverController;
 {
 	[self finishPicking];
 }
-#endif
 
 @end

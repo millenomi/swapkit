@@ -12,62 +12,163 @@
 
 #import <SwapKit/SwapKit.h>
 
+UILabel* ILSwapCatalogNavigationBarTitleViewForString(NSString* s) {
+	UILabel* l = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+	l.text = s;
+	l.numberOfLines = 1;
+	l.font = [UIFont boldSystemFontOfSize:20];
+	l.textColor = [UIColor whiteColor];
+	l.shadowColor = [UIColor grayColor];
+	l.shadowOffset = CGSizeMake(0, -1);
+	[l sizeToFit];
+	l.opaque = NO;
+	l.backgroundColor = [UIColor clearColor];
+	return l;
+}
 
-#if kILSwapCatalogPlatform_iPhone
+BOOL ILSwapIsiPad() {
+	static BOOL checked = NO, isiPad;
+	if (!checked) {
+		isiPad = NO;
+		UIDevice* d = [UIDevice currentDevice];
+		
+		if ([d respondsToSelector:@selector(userInterfaceIdiom)]) {
+			NSMethodSignature* m = [d methodSignatureForSelector:@selector(userInterfaceIdiom)];
+			NSInvocation* i = [NSInvocation invocationWithMethodSignature:m];
+			[i setTarget:d];
+			[i setSelector:@selector(userInterfaceIdiom)];
+			[i invoke];
+			
+			UIUserInterfaceIdiom idiom;
+			[i getReturnValue:&idiom];
+			
+			isiPad = (idiom == UIUserInterfaceIdiomPad);
+		}
+		
+		checked = YES;
+	}
+	
+	return isiPad;
+}
+
+@interface ILSwapCatalogAppDelegate () <UISplitViewControllerDelegate>
+- (void) updatePopverBarItem;
+- (void) didFinishLaunhingOniPadWithOptions:(NSDictionary*) options;
+@end
 
 @implementation ILSwapCatalogAppDelegate
 
-@synthesize window;
-@synthesize navigationController;
-
+@synthesize popover, popoverItem;
 
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (void)applicationDidFinishLaunching:(UIApplication *)application {    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary*) options {    
     
-    // Override point for customization after app launch    
+	if (ILSwapIsiPad())
+		[self didFinishLaunhingOniPadWithOptions:options];
+	else
+		[window addSubview:[navigationController view]];
 	
-	[window addSubview:[navigationController view]];
     [window makeKeyAndVisible];
-}
-
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-	// Save data if appropriate
+	return YES;
 }
 
 - (BOOL) shouldSupportAdditionalOrientation:(UIInterfaceOrientation) o forViewController:(UIViewController*) vc;
 {
-	return NO; // only allow iPhonesque standard orientations.
+	if (ILSwapIsiPad())
+		return YES; // on iPad, the interface orients YOU
+	else
+		return NO; // only allow iPhonesque standard orientations.
 }
 
 - (void) showActionSheet:(UIActionSheet*) a invokedByBarButtonItem:(UIBarButtonItem*) item;
 {
-	[a showInView:self.window];
+	if (ILSwapIsiPad() && [a respondsToSelector:@selector(showFromBarButtonItem:)])
+		[a showFromBarButtonItem:item];
+	else
+		[a showInView:window];
 }
 
 - (void) showActionSheet:(UIActionSheet*) a invokedByView:(UIView*) view;
 {
-	[a showInView:self.window];
+	if (ILSwapIsiPad() && [a respondsToSelector:@selector(showFromRect:inView:animated:)])
+		[a showFromRect:view.bounds inView:view animated:YES];
+	else
+		[a showInView:window];
 }
 
 - (void) displayApplicationRegistration:(NSDictionary*) reg;
 {
-	if (reg) {
+	if (ILSwapIsiPad()) {
+		UIViewController* toDisplay;
+		if (reg)
+			toDisplay = [[[ILSwapAppPane alloc] initWithApplicationRegistrationRecord:reg] autorelease];
+		else
+			toDisplay = noItemController;
+		
+		detailsController.viewControllers = [NSArray arrayWithObject:toDisplay];
+		[self updatePopverBarItem];
+		
+		[popover dismissPopoverAnimated:YES];
+	} else if (reg) { // iPhone
 		ILSwapAppPane* pane = [[[ILSwapAppPane alloc] initWithApplicationRegistrationRecord:reg] autorelease];
-		[self.navigationController pushViewController:pane animated:YES];
+		[navigationController pushViewController:pane animated:YES];
 	}
 }
 
 - (void) displaySendViewController:(UIViewController*) c;
 {
-	[self.navigationController pushViewController:c animated:YES];
+	if (ILSwapIsiPad()) {
+		c.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:c action:@selector(dismissModal)] autorelease];
+		
+		UINavigationController* nav = [[[UINavigationController alloc] initWithRootViewController:c] autorelease];
+		nav.modalPresentationStyle = UIModalPresentationPageSheet;
+		
+		[splitController presentModalViewController:nav animated:YES];
+	} else
+		[navigationController pushViewController:c animated:YES];
 }
 
 - (void) displayImagePickerController:(UIImagePickerController*) c comingFromView:(UIView*) v withinViewController:(UIViewController*) p;
 {
-	[p presentModalViewController:c animated:YES];
+	if (ILSwapIsiPad()) {
+		UIPopoverController* pc = [[UIPopoverController alloc] initWithContentViewController:c];
+		[pc presentPopoverFromRect:v.bounds inView:v permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	} else
+		[p presentModalViewController:c animated:YES];
+}
+
+#pragma mark iPad Split View Management
+
+- (void) didFinishLaunhingOniPadWithOptions:(NSDictionary *)options;
+{
+	splitController = [[UISplitViewController alloc] init];
+	splitController.delegate = self;
+	splitController.viewControllers = [NSArray arrayWithObjects:navigationController, detailsController, nil];
+	[window addSubview:splitController.view];
+}
+
+- (void) updatePopverBarItem;
+{
+	detailsController.topViewController.navigationItem.leftBarButtonItem = self.popoverItem;
+}
+
+- (void) splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc;
+{
+	self.popover = pc;
+	self.popoverItem = barButtonItem;	
+	self.popoverItem.title = NSLocalizedString(@"SwapKit Catalog", @"Title for master popover button");
+	
+	self.popover.popoverContentSize = CGSizeMake(320, 500);
+	[self updatePopverBarItem];
+}
+
+- (void) splitViewController:(UISplitViewController *)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem;
+{
+	self.popover = nil;
+	self.popoverItem = nil;
+	[self updatePopverBarItem];
 }
 
 #pragma mark -
@@ -81,4 +182,3 @@
 
 @end
 
-#endif
