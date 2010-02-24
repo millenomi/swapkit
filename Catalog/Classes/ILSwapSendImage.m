@@ -41,11 +41,11 @@
 	imagePicker.delegate = self;
 	imagePicker.mediaTypes = [NSArray arrayWithObject:(id) kUTTypeImage];
 	
-	if (ILSwapIsiPad() && NSClassFromString(@"UIPopoverController")) {
+	if (ILSwapIsiPad()) {
 		if (popover)
 			return;
 		
-		popover = [[UIPopoverController alloc] initWithContentViewController:imagePicker];
+		popover = [[ILSwapiPadClass(UIPopoverController) alloc] initWithContentViewController:imagePicker];
 		popover.delegate = self;
 		[popover presentPopoverFromRect:v.bounds inView:v permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	} else

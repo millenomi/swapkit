@@ -341,7 +341,7 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 		
 		if ([obj isEqual:(id) kUTTypeUTF8PlainText]) {
 			
-			ILSwapSendText* t = [[[ILSwapSendText alloc] initWithApplicationIdentifier:[record objectForKey:kILAppIdentifier] type:obj] autorelease];
+			ILSwapSendText* t = [[[ILSwapSendText alloc] initWithApplicationIdentifier:[record objectForKey:kILAppIdentifier] type:obj target:self didFinishSelector:@selector(didFinishSendingText:)] autorelease];
 			[ILSwapCatalogApp() displaySendViewController:t];
 			
 		} else if ([obj isEqual:(id) kUTTypePNG]) {
@@ -390,7 +390,7 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 	
 	switch (buttonIndex) {
 		case kILSwapSendText: {			
-			ILSwapSendText* t = [[[ILSwapSendText alloc] initWithApplicationIdentifier:[record objectForKey:kILAppIdentifier] type:a.sendingType] autorelease];
+			ILSwapSendText* t = [[[ILSwapSendText alloc] initWithApplicationIdentifier:[record objectForKey:kILAppIdentifier] type:a.sendingType target:self didFinishSelector:@selector(didFinishSendingText:)] autorelease];
 			[ILSwapCatalogApp() displaySendViewController:t];			
 		} 
 			break;
@@ -451,6 +451,15 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier;
 {
 	return NO;
+}
+
+#pragma mark Sending text finish selector
+
+- (void) didFinishSendingText:(ILSwapSendText*) t;
+{
+	NSIndexPath* p = [self.tableView indexPathForSelectedRow];
+	if (p)
+		[self.tableView deselectRowAtIndexPath:p animated:YES];
 }
 
 @end

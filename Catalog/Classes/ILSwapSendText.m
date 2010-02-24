@@ -14,7 +14,7 @@
 
 @implementation ILSwapSendText
 
-- (id) initWithApplicationIdentifier:(NSString*) a type:(NSString*) t;
+- (id) initWithApplicationIdentifier:(NSString*) a type:(NSString*) t target:(id) ta didFinishSelector:(SEL) finish;
 {
 	if (!(self = [super initWithNibName:@"ILSwapSendText" bundle:nil]))
 		return nil;
@@ -24,6 +24,9 @@
 	
 	app = [a copy];
 	type = [t copy];
+	
+	target = ta;
+	didFinish = finish;
 	
 	return self;
 }
@@ -94,11 +97,17 @@
 - (void) send;
 {
 	[[ILSwapService sharedService] sendItems:[NSArray arrayWithObject:textView.text] ofType:type forAction:nil toApplicationWithIdentifier:app];
+	
+	if (target && didFinish)
+		[target performSelector:didFinish withObject:self];	
 }
 
 - (void) dismissModal;
 {
 	[self dismissModalViewControllerAnimated:YES];
+	
+	if (target && didFinish)
+		[target performSelector:didFinish withObject:self];
 }
 
 @end

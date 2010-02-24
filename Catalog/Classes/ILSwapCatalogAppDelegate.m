@@ -32,18 +32,8 @@ BOOL ILSwapIsiPad() {
 		isiPad = NO;
 		UIDevice* d = [UIDevice currentDevice];
 		
-		if ([d respondsToSelector:@selector(userInterfaceIdiom)]) {
-			NSMethodSignature* m = [d methodSignatureForSelector:@selector(userInterfaceIdiom)];
-			NSInvocation* i = [NSInvocation invocationWithMethodSignature:m];
-			[i setTarget:d];
-			[i setSelector:@selector(userInterfaceIdiom)];
-			[i invoke];
-			
-			UIUserInterfaceIdiom idiom;
-			[i getReturnValue:&idiom];
-			
-			isiPad = (idiom == UIUserInterfaceIdiomPad);
-		}
+		if ([d respondsToSelector:@selector(userInterfaceIdiom)]) 
+			isiPad = (d.userInterfaceIdiom == UIUserInterfaceIdiomPad);
 		
 		checked = YES;
 	}
@@ -133,7 +123,7 @@ BOOL ILSwapIsiPad() {
 - (void) displayImagePickerController:(UIImagePickerController*) c comingFromView:(UIView*) v withinViewController:(UIViewController*) p;
 {
 	if (ILSwapIsiPad()) {
-		UIPopoverController* pc = [[UIPopoverController alloc] initWithContentViewController:c];
+		UIPopoverController* pc = [[ILSwapiPadClass(UIPopoverController) alloc] initWithContentViewController:c];
 		[pc presentPopoverFromRect:v.bounds inView:v permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	} else
 		[p presentModalViewController:c animated:YES];
@@ -143,7 +133,7 @@ BOOL ILSwapIsiPad() {
 
 - (void) didFinishLaunhingOniPadWithOptions:(NSDictionary *)options;
 {
-	splitController = [[UISplitViewController alloc] init];
+	splitController = [[ILSwapiPadClass(UISplitViewController) alloc] init];
 	splitController.delegate = self;
 	splitController.viewControllers = [NSArray arrayWithObjects:navigationController, detailsController, nil];
 	[window addSubview:splitController.view];

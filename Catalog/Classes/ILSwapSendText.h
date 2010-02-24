@@ -14,10 +14,13 @@
 	
 	NSString* type;
 	NSString* app;
+	
+	id target;
+	SEL didFinish;
 }
 
-- (id) initWithApplicationIdentifier:(NSString*) app type:(NSString*) type;
-
+// finish == - swapKitSendTextDidFinish:(ILSwapSendText*) s;
+- (id) initWithApplicationIdentifier:(NSString*) app type:(NSString*) type target:(id) t didFinishSelector:(SEL) finish;
 - (void) dismissModal;
 
 @end

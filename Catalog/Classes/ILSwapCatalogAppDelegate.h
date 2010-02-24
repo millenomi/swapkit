@@ -21,6 +21,9 @@ extern BOOL ILSwapIsiPad();
 
 @end
 
+// #define ILSwapiPadClass(name) (ILSwapIsiPad() ? NSClassFromString(@#name) : Nil)
+#define ILSwapiPadClass(name) ([name class])
+
 static inline id <ILSwapCatalogAppServices> ILSwapCatalogApp() {
 	return (id <ILSwapCatalogAppServices>) UIApp.delegate;
 }
