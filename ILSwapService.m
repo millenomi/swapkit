@@ -55,6 +55,15 @@ typedef NSInteger ILSwapPasteboardLifetime;
 #import "ILSwapItem.h"
 #import "ILSwapItem_Private.h"
 
+static BOOL ILSwapContainsAllObjectsInArray(NSArray* containee, NSArray* contents) {
+	for (id i in contents) {
+		if (![containee containsObject:i])
+			return NO;
+	}
+	
+	return YES;
+}
+
 @interface ILSwapService (ILSwapPasteboardLifetime)
 
 - (void) deleteInvalidatedPasteboards;
@@ -71,7 +80,7 @@ static BOOL ILSwapIsAppInstalled(NSDictionary* reg) {
 @interface ILSwapService ()
 
 - (NSDictionary*) registrationByApplyingDefaultsToAttributes:(NSDictionary*) a;
-- (NSArray*) findApplicationRegistrationsForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action stopAtTheFirstMatch:(BOOL) oneOnly;
+- (NSArray*) findApplicationRegistrationsForSendingItems:(NSArray*) items forAction:(NSString*) action stopAtTheFirstMatch:(BOOL) oneOnly;
 
 @end
 
@@ -351,10 +360,15 @@ L0ObjCSingletonMethod(sharedService)
 	return [[self applicationRegistrations] objectForKey:appID];
 }
 
-- (NSDictionary*) applicationRegistrationForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
+// TODO rewrite this to take multiple types into account.
+- (NSDictionary*) applicationRegistrationForSendingItems:(NSArray*) items forAction:(NSString*) action;
 {
 	if (!action)
 		action = kILSwapDefaultAction;
+	
+	NSMutableArray* utis = [NSMutableArray array];
+	for (ILSwapItem* i in items)
+		[utis addObject:i.type];
 	
 	NSDictionary* reg = nil;
 	BOOL isMany = [items count] > 1;
@@ -375,14 +389,21 @@ L0ObjCSingletonMethod(sharedService)
 			continue;
 		
 		NSArray* supportedUTIs = L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]);
-		BOOL hasUTI = [supportedUTIs containsObject:(id) kUTTypeData] || [supportedUTIs containsObject:uti];
+		BOOL hasUTI = [supportedUTIs containsObject:(id) kUTTypeData] || ILSwapContainsAllObjectsInArray(supportedUTIs, utis);
+		
 		if (!hasUTI) {
-			for (NSString* supportedUTI in supportedUTIs) {
-				if (UTTypeConformsTo((CFStringRef) uti, (CFStringRef) supportedUTI)) {
-					hasUTI = YES;
-					break;
+			NSInteger foundUTIs = 0;
+			
+			for (NSString* uti in utis) {
+				for (NSString* supportedUTI in supportedUTIs) {
+					if ([uti isEqual:supportedUTI] || UTTypeConformsTo((CFStringRef) uti, (CFStringRef) supportedUTI)) {
+						foundUTIs++;
+						break;
+					}
 				}
 			}
+			
+			hasUTI = (foundUTIs == [utis count]);
 		}
 		
 		if (!hasUTI)

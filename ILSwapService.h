@@ -33,6 +33,7 @@
 
 #import <UIKit/UIKit.h>
 @class ILSwapRequest;
+@class ILSwapItem;
 
 /**
 \addtogroup ILSwapKitRegistrationKeys App Registration Keys
@@ -99,7 +100,7 @@ This is the key in Info.plist the swap service will look for when autoregisterin
 /**
 \ingroup ILSwapKitConstants
 
-This is the default action, that is, a generic "I can receive items of this type" action without strings attached. It's the action used if you specify nil in ILSwapService#sendItems:ofType:forAction:toApplicationWithIdentifier: and other methods that take an action.
+This is the default action, that is, a generic "I can receive items of this type" action without strings attached. It's the action used if you specify nil in ILSwapService#sendItems:forAction:toApplicationWithIdentifier: and other methods that take an action.
 */
 #define kILSwapDefaultAction @"ILReceive"
 
@@ -219,9 +220,9 @@ Returns all application registrations. The returned dictionary uses application 
 - (NSDictionary*) registrationForApplicationWithIdentifier:(NSString*) appID;
 
 /**
- Sends one item to the application with the given identifier. This is a convenience method for #sendItems:ofType:forAction:toApplicationWithIdentifier: for sending a single item; see the docs for that method for more information.
+ Sends one item to the application with the given identifier. This is a convenience method for #sendItems:forAction:toApplicationWithIdentifier: for sending a single item; see the docs for that method for more information.
 */
-- (BOOL) sendItem:(id) item ofType:(id) uti forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) appID;
+- (BOOL) sendItem:(ILSwapItem*) item forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) appID;
 
 /**
  Sends the given items to the application with the given identifier.
@@ -231,12 +232,7 @@ Returns all application registrations. The returned dictionary uses application 
  
 Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
 
- The items array can contain either ILSwapItem instances or "raw" values, which can be any value you could set a ILSwapItem#value to. In this second case, they will be wrapped into a metadata-less ILSwapItem when received by the other application. For reference, the following values are fine:
- 
- - NSData.
- - NSString (in which case the type parameter must be kUTTypeUTF8PlainText).
- - NSArray or NSDictionary containing property list objects only.
- - UIImage
+ The items array must contain ILSwapItem instances only. This is a change from 1.0, which could contain ILSwapItems or raw values.
  
  but see ILSwapItem#value's documentation for details.
  
@@ -247,47 +243,47 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
 @param action The action to be performed upon the items by the target application. Can be nil; @ref kILSwapDefaultAction will be used in that case.
 @param ident The application identifier for the target application, or nil to send to the first app that can handle the specified items, type and action.
 */
-- (BOOL) sendItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) ident;
+- (BOOL) sendItems:(NSArray*) items forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) ident;
 
 /**
- Searches for a registered application that can receive the given items and perform the given action. This is the same algorithm described for the #sendItems:ofType:forAction:toApplicationWithIdentifier: method when the application identifier is nil.
+ Searches for a registered application that can receive the given items and perform the given action. This is the same algorithm described for the #sendItems:forAction:toApplicationWithIdentifier: method when the application identifier is nil.
  
  If you specify nil for the action, @ref kILSwapDefaultAction will be used.
  
  The returned registration is guaranteed to never refer to the currently running application.
  
  @return The registration dictionary for the right application, if found, or nil if no such application is registered with SwapKit.
- @see #sendItems:ofType:forAction:toApplicationWithIdentifier:
+ @see #sendItems:forAction:toApplicationWithIdentifier:
  */
-- (NSDictionary*) applicationRegistrationForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
+- (NSDictionary*) applicationRegistrationForSendingItems:(NSArray*) items forAction:(NSString*) action;
 
 /**
- Returns YES if there is at least one app, other than the current one, that can receive the given items and action, NO otherwise. Using this method is more efficient than inspecting the return value of #applicationRegistrationForSendingItems:ofType:forAction: and #allApplicationRegistrationsForSendingItems:ofType:forAction:.
+ Returns YES if there is at least one app, other than the current one, that can receive the given items and action, NO otherwise. Using this method is more efficient than inspecting the return value of #applicationRegistrationForSendingItems:forAction: and #allApplicationRegistrationsForSendingItems:forAction:.
  
  If you specify nil for the action, @ref kILSwapDefaultAction will be used.
  
  @return The registration dictionary for the right application, if found, or nil if no such application is registered with SwapKit.
- @see #sendItems:ofType:forAction:toApplicationWithIdentifier:
+ @see #sendItems:forAction:toApplicationWithIdentifier:
  */
-- (BOOL) canSendItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
+- (BOOL) canSendItems:(NSArray*) items forAction:(NSString*) action;
 
 /**
- Searches for a set of registered applications that can receive the given items and perform the given action. This is similar to #applicationRegistrationForSendingItems:ofType:forAction:, but returns all possible matches rather than a single one. The order of matches returned is currently arbitrary, but this may change in a future release of SwapKit.
+ Searches for a set of registered applications that can receive the given items and perform the given action. This is similar to #applicationRegistrationForSendingItems:forAction:, but returns all possible matches rather than a single one. The order of matches returned is currently arbitrary, but this may change in a future release of SwapKit.
  
  If you specify nil for the action, @ref kILSwapDefaultAction will be used.
  
  The returned array never contains the currently running application. If you want to get the currently running application's registration, use #registrationForApplicationWithIdentifier: with the current app's identifier instead.
 
  @return An array of registration dictionaries for all found applications. If none is found, an empty array will be returned.
- @see #applicationRegistrationForSendingItems:ofType:forAction:
- @see #sendItems:ofType:forAction:toApplicationWithIdentifier:
+ @see #applicationRegistrationForSendingItems:forAction:
+ @see #sendItems:forAction:toApplicationWithIdentifier:
 */
-- (NSArray*) allApplicationRegistrationsForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
+- (NSArray*) allApplicationRegistrationsForSendingItems:(NSArray*) items forAction:(NSString*) action;
 
 /**
  This is the primitive request-sending method. It will send a request with the given attributes to the application whose registration dictionary is passed in.
  
- This method does no checking -- it is assumed that this method is called with an attributes dictionary that will be successfully parsed by another app, either via its delegate method or via SwapKit's built-in checks. #sendItems:ofType:forAction:toApplicationWithIdentifier: uses this method to send appropriately-formatted requests; it is preferred that you use that method, as it also takes care of placing the items in external storage (such as a pasteboard) and manages that storage's lifetime.
+ This method does no checking -- it is assumed that this method is called with an attributes dictionary that will be successfully parsed by another app, either via its delegate method or via SwapKit's built-in checks. #sendItems:forAction:toApplicationWithIdentifier: uses this method to send appropriately-formatted requests; it is preferred that you use that method, as it also takes care of placing the items in external storage (such as a pasteboard) and manages that storage's lifetime.
  
  @return YES if the request was dispatched, NO otherwise. (This only happens in cases of force majeoure -- eg the app does not have a URL scheme for receiving because the registration contains incorrect data.)
  */
@@ -303,7 +299,7 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
 @optional
 
 /**
- Called whenever SwapKit detects that another application sent us a request through ILSwapService#sendItems:ofType:forAction:toApplicationWithIdentifier: or an equivalent method.
+ Called whenever SwapKit detects that another application sent us a request through ILSwapService#sendItems:forAction:toApplicationWithIdentifier: or an equivalent method.
  
  @param request The request that was received.
  */

@@ -64,6 +64,7 @@
 @interface ILSwapItem : NSObject <NSCopying, NSMutableCopying> {
 @protected
 	id value;
+	NSString* type;
 	NSDictionary* attributes;
 }
 
@@ -78,6 +79,11 @@
 @property(copy, nonatomic, readonly) id value;
 
 /**
+ The type for this item. A UTI describing the type of the item the .value contains.
+ */
+@property(copy, nonatomic, readonly) NSString* type;
+
+/**
  The attributes for this item. It can be nil, or, if non-nil, it's a NSDictionary instance containing only property list objects. This dictionary, if present, contains additional metadata for the item.
  
  @see ILSwapKitItems
@@ -88,14 +94,15 @@
  Creates a new item with the given value and attributes.
  
  @param v A valid value for this item. See #value for details.
+ @param t The type for this item.
  @param a Metadata attributes for this item. Can be nil; if it's not, it must only contain property list objects.
  */
-- (id) initWithValue:(id) v attributes:(NSDictionary*) a;
+- (id) initWithValue:(id) v type:(NSString*) t attributes:(NSDictionary*) a;
 
 /**
- Convenience method for #initWithValue:attributes:.
+ Convenience method for #initWithValue:type:attributes:.
  */
-+ itemWithValue:(id) v attributes:(NSDictionary*) a;
++ itemWithValue:(id) v type:(NSString*) t attributes:(NSDictionary*) a;
 
 @end
 
@@ -116,6 +123,11 @@
  Please note: you CAN set a UIImage as the value. It will be treated correctly, but it will be retained rather than used as the basis for a new object. This should not affect the application, since UIImages are immutable.
  */
 @property(copy, nonatomic) id value;
+
+/**
+ The type for this item, a UTI. Can be nil, but it must be non-nil if you want to pass this object to anything that can also take an immutable ILSwapItem.
+ */
+@property(copy, nonatomic) NSString* type;
 
 /**
  The attributes for this item. Can be modified.

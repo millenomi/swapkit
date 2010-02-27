@@ -76,7 +76,7 @@
 	NSData* d = [pb valueForPasteboardType:self.type];
 	NSData* m = [pb valueForPasteboardType:kILSwapItemAttributesUTI];
 	
-	return [ILSwapItem itemWithValue:d attributes:[ILSwapItem attributesFromPasteboardValue:m]];
+	return [ILSwapItem itemWithValue:d type:self.type attributes:[ILSwapItem attributesFromPasteboardValue:m]];
 }
 
 - (NSUInteger) countOfItems;
@@ -88,9 +88,16 @@
 {
 	if (!items) {
 		NSMutableArray* a = [NSMutableArray array];
-		NSString* uti = self.type;
 
 		for (NSDictionary* item in pb.items) {
+			NSString* uti; // take the first UTI off the item.
+			for (NSString* u in item) {
+				if ([u isEqual:kILSwapItemAttributesUTI])
+					continue;
+				
+				uti = u; break;
+			}
+			
 			id d = [item objectForKey:uti];
 			id m = [item objectForKey:kILSwapItemAttributesUTI];
 			
@@ -98,7 +105,7 @@
 				continue;
 			
 			[a addObject:
-			 [ILSwapItem itemWithValue:d attributes:[ILSwapItem attributesFromPasteboardValue:m]]
+			 [ILSwapItem itemWithValue:d type:uti attributes:[ILSwapItem attributesFromPasteboardValue:m]]
 			 ];
 		}
 		
