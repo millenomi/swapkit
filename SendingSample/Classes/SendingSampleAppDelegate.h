@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SendingSampleAppDelegate : NSObject <UIApplicationDelegate, UITextViewDelegate> {
+@interface SendingSampleAppDelegate : NSObject <UIApplicationDelegate, UITextViewDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     UIWindow *window;
 	
 	IBOutlet UITextView* loremIpsumView;
 	IBOutlet UIBarButtonItem* doneButton;
+	IBOutlet UIViewController* rootController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
