@@ -21,6 +21,7 @@
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)options;
 {
+	[window addSubview:rootController.view];
     [window makeKeyAndVisible];
 	
 	BOOL handled = [ILSwapService didFinishLaunchingWithOptions:options];
@@ -44,13 +45,40 @@
 - (void) swapServiceDidReceiveRequest:(ILSwapRequest*) request;
 {	
 	// we received items via SwapKit! do stuff with them!
-	NSString* text = request.item.stringValue;
-	if (text)
-		textView.text = text;
 	
-	id title = [request.item.attributes objectForKey:kILSwapItemTitleAttribute];
-	if (title && [title isKindOfClass:[NSString class]])
-		currentNavigationItem.title = title;
+	BOOL foundText = NO, foundImage = NO;
+	
+	for (ILSwapItem* item in request.items) {
+		
+		if (!foundText && [item typeConformsTo:(id) kUTTypePlainText]) {
+			NSString* text = item.stringValue;
+			if (text)
+				textView.text = text;
+		
+			id title = [item.attributes objectForKey:kILSwapItemTitleAttribute];
+			if (title && [title isKindOfClass:[NSString class]])
+				currentNavigationItem.title = title;
+			
+			foundText = YES;
+			
+		} else if (!foundImage && [item typeConformsTo:(id) kUTTypeImage]) {
+			UIImage* image = item.imageValue;
+			if (image)
+				imageView.image = image;
+			
+			id title = [item.attributes objectForKey:kILSwapItemTitleAttribute];
+			if (title && [title isKindOfClass:[NSString class]])
+				imagePane.navigationItem.title = title;
+			
+			[rootController pushViewController:imagePane animated:YES];
+			
+			foundImage = YES;
+			
+		}
+		
+		if (foundText && foundImage)
+			break;
+	}
 }
 
 - (void) dealloc;
