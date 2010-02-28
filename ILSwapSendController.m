@@ -51,37 +51,33 @@ L0UniquePointerConstant(kILSwapSendControllerObservationContext);
 		return nil;
 
 	[self addObserver:self forKeyPath:@"items" options:0 context:kILSwapSendControllerObservationContext];
-	[self addObserver:self forKeyPath:@"type" options:0 context:kILSwapSendControllerObservationContext];
 	[self addObserver:self forKeyPath:@"action" options:0 context:kILSwapSendControllerObservationContext];
 	
 	return self;
 }
 
-- (id) initWithItems:(NSArray*) i ofType:(id) t forAction:(NSString*) a;
+- (id) initWithItems:(NSArray*) i forAction:(NSString*) a;
 {
 	if (!(self = [self init]))
 		return nil;
 	
 	items = [i copy];
-	type = [t copy];
 	action = [a copy];
 	[self updateDestinations];
 	
 	return self;
 }
 
-@synthesize items, type, action, delegate;
+@synthesize items, action, delegate;
 
 - (void) dealloc
 {
 	[self removeObserver:self forKeyPath:@"items"];
-	[self removeObserver:self forKeyPath:@"type"];
 	[self removeObserver:self forKeyPath:@"action"];
 	
 	[destinations release];
 	
 	[items release];
-	[type release];
 	[action release];
 	
 	[sendButtonItem release];
@@ -89,9 +85,9 @@ L0UniquePointerConstant(kILSwapSendControllerObservationContext);
 	[super dealloc];
 }
 
-+ (id) controllerForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
++ (id) controllerForSendingItems:(NSArray*) items forAction:(NSString*) action;
 {
-	return [[[self alloc] initWithItems:items ofType:uti forAction:action] autorelease];
+	return [[[self alloc] initWithItems:items forAction:action] autorelease];
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
@@ -103,7 +99,7 @@ L0UniquePointerConstant(kILSwapSendControllerObservationContext);
 - (void) updateDestinations;
 {
 	[destinations release]; destinations = nil;
-	if (!self.items || !self.type)
+	if (!self.items || [self.items count] == 0)
 		return;
 	
 	NSMutableArray* dests = [NSMutableArray array];
