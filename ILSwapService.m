@@ -30,11 +30,6 @@
  
  */
 
-enum {
-	kILSwapPasteboardThisSessionOnly,
-};
-typedef NSInteger ILSwapPasteboardLifetime;
-
 #import "ILSwapService.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -55,6 +50,21 @@ typedef NSInteger ILSwapPasteboardLifetime;
 #import "ILSwapItem.h"
 #import "ILSwapItem_Private.h"
 
+#import "ILSwapBinding.h"
+
+static BOOL ILSwapIsAppInstalled(NSDictionary* reg) {
+	NSString* s = [reg objectForKey:kILAppReceiveItemURLScheme];
+	return s && [UIApp canOpenURL:
+				 [NSURL URLWithString:[NSString stringWithFormat:@"%@:", s]]];
+}
+
+enum {
+	kILSwapPasteboardThisSessionOnly,
+};
+typedef NSInteger ILSwapPasteboardLifetime;
+
+
+
 static BOOL ILSwapContainsAllObjectsInArray(NSArray* containee, NSArray* contents) {
 	for (id i in contents) {
 		if (![containee containsObject:i])
@@ -71,16 +81,10 @@ static BOOL ILSwapContainsAllObjectsInArray(NSArray* containee, NSArray* content
 
 @end
 
-static BOOL ILSwapIsAppInstalled(NSDictionary* reg) {
-	NSString* s = [reg objectForKey:kILAppReceiveItemURLScheme];
-	return s && [UIApp canOpenURL:
-				 [NSURL URLWithString:[NSString stringWithFormat:@"%@:", s]]];
-}
 
 @interface ILSwapService ()
 
 - (NSDictionary*) registrationByApplyingDefaultsToAttributes:(NSDictionary*) a;
-- (NSArray*) findApplicationRegistrationsForSendingItems:(NSArray*) items forAction:(NSString*) action stopAtTheFirstMatch:(BOOL) oneOnly;
 
 @end
 
@@ -127,7 +131,7 @@ L0ObjCSingletonMethod(sharedService)
 	return self;
 }
 
-@synthesize delegate;
+@synthesize delegate, applicationRegistration = registrationAttributes;
 
 - (void) dealloc
 {
@@ -362,141 +366,42 @@ L0ObjCSingletonMethod(sharedService)
 
 // TODO rewrite this to take multiple types into account.
 - (NSDictionary*) applicationRegistrationForSendingItems:(NSArray*) items forAction:(NSString*) action;
+{	
+	ILSwapBinding* binding = [ILSwapBinding binding];
+	binding.items = items;
+	binding.action = action;
+	
+	NSArray* regs = binding.appropriateApplications;
+	return [regs count] > 0? [binding.appropriateApplications objectAtIndex:0] : nil;
+}
+
+- (BOOL) canSendItems:(NSArray*) items forAction:(NSString*) action;
+{
+	ILSwapBinding* binding = [ILSwapBinding binding];
+	binding.items = items;
+	binding.action = action;
+	
+	return binding.canSend;
+}
+
+- (NSArray*) allApplicationRegistrationsForSendingItems:(NSArray*) items forAction:(NSString*) action;
 {
 	if (!action)
 		action = kILSwapDefaultAction;
 	
-	NSMutableArray* utis = [NSMutableArray array];
-	for (ILSwapItem* i in items)
-		[utis addObject:i.type];
+	ILSwapBinding* binding = [ILSwapBinding binding];
+	binding.items = items;
+	binding.action = action;
 	
-	NSDictionary* reg = nil;
-	BOOL isMany = [items count] > 1;
-	NSString* me = [[NSBundle mainBundle] bundleIdentifier];
-
-	for (NSString* candidateAppID in [self applicationRegistrations]) {
-		if ([candidateAppID isEqual:me])
-			continue;
-		
-		NSDictionary* r = [[self applicationRegistrations] objectForKey:candidateAppID];
-		if (![r objectForKey:kILAppReceiveItemURLScheme])
-			continue;
-		
-		if (!ILSwapIsAppInstalled(r))
-			continue;
-		
-		if (![L0As(NSArray, [r objectForKey:kILAppSupportedActions]) containsObject:action])
-			continue;
-		
-		NSArray* supportedUTIs = L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]);
-		BOOL hasUTI = [supportedUTIs containsObject:(id) kUTTypeData] || ILSwapContainsAllObjectsInArray(supportedUTIs, utis);
-		
-		if (!hasUTI) {
-			NSInteger foundUTIs = 0;
-			
-			for (NSString* uti in utis) {
-				for (NSString* supportedUTI in supportedUTIs) {
-					if ([uti isEqual:supportedUTI] || UTTypeConformsTo((CFStringRef) uti, (CFStringRef) supportedUTI)) {
-						foundUTIs++;
-						break;
-					}
-				}
-			}
-			
-			hasUTI = (foundUTIs == [utis count]);
-		}
-		
-		if (!hasUTI)
-			continue;
-		
-		if (isMany && ![L0As(NSNumber, [r objectForKey:kILAppSupportsReceivingMultipleItems]) boolValue])
-			continue;
-		
-		reg = r;
-		break;
-	}
-	
-	if (!reg && isMany) {
-		for (NSString* candidateAppID in [self applicationRegistrations]) {
-			NSDictionary* r = [[self applicationRegistrations] objectForKey:candidateAppID];
-			if (![r objectForKey:kILAppReceiveItemURLScheme])
-				continue;
-			
-			if (![L0As(NSArray, [r objectForKey:kILAppSupportedActions]) containsObject:action])
-				continue;
-			
-			NSArray* supportedUTIs = L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]);
-			BOOL hasUTI = [supportedUTIs containsObject:(id) kUTTypeData] || [supportedUTIs containsObject:uti];
-			if (!hasUTI) {
-				for (NSString* supportedUTI in supportedUTIs) {
-					if (UTTypeConformsTo((CFStringRef) uti, (CFStringRef) supportedUTI)) {
-						hasUTI = YES;
-						break;
-					}
-				}
-			}
-			
-			if (!hasUTI)
-				continue;
-			
-			reg = r;
-			break;
-		}
-	}
-	
-	return reg;
+	return binding.appropriateApplications;
 }
 
-- (BOOL) canSendItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
+- (BOOL) sendItem:(ILSwapItem*) item forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) appID;
 {
-	return [[self findApplicationRegistrationsForSendingItems:items ofType:uti forAction:action stopAtTheFirstMatch:YES] count] != 0;
+	return [self sendItems:[NSArray arrayWithObject:item] forAction:action toApplicationWithIdentifier:appID];
 }
 
-- (NSArray*) allApplicationRegistrationsForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
-{
-	return [self findApplicationRegistrationsForSendingItems:items ofType:uti forAction:action stopAtTheFirstMatch:NO];
-}
-
-- (NSArray*) findApplicationRegistrationsForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action stopAtTheFirstMatch:(BOOL) oneOnly;
-{
-	if (!action)
-		action = kILSwapDefaultAction;
-	
-	NSMutableArray* candidates = [NSMutableArray array];
-	NSString* me = [[NSBundle mainBundle] bundleIdentifier];
-
-	for (NSString* candidateAppID in [self applicationRegistrations]) {
-		if ([candidateAppID isEqual:me])
-			continue;
-		
-		NSDictionary* r = [[self applicationRegistrations] objectForKey:candidateAppID];
-		if (![r objectForKey:kILAppReceiveItemURLScheme])
-			continue;
-		
-		if (!ILSwapIsAppInstalled(r))
-			continue;
-		
-		if (![[r objectForKey:kILAppSupportedActions] containsObject:action])
-			continue;
-		
-		if (![L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]) containsObject:uti])
-			continue;
-		
-		[candidates addObject:r];
-		
-		if (oneOnly)
-			break;
-	}	
-	
-	return candidates;
-}
-
-- (BOOL) sendItem:(id) item ofType:(id) uti forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) appID;
-{
-	return [self sendItems:[NSArray arrayWithObject:item] ofType:uti forAction:action toApplicationWithIdentifier:appID];
-}
-
-- (BOOL) sendItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) appID;
+- (BOOL) sendItems:(NSArray*) items forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) appID;
 {
 	if ([items count] == 0)
 		return NO;
@@ -508,7 +413,7 @@ L0ObjCSingletonMethod(sharedService)
 	if (appID)
 		reg = [self registrationForApplicationWithIdentifier:appID];
 	else 
-		reg = [self applicationRegistrationForSendingItems:items ofType:uti forAction:action];
+		reg = [self applicationRegistrationForSendingItems:items forAction:action];
 	
 	if (!reg)
 		return NO;
@@ -519,12 +424,8 @@ L0ObjCSingletonMethod(sharedService)
 	pb.persistent = YES;
 	
 	NSMutableArray* a = [NSMutableArray array];
-	for (id item in items) {
-		NSDictionary* d;
-		if ([item isKindOfClass:[ILSwapItem class]]) 
-			d = [item pasteboardItemOfType:uti];
-		else
-			d = [NSDictionary dictionaryWithObject:item forKey:uti];
+	for (ILSwapItem* item in items) {
+		NSDictionary* d = [item pasteboardItem];
 		
 		if (!d) {
 			[NSException raise:@"ILSwapServiceCannotSendObject" format:@"Could not extract a value from object: %@", item];

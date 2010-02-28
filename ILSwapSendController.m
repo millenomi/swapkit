@@ -109,7 +109,7 @@ L0UniquePointerConstant(kILSwapSendControllerObservationContext);
 	NSMutableArray* dests = [NSMutableArray array];
 
 	ILSwapService* s = [ILSwapService sharedService];
-	NSArray* candidates = [s allApplicationRegistrationsForSendingItems:items ofType:type forAction:action];
+	NSArray* candidates = [s allApplicationRegistrationsForSendingItems:items forAction:action];
 	
 	if ([candidates count] == 0)
 		return;
@@ -179,7 +179,7 @@ L0UniquePointerConstant(kILSwapSendControllerObservationContext);
 {
 	if (buttonIndex != actionSheet.cancelButtonIndex) {
 		NSDictionary* app = [destinations objectAtIndex:buttonIndex];
-		[[ILSwapService sharedService] sendItems:items ofType:type forAction:action toApplicationWithIdentifier:[app objectForKey:kILAppIdentifier]];
+		[[ILSwapService sharedService] sendItems:items forAction:action toApplicationWithIdentifier:[app objectForKey:kILAppIdentifier]];
 	} else
 		[self.delegate sendController:self didNotSendItemsWithCause:kILSwapSendingCancelled];
 

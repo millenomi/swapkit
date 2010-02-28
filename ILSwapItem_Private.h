@@ -6,7 +6,7 @@
 @interface ILSwapItem (ILSwapItemPasteboard)
 
 /** @internal */
-- (NSDictionary*) pasteboardItemOfType:(NSString*) type;
+- (NSDictionary*) pasteboardItem;
 
 + (NSDictionary*) attributesFromPasteboardValue:(NSData*) d;
 

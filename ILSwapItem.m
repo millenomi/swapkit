@@ -133,6 +133,11 @@ static BOOL ILSwapIsPropertyListObject(id v) {
 	return [super init];
 }
 
+- (NSString*) type;
+{
+	return [super type];
+}
+
 - (id) value;
 {
 	return [super value];
@@ -163,12 +168,12 @@ static BOOL ILSwapIsPropertyListObject(id v) {
 
 @implementation ILSwapItem (ILSwapItemPasteboard)
 
-- (NSDictionary*) pasteboardItemOfType:(NSString*) type;
+- (NSDictionary*) pasteboardItem;
 {
 	if (!self.value)
 		return nil;
 	
-	NSMutableDictionary* d = [NSMutableDictionary dictionaryWithObject:self.value forKey:type];
+	NSMutableDictionary* d = [NSMutableDictionary dictionaryWithObject:self.value forKey:self.type];
 	if (self.attributes && [self.attributes count] > 0)
 		[d setObject:self.attributes forKey:kILSwapItemAttributesUTI];
 	

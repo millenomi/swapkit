@@ -11,15 +11,23 @@
 
 @interface ILSwapBinding : NSObject {
 	NSDictionary* registrations;
+	
+	NSArray* items;
+	NSString* action;
+	BOOL allowMatchingThisApplication;
+	
+	NSArray* appropriateApplications;
+	BOOL canSend;
 }
 
 + binding;
 - (id) initWithRegistrations:(NSDictionary*) regs;
 
-@property(copy) NSArray* items;
-@property(copy) NSString* action;
+@property(nonatomic, copy) NSArray* items;
+@property(nonatomic, copy) NSString* action;
+@property(nonatomic) BOOL allowMatchingThisApplication; // default is NO
 
-@property(readonly) NSArray* appropriateApplications;
-@property(readonly) BOOL canSend;
+@property(nonatomic, readonly) NSArray* appropriateApplications;
+@property(nonatomic, readonly) BOOL canSend;
 
 @end

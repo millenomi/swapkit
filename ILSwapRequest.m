@@ -98,6 +98,9 @@
 				uti = u; break;
 			}
 			
+			if (!uti)
+				continue; // the item is missing, well, the item value :)
+			
 			id d = [item objectForKey:uti];
 			id m = [item objectForKey:kILSwapItemAttributesUTI];
 			

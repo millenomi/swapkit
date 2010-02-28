@@ -146,7 +146,7 @@ TODO: More detailed information.
 }
 
 /// Returns the shared instance of this class.
-+ sharedService;
++ (ILSwapService*) sharedService;
 
 /// Sets or retrieves the delegate. The object set through this property receives callbacks when SwapKit finds that certain events have happened (for example, that an array of items was received).
 @property(assign) id <ILSwapServiceDelegate> delegate;
@@ -288,6 +288,11 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
  @return YES if the request was dispatched, NO otherwise. (This only happens in cases of force majeoure -- eg the app does not have a URL scheme for receiving because the registration contains incorrect data.)
  */
 - (BOOL) sendRequestWithAttributes:(NSDictionary*) attributes toApplicationWithRegistration:(NSDictionary*) reg;
+
+/**
+ This is our application regiatration, that is, the dictionary that was passed to the last #registerWithAttributes:update: call since the app started.
+ */
+@property(readonly) NSDictionary* applicationRegistration;
 
 @end
 
