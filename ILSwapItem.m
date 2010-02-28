@@ -9,7 +9,9 @@
 #import "ILSwapItem.h"
 #import "ILSwapItem_Private.h"
 
-#define L0Keep(object) [object conformsToProtocol:@protocol(NSCopying)]? [object copy] : [object retain];
+#import <MobileCoreServices/MobileCoreServices.h>
+
+#define L0Keep(object) ([object conformsToProtocol:@protocol(NSCopying)]? [object copy] : [object retain])
 
 @interface ILSwapItem ()
 
@@ -75,6 +77,14 @@ static BOOL ILSwapIsPropertyListObject(id v) {
 - (id) mutableCopyWithZone:(NSZone *)zone;
 {
 	return [[ILSwapMutableItem allocWithZone:zone] initWithValue:self.value type:self.type attributes:self.attributes];
+}
+
+- (BOOL) typeConformsTo:(id) t;
+{
+	if (!self.type)
+		return NO;
+	
+	return [t isEqual:self.type] || UTTypeConformsTo((CFStringRef) self.type, (CFStringRef) t);
 }
 
 @synthesize value, type, attributes;

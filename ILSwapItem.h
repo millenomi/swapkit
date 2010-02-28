@@ -84,6 +84,11 @@
 @property(copy, nonatomic, readonly) NSString* type;
 
 /**
+ Checks whether the .type of this item is the same, or conforms to, the given UTI. This is the preferred way to check if you can handle the item, instead of directly testing the value of the #type property.
+ */
+- (BOOL) typeConformsTo:(id) type;
+
+/**
  The attributes for this item. It can be nil, or, if non-nil, it's a NSDictionary instance containing only property list objects. This dictionary, if present, contains additional metadata for the item.
  
  @see ILSwapKitItems
