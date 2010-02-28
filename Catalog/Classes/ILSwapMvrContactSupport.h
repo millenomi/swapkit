@@ -37,7 +37,7 @@
 
 @interface ILSwapItem (ILSwapMvrContactSupport)
 
-+ moverContactItemFromPersonRecord:(ABRecordRef) record;
++ (ILSwapItem*) moverContactItemFromPersonRecord:(ABRecordRef) record;
 - (ABRecordRef) copyPersonRecordFromMoverContactItem;
 
 @end

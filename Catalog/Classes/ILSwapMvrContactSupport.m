@@ -103,7 +103,7 @@ static id MvrKeyForABProperty(ABPropertyID prop) {
 
 @implementation ILSwapItem (ILSwapMvrContactSupport)
 
-+ moverContactItemFromPersonRecord:(ABRecordRef) record;
++ (ILSwapItem*) moverContactItemFromPersonRecord:(ABRecordRef) record;
 {
     NSMutableDictionary* info = [NSMutableDictionary dictionary];
 	
@@ -158,7 +158,7 @@ static id MvrKeyForABProperty(ABPropertyID prop) {
 		[data release];
 	}
 	
-	return person;
+	return [ILSwapItem itemWithValue:person type:kMvrContactAsPropertyListType attributes:nil];
 }
 
 - (ABRecordRef) copyPersonRecordFromMoverContactItem;

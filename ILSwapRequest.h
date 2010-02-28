@@ -17,7 +17,6 @@
 @interface ILSwapRequest : NSObject {
 @private
 	UIPasteboard* pb;
-	NSString* type;
 	BOOL remove;
 	NSArray* items;
 
@@ -27,12 +26,7 @@
 // Responses have private constructors only. Sorry!
 
 /**
- The type of data contained in this request. This is the same type that was passed to ILSwapService#sendItems:ofType:forAction:toApplicationWithIdentifier:.
- */
-@property(readonly) NSString* type;
-
-/**
- The single item contained in this request. If multiple items are in the request, then this will contain the first item only. (In case a malformed request arrives, with no items in it, this method will return nil.)
+ The single item contained in this request. If multiple items are in the request, or if a malformed request arrives with no items in it, this method will return nil.
  */
 @property(readonly) ILSwapItem* item;
 

@@ -12,6 +12,9 @@
     UIWindow *window;
 	IBOutlet UITextView* textView;
 	IBOutlet UINavigationItem* currentNavigationItem;
+	IBOutlet UINavigationController* rootController;
+	IBOutlet UIViewController* imagePane;
+	IBOutlet UIImageView* imageView;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;

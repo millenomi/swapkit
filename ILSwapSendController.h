@@ -50,7 +50,6 @@ Memory management is similar to UIAlertViews and UIActionSheets; you don't need 
 	NSArray* destinations;
 	
 	NSArray* items;
-	id type;
 	NSString* action;
 	
 	UIBarButtonItem* sendButtonItem;
@@ -68,21 +67,17 @@ Memory management is similar to UIAlertViews and UIActionSheets; you don't need 
 /**
 Creates a new sending controller that will allow users to pick an application able to receive items for the given item type and action.
 
-@param items The items to send.
-@param uti The UTI all items will be sent as.
+@param items The items to send (instances of ILSwapItem).
 @param action The desired action. Can be nil to use the default (kILSwapDefaultAction).
 @see ILSwapService#sendItems:ofType:forAction:toApplicationWithIdentifier:
 */
-- (id) initWithItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
+- (id) initWithItems:(NSArray*) items forAction:(NSString*) action;
 
 /** Convenience method for returning an autoreleased sending controller initialized by ILSwapSendController#initWithItems:ofType:forAction:. */
-+ (id) controllerForSendingItems:(NSArray*) items ofType:(id) uti forAction:(NSString*) action;
++ (id) controllerForSendingItems:(NSArray*) items forAction:(NSString*) action;
 
 /** The items to send. Must not be modified while sending. */
 @property(copy) NSArray* items;
-
-/** The type of the items to send as a UTI. Must not be modified while sending. */
-@property(copy) id type;
 
 /** The action to use. If nil, @ref kILSwapDefaultAction will be used. Must not be modified while sending. */
 @property(copy) NSString* action;

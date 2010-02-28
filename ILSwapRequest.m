@@ -41,7 +41,6 @@
 		[UIPasteboard removePasteboardWithName:pb.name];
 	[pb release];
 
-	[type release];
 	[attributes release];
 
 	[super dealloc];
@@ -54,29 +53,26 @@
 
 #pragma mark Items management
 
-- (NSString*) type;
-{
-	if (!type) {
-		NSMutableArray* a = [NSMutableArray arrayWithArray:pb.pasteboardTypes];
-		[a removeObject:kILSwapItemAttributesUTI];
-		type = [a count] != 0? [[a objectAtIndex:0] copy] : nil;
-	}
-	
-	return type;
-}
-
 - (ILSwapItem*) item;
 {
-	if (pb.numberOfItems == 0)
+	if (pb.numberOfItems != 1)
 		return nil;
 	
-	if (!self.type)
+	NSString* uti; // take the first UTI off the item.
+	for (NSString* u in [pb pasteboardTypes]) {
+		if ([u isEqual:kILSwapItemAttributesUTI])
+			continue;
+		
+		uti = u; break;
+	}
+	
+	if (!uti)
 		return nil;
 	
-	NSData* d = [pb valueForPasteboardType:self.type];
+	NSData* d = [pb valueForPasteboardType:uti];
 	NSData* m = [pb valueForPasteboardType:kILSwapItemAttributesUTI];
 	
-	return [ILSwapItem itemWithValue:d attributes:[ILSwapItem attributesFromPasteboardValue:m]];
+	return [ILSwapItem itemWithValue:d type:uti attributes:[ILSwapItem attributesFromPasteboardValue:m]];
 }
 
 - (NSUInteger) countOfItems;
@@ -88,9 +84,19 @@
 {
 	if (!items) {
 		NSMutableArray* a = [NSMutableArray array];
-		NSString* uti = self.type;
 
 		for (NSDictionary* item in pb.items) {
+			NSString* uti; // take the first UTI off the item.
+			for (NSString* u in item) {
+				if ([u isEqual:kILSwapItemAttributesUTI])
+					continue;
+				
+				uti = u; break;
+			}
+			
+			if (!uti)
+				continue; // the item is missing, well, the item value :)
+			
 			id d = [item objectForKey:uti];
 			id m = [item objectForKey:kILSwapItemAttributesUTI];
 			
@@ -98,7 +104,7 @@
 				continue;
 			
 			[a addObject:
-			 [ILSwapItem itemWithValue:d attributes:[ILSwapItem attributesFromPasteboardValue:m]]
+			 [ILSwapItem itemWithValue:d type:uti attributes:[ILSwapItem attributesFromPasteboardValue:m]]
 			 ];
 		}
 		

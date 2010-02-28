@@ -9,12 +9,15 @@
 #import "ILSwapItem.h"
 #import "ILSwapItem_Private.h"
 
-#define L0Keep(object) [object conformsToProtocol:@protocol(NSCopying)]? [object copy] : [object retain];
+#import <MobileCoreServices/MobileCoreServices.h>
+
+#define L0Keep(object) ([object conformsToProtocol:@protocol(NSCopying)]? [object copy] : [object retain])
 
 @interface ILSwapItem ()
 
 - (void) privatelySetValue:(id) value;
 - (void) privatelySetAttributes:(NSDictionary*) a;
+- (void) privatelySetType:(NSString*) type;
 
 + (BOOL) canBeInitializedWithNilItem;
 
@@ -39,7 +42,7 @@ static BOOL ILSwapIsPropertyListObject(id v) {
 	return NO;
 }
 
-- (id) initWithValue:(id) v attributes:(NSDictionary*) a;
+- (id) initWithValue:(id) v type:(NSString*) t attributes:(NSDictionary*) a;
 {
 	if (!(self = [super init]))
 		return nil;
@@ -50,27 +53,41 @@ static BOOL ILSwapIsPropertyListObject(id v) {
 		return nil;
 	}
 	
+	type = [t copy];
+	if (!type && ![[self class] canBeInitializedWithNilItem]) {
+		[self release];
+		return nil;
+	}
+	
 	attributes = [a copy];
 	
 	return self;
 }
 
-+ itemWithValue:(id) v attributes:(NSDictionary*) a;
++ itemWithValue:(id) v type:(NSString*) t attributes:(NSDictionary*) a;
 {
-	return [[[self alloc] initWithValue:v attributes:a] autorelease];
+	return [[[self alloc] initWithValue:v type:t attributes:a] autorelease];
 }
 
 - (id) copyWithZone:(NSZone *)zone;
 {
-	return [[ILSwapItem allocWithZone:zone] initWithValue:self.value attributes:self.attributes];
+	return [[ILSwapItem allocWithZone:zone] initWithValue:self.value type:self.type attributes:self.attributes];
 }
 
 - (id) mutableCopyWithZone:(NSZone *)zone;
 {
-	return [[ILSwapMutableItem allocWithZone:zone] initWithValue:self.value attributes:self.attributes];
+	return [[ILSwapMutableItem allocWithZone:zone] initWithValue:self.value type:self.type attributes:self.attributes];
 }
 
-@synthesize value, attributes;
+- (BOOL) typeConformsTo:(id) t;
+{
+	if (!self.type)
+		return NO;
+	
+	return [t isEqual:self.type] || UTTypeConformsTo((CFStringRef) self.type, (CFStringRef) t);
+}
+
+@synthesize value, type, attributes;
 
 - (void) dealloc
 {
@@ -85,6 +102,14 @@ static BOOL ILSwapIsPropertyListObject(id v) {
 	if (v != value) {
 		[value release];
 		value = L0Keep(v);
+	}
+}
+
+- (void) privatelySetType:(id) t;
+{
+	if (t != type) {
+		[type release];
+		type = [t copy];
 	}
 }
 
@@ -108,7 +133,7 @@ static BOOL ILSwapIsPropertyListObject(id v) {
 
 + item;
 {
-	return [[self new] autorelease];
+	return [[[self alloc] initWithValue:nil type:nil attributes:nil] autorelease];
 }
 
 // Silences the compiler.
@@ -116,6 +141,11 @@ static BOOL ILSwapIsPropertyListObject(id v) {
 - (id) init;
 {
 	return [super init];
+}
+
+- (NSString*) type;
+{
+	return [super type];
 }
 
 - (id) value;
@@ -126,6 +156,11 @@ static BOOL ILSwapIsPropertyListObject(id v) {
 - (NSDictionary*) attributes;
 {
 	return [super attributes];
+}
+
+- (void) setType:(NSString*) t;
+{
+	[super privatelySetType:t];
 }
 
 - (void) setValue:(id) v;
@@ -143,12 +178,12 @@ static BOOL ILSwapIsPropertyListObject(id v) {
 
 @implementation ILSwapItem (ILSwapItemPasteboard)
 
-- (NSDictionary*) pasteboardItemOfType:(NSString*) type;
+- (NSDictionary*) pasteboardItem;
 {
 	if (!self.value)
 		return nil;
 	
-	NSMutableDictionary* d = [NSMutableDictionary dictionaryWithObject:self.value forKey:type];
+	NSMutableDictionary* d = [NSMutableDictionary dictionaryWithObject:self.value forKey:self.type];
 	if (self.attributes && [self.attributes count] > 0)
 		[d setObject:self.attributes forKey:kILSwapItemAttributesUTI];
 	

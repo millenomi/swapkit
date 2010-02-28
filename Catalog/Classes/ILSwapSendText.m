@@ -96,7 +96,7 @@
 
 - (void) send;
 {
-	[[ILSwapService sharedService] sendItems:[NSArray arrayWithObject:textView.text] ofType:type forAction:nil toApplicationWithIdentifier:app];
+	[[ILSwapService sharedService] sendItem:[ILSwapItem itemWithValue:textView.text type:type attributes:nil] forAction:nil toApplicationWithIdentifier:app];
 	
 	if (target && didFinish)
 		[target performSelector:didFinish withObject:self];	
