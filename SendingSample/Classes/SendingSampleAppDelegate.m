@@ -44,8 +44,9 @@
 	item.attributes = [NSDictionary dictionaryWithObjectsAndKeys:
 					   @"From Sender…", kILSwapItemTitleAttribute,
 					   nil];
+	item.type = (id) kUTTypeUTF8PlainText;
 	
-	ILSwapSendController* sender = [ILSwapSendController controllerForSendingItems:[NSArray arrayWithObject:item] ofType:(id) kUTTypeUTF8PlainText forAction:nil];
+	ILSwapSendController* sender = [ILSwapSendController controllerForSendingItems:[NSArray arrayWithObject:item] forAction:nil];
 	[sender send];
 }
 
