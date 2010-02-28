@@ -58,7 +58,7 @@
 		[self clear];
 		
 		[items release];
-		a = [items copy];
+		items = [a copy];
 	}
 }
 
@@ -96,9 +96,10 @@
 	
 	NSString* selfIdent = [[ILSwapService sharedService].applicationRegistration objectForKey:kILAppIdentifier];
 	
-	for (NSDictionary* reg in registrations) {
+	for (NSString* appID in registrations) {
+		NSDictionary* reg = [registrations objectForKey:appID];
 		// an app does not match if it is us and we don't want to match ourselves.
-		if (!self.allowMatchingThisApplication && selfIdent && [[reg objectForKey:kILAppIdentifier] isEqual:selfIdent])
+		if (!self.allowMatchingThisApplication && selfIdent && [appID isEqual:selfIdent])
 			continue;
 		
 		// an app does not match if it's not installed.
