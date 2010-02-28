@@ -366,7 +366,7 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 	[peoplePicker dismissModalViewControllerAnimated:YES];
 
 	ILSwapItem* i = [ILSwapItem moverContactItemFromPersonRecord:person];
-	[[ILSwapService sharedService] sendItem:i ofType:kMvrContactAsPropertyListType forAction:nil toApplicationWithIdentifier:[record objectForKey:kILAppIdentifier]];
+	[[ILSwapService sharedService] sendItem:i forAction:nil toApplicationWithIdentifier:[record objectForKey:kILAppIdentifier]];
 	
 	return NO;
 }
