@@ -73,8 +73,11 @@ Array of strings. UTIs advertised as accepted for receiving. Default is '()' (ie
 */
 #define kILAppSupportedReceivedItemsUTIs @"ILAppSupportedReceivedItemsUTIs" 
 
-/// Boolean (NSNumber). If YES, sending multiple items is meaningful. If NO (default), sending multiple items will only cause the first item to be received.
+/// Boolean (NSNumber). If YES, sending multiple items in the same request is meaningful. If NO (default), sending multiple items will only cause the first item to be received.
 #define kILAppSupportsReceivingMultipleItems @"ILAppSupportsReceivingMultipleItems"
+
+/// Boolean (NSNumber). If YES, sending multiple items of multiple types in the same request is meaningful. If NO (default), sending multiple items will only cause the first item to be received. If an app sets this flag, it also must set kILAppSupportsReceivingMultipleItems to YES. (SwapKit 1.1 or later is required to send or receive requests with multiple items of multiple types.)
+#define kILAppSupportsReceivingMultipleTypes @"ILAppSupportsReceivingMultipleTypes"
 
 /// String. Used to avoid registering multiple times. Will be ignored and overwritten by the internal registration machinery if given during registration, but will be returned by ILSwapRegistration#applicationRegistrations and related methods.
 #define kILAppRegistrationUUID @"ILAppRegistrationUUID"

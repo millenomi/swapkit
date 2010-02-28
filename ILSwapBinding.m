@@ -111,6 +111,10 @@
 		if ([self.items count] > 1 && ![[reg objectForKey:kILAppSupportsReceivingMultipleItems] boolValue])
 			continue;
 		
+		// an app does not match if there are multiple types and it does not support accepting multitype requests.
+		if ([utis count] > 1 && ![[reg objectForKey:kILAppSupportsReceivingMultipleTypes] boolValue])
+			continue;
+		
 		// an app does not match if it doesn't support any of the types we seek.
 		NSArray* a = [reg objectForKey:kILAppSupportedReceivedItemsUTIs];
 		if (!a || ![a isKindOfClass:[NSArray class]])
