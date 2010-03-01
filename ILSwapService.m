@@ -54,6 +54,8 @@
 
 #import "ILSwapService_Private.h"
 
+#import "ILSwapPasteboardSender.h"
+
 static BOOL ILSwapIsAppInstalled(NSDictionary* reg) {
 	NSString* s = [reg objectForKey:kILAppReceiveItemURLScheme];
 	return s && [UIApp canOpenURL:
@@ -411,54 +413,30 @@ L0ObjCSingletonMethod(sharedService)
 
 - (BOOL) sendItems:(NSArray*) items forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) appID;
 {
-	if ([items count] == 0)
-		return NO;
+	if (asyncSender)
+		return NO; // one at a time please
 	
-	if (!action)
-		action = kILSwapDefaultAction;
+	ILSwapPasteboardSender* sender = [[[ILSwapPasteboardSender alloc] initWithItems:items action:action applicationIdentifier:appID] autorelease];
 	
-	NSDictionary* reg = nil;
-	if (appID)
-		reg = [self registrationForApplicationWithIdentifier:appID];
-	else 
-		reg = [self applicationRegistrationForSendingItems:items forAction:action];
-	
-	if (!reg)
-		return NO;
+	ILSwapSendResult r = [sender send];
+	if (r == kILSwapSendOngoing) {
 		
-	BOOL handlesOnlyOne = ![L0As(NSNumber, [reg objectForKey:kILAppSupportsReceivingMultipleItems]) boolValue];
-	
-	UIPasteboard* pb = [UIPasteboard pasteboardWithUniqueName];
-	pb.persistent = YES;
-	
-	NSMutableArray* a = [NSMutableArray array];
-	for (ILSwapItem* item in items) {
-		NSDictionary* d = [item pasteboardItem];
+		if ([delegate respondsToSelector:@selector(swapServiceWillBeginSendingAsynchronousRequest)])
+			[delegate swapServiceWillBeginSendingAsynchronousRequest];
 		
-		if (!d) {
-			[NSException raise:@"ILSwapServiceCannotSendObject" format:@"Could not extract a value from object: %@", item];
-			return NO;
-		}
+		asyncSender = [sender retain];
 		
-		[a addObject:d];
-		
-		if (handlesOnlyOne)
-			break;
 	}
-	pb.items = a;
 	
-	NSDictionary* attrs = [NSDictionary dictionaryWithObjectsAndKeys:
-						   pb.name, kILSwapServicePasteboardNameKey,
-						   action, kILSwapServiceActionKey,
-						   nil];
-	
-	[self managePasteboard:pb withLifetimePeriod:kILSwapPasteboardThisSessionOnly];
-	
-	BOOL done = [self sendRequestWithAttributes:attrs toApplicationWithRegistration:reg];
-	if (!done)
-		[UIPasteboard removePasteboardWithName:pb.name];
-	
-	return done;
+	return r != kILSwapSendError;
+}
+
+- (void) sendingFinishedWithResult:(ILSwapSendResult)r;
+{
+	if ([delegate respondsToSelector:@selector(swapServiceDidEndSendingAsynchronousRequest:)])
+		[delegate swapServiceDidEndSendingAsynchronousRequest:r != kILSwapSendError];
+
+	[asyncSender autorelease]; asyncSender = nil;
 }
 
 - (BOOL) sendRequestWithAttributes:(NSDictionary*) attributes toApplicationWithRegistration:(NSDictionary*) reg;

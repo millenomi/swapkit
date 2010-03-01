@@ -9,16 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "L0Map.h"
 
-enum {
-	kILSwapSendDone,
-	kILSwapSendOngoing,
-	kILSwapSendError
-};
-typedef NSInteger ILSwapSendResult;
-
 #define kILSwapFragmentPasteboardType @"net.infinite-labs.SwapKit.Fragment"
 #define kILSwapFragmentListPasteboardType @"net.infinite-labs.SwapKit.FragmentList"
 
+#import "ILSwapService_Private.h"
 
 @interface ILSwapPasteboardSender : NSObject {
 	NSArray* items;

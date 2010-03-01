@@ -34,6 +34,7 @@
 #import <UIKit/UIKit.h>
 @class ILSwapRequest;
 @class ILSwapItem;
+@class ILSwapPasteboardSender;
 
 /**
 \addtogroup ILSwapKitRegistrationKeys App Registration Keys
@@ -146,6 +147,7 @@ TODO: More detailed information.
 	NSDictionary* registrationAttributes;
 	NSDictionary* appRegistrations;
 	NSMutableSet* thisSessionOnlyPasteboards;
+	ILSwapPasteboardSender* asyncSender;
 }
 
 /// Returns the shared instance of this class.
@@ -322,8 +324,8 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
 
 
 @optional
-- (void) swapServiceWillBeginSendingLargeRequest;
-- (void) swapServiceDidEndSendingLargeRequest;
+- (void) swapServiceWillBeginSendingAsynchronousRequest;
+- (void) swapServiceDidEndSendingAsynchronousRequest:(BOOL) succeeded;
 
 @end
 
