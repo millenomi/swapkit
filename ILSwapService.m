@@ -52,18 +52,13 @@
 
 #import "ILSwapBinding.h"
 
+#import "ILSwapService_Private.h"
+
 static BOOL ILSwapIsAppInstalled(NSDictionary* reg) {
 	NSString* s = [reg objectForKey:kILAppReceiveItemURLScheme];
 	return s && [UIApp canOpenURL:
 				 [NSURL URLWithString:[NSString stringWithFormat:@"%@:", s]]];
 }
-
-enum {
-	kILSwapPasteboardThisSessionOnly,
-};
-typedef NSInteger ILSwapPasteboardLifetime;
-
-
 
 static BOOL ILSwapContainsAllObjectsInArray(NSArray* containee, NSArray* contents) {
 	for (id i in contents) {
@@ -73,13 +68,6 @@ static BOOL ILSwapContainsAllObjectsInArray(NSArray* containee, NSArray* content
 	
 	return YES;
 }
-
-@interface ILSwapService (ILSwapPasteboardLifetime)
-
-- (void) deleteInvalidatedPasteboards;
-- (void) managePasteboard:(UIPasteboard*) pb withLifetimePeriod:(ILSwapPasteboardLifetime) lt;
-
-@end
 
 
 @interface ILSwapService ()
@@ -91,6 +79,9 @@ static BOOL ILSwapContainsAllObjectsInArray(NSArray* containee, NSArray* content
 
 
 @implementation ILSwapService
+
+#pragma mark -
+#pragma mark Convenience methods
 
 + (BOOL) didFinishLaunchingWithOptions:(NSDictionary*) options;
 {
@@ -118,6 +109,10 @@ static BOOL ILSwapContainsAllObjectsInArray(NSArray* containee, NSArray* content
 	return [[self sharedService] performActionsForURL:u];
 }
 
+
+#pragma mark -
+#pragma mark Initialization
+
 L0ObjCSingletonMethod(sharedService)
 
 - (id) init
@@ -131,8 +126,6 @@ L0ObjCSingletonMethod(sharedService)
 	return self;
 }
 
-@synthesize delegate, applicationRegistration = registrationAttributes;
-
 - (void) dealloc
 {
 	[registrationAttributes release];
@@ -141,6 +134,14 @@ L0ObjCSingletonMethod(sharedService)
 	[super dealloc];
 }
 
+#pragma mark -
+#pragma mark Properties
+
+@synthesize delegate, applicationRegistration = registrationAttributes;
+
+
+#pragma mark -
+#pragma mark Registration Management & Bindings
 
 - (void) registerWithAttributes:(NSDictionary*) a update:(BOOL) update;
 {
@@ -258,45 +259,6 @@ L0ObjCSingletonMethod(sharedService)
 	return reg;
 }
 
-
-- (BOOL) performActionsForURL:(NSURL*) u;
-{
-	if (!registrationAttributes)
-		return NO;
-	
-	NSString* recvScheme = [registrationAttributes objectForKey:kILAppReceiveItemURLScheme];
-	if (!recvScheme)
-		return NO;
-	
-	NSDictionary* parts = [u dictionaryByDecodingQueryString];
-
-	if ([[u scheme] isEqual:recvScheme]) {
-		if ([delegate respondsToSelector:@selector(swapServiceDidReceiveRequest:)]) {
-		
-			NSString* pasteboardName = [parts objectForKey:kILSwapServicePasteboardNameKey];
-			
-			UIPasteboard* pb = nil;
-			
-			if (pasteboardName)
-				pb = [UIPasteboard pasteboardWithName:pasteboardName create:YES];
-			
-			if (pb.numberOfItems > 0) {
-				ILSwapRequest* req = [[[ILSwapRequest alloc] initWithPasteboard:pb attributes:parts removePasteboardWhenDone:YES] autorelease];
-				
-				[delegate swapServiceDidReceiveRequest:req];
-				return YES;
-			}
-		}
-		
-		if ([delegate respondsToSelector:@selector(swapServiceDidReceiveRequestWithAttributes:)]) {
-			[delegate swapServiceDidReceiveRequestWithAttributes:parts];
-			return YES;
-		}
-	}
-	
-	return NO;
-}
-
 - (NSDictionary*) applicationRegistrations;
 {
 	if (!appRegistrations) {
@@ -395,6 +357,52 @@ L0ObjCSingletonMethod(sharedService)
 	
 	return binding.appropriateApplications;
 }
+
+#pragma mark -
+#pragma mark Receiving
+
+
+- (BOOL) performActionsForURL:(NSURL*) u;
+{
+	if (!registrationAttributes)
+		return NO;
+	
+	NSString* recvScheme = [registrationAttributes objectForKey:kILAppReceiveItemURLScheme];
+	if (!recvScheme)
+		return NO;
+	
+	NSDictionary* parts = [u dictionaryByDecodingQueryString];
+	
+	if ([[u scheme] isEqual:recvScheme]) {
+		if ([delegate respondsToSelector:@selector(swapServiceDidReceiveRequest:)]) {
+			
+			NSString* pasteboardName = [parts objectForKey:kILSwapServicePasteboardNameKey];
+			
+			UIPasteboard* pb = nil;
+			
+			if (pasteboardName)
+				pb = [UIPasteboard pasteboardWithName:pasteboardName create:YES];
+			
+			if (pb.numberOfItems > 0) {
+				ILSwapRequest* req = [[[ILSwapRequest alloc] initWithPasteboard:pb attributes:parts removePasteboardWhenDone:YES] autorelease];
+				
+				[delegate swapServiceDidReceiveRequest:req];
+				return YES;
+			}
+		}
+		
+		if ([delegate respondsToSelector:@selector(swapServiceDidReceiveRequestWithAttributes:)]) {
+			[delegate swapServiceDidReceiveRequestWithAttributes:parts];
+			return YES;
+		}
+	}
+	
+	return NO;
+}
+
+
+#pragma mark -
+#pragma mark Sending
 
 - (BOOL) sendItem:(ILSwapItem*) item forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) appID;
 {

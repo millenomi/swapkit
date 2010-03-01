@@ -320,5 +320,10 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
  */
 - (void) swapServiceDidReceiveRequestWithAttributes:(NSDictionary*) a;
 
+
+@optional
+- (void) swapServiceWillBeginSendingLargeRequest;
+- (void) swapServiceDidEndSendingLargeRequest;
+
 @end
 
