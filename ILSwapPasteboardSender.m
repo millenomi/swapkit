@@ -193,7 +193,7 @@
 			UIPasteboard* pb = [UIPasteboard pasteboardWithUniqueName];
 			pbName = [pb.name copy];
 			pb.persistent = YES;
-			pb.items = [NSDictionary dictionaryWithObject:currentBuffer forKey:kILSwapFragmentPasteboardType];
+			pb.items = [NSArray arrayWithObject:[NSDictionary dictionaryWithObject:currentBuffer forKey:kILSwapFragmentPasteboardType]];
 			[[ILSwapService sharedService] managePasteboard:pb withLifetimePeriod:kILSwapPasteboardThisSessionOnly];
 		}
 		[pool release];
@@ -222,7 +222,7 @@
 		UIPasteboard* pb = [UIPasteboard pasteboardWithUniqueName];
 		pb.persistent = YES;
 		
-		NSMutableArray* pbItems = [[pasteboardItems copy] autorelease];
+		NSMutableArray* pbItems = [[pasteboardItems mutableCopy] autorelease];
 		
 		for (id <ILSwapReader> r in readers) {
 			NSMutableDictionary* item = [NSMutableDictionary dictionary], * a = [attributesByReader objectForKey:r];

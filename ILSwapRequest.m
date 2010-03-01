@@ -31,9 +31,10 @@
 	NSArray* fragments;
 	NSInteger current;
 	id <ILSwapReaderDelegate> delegate;
+	ILSwapPasteboardFragmentsDataSource* dataSource;
 }
 
-- (id) initWithFragmentList:(NSArray*) f;
+- (id) initWithFragmentList:(NSArray*) f dataSource:(ILSwapPasteboardFragmentsDataSource*) ds;
 - (void) scheduleNextFragmentRead;
 
 @end
@@ -60,17 +61,18 @@
 
 - (id <ILSwapReader>) reader;
 {
-	return [[[ILSwapPasteboardFragmentsReader alloc] initWithFragmentList:fragments] autorelease];
+	return [[[ILSwapPasteboardFragmentsReader alloc] initWithFragmentList:fragments dataSource:self] autorelease];
 }
 
 @end
 
 @implementation ILSwapPasteboardFragmentsReader
 
-- (id) initWithFragmentList:(NSArray*) f;
+- (id) initWithFragmentList:(NSArray*) f dataSource:(ILSwapPasteboardFragmentsDataSource*) ds;
 {
 	if (self = [super init]) {
 		fragments = [f copy];
+		dataSource = [ds retain];
 		current = -1;
 	}
 	
@@ -80,6 +82,7 @@
 - (void) dealloc
 {
 	[fragments release];
+	[dataSource release];
 	[super dealloc];
 }
 
@@ -115,6 +118,8 @@
 
 - (void) readNextFragment;
 {
+	[[self retain] autorelease];
+	
 	if (current >= [fragments count]) {
 		current = -1;
 		if ([delegate respondsToSelector:@selector(readerDidEnd:)])

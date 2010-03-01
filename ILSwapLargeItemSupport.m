@@ -84,11 +84,12 @@
 	NSAssert(!stream, @"Can't call -start on a running reader!");
 	NSAssert(!buffer, @"Bug: we have a stray buffer (a leak?)");
 	
+	buffer = malloc(bufferLength);
+
 	stream = [[NSInputStream inputStreamWithFileAtPath:path] retain];
 	[stream setDelegate:self];
+	[stream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 	[stream open];
-	
-	buffer = malloc(bufferLength);
 }
 
 - (void) stop;
@@ -110,6 +111,7 @@
 - (void) stream:(NSStream*) aStream handleEvent:(NSStreamEvent) eventCode;
 {
 	switch (eventCode) {
+		case NSStreamEventOpenCompleted:
 		case NSStreamEventHasBytesAvailable: {
 			
 			uint8_t* data; NSUInteger length;
