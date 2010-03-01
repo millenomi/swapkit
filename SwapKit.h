@@ -38,5 +38,6 @@
 #import "ILSwapRequest.h"
 #import "ILSwapItem.h"
 #import "ILSwapKitBundle.h"
+#import "ILSwapLargeItemSupport.h"
 
 #endif

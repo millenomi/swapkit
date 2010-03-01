@@ -54,9 +54,10 @@
  The #value object in a ILSwapitem can be any of the following:
  
  * A NSData object containing arbitrary data for the item; or
- * A NSString, containing textual data; or
+ * a NSString, containing textual data; or
  * a NSArray or NSDictionary containing property lists objects; or
- * a UIImage.
+ * a UIImage; or
+ * a id <ILSwapDataSource>, providing access to data potentially larger than available RAM. See the "large items" documentation for details.
  
  You don't usually access the #value directly. Instead, you use one of the #propertyListValue, #stringValue, #imageValue, #dataValue and other accessor methods to specify how you want to access the data. (These methods will recognize and automatically convert the #value for you if inappropriate -- for example, if the #value is a NSData object containing a serialized property list, the #propertyListValue method will deserialize it for you.) It's up to you to know what accessor to use for the particular ILSwapRequest#type involved.
  

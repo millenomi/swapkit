@@ -13,6 +13,188 @@
 #import "ILSwapItem.h"
 #import "ILSwapItem_Private.h"
 
+#import "ILSwapPasteboardSender.h"
+#import "ILSwapLargeItemSupport.h"
+
+
+@interface ILSwapPasteboardFragmentsDataSource : NSObject <ILSwapDataSource>
+{
+	NSArray* fragments;
+}
+
+- (id) initWithFragmentList:(NSArray*) f;
+
+@end
+
+@interface ILSwapPasteboardFragmentsReader : NSObject <ILSwapReader>
+{
+	NSArray* fragments;
+	NSInteger current;
+	id <ILSwapReaderDelegate> delegate;
+	ILSwapPasteboardFragmentsDataSource* dataSource;
+}
+
+- (id) initWithFragmentList:(NSArray*) f dataSource:(ILSwapPasteboardFragmentsDataSource*) ds;
+- (void) scheduleNextFragmentRead;
+
+@end
+
+
+@implementation ILSwapPasteboardFragmentsDataSource
+
+- (id) initWithFragmentList:(NSArray*) f;
+{
+	if (self = [super init])
+		fragments = [f copy];
+	
+	return self;
+}
+
+- (void) dealloc
+{
+	for (NSString* name in fragments)
+		[UIPasteboard removePasteboardWithName:name];
+	
+	[fragments release];
+	[super dealloc];
+}
+
+- (id <ILSwapReader>) reader;
+{
+	return [[[ILSwapPasteboardFragmentsReader alloc] initWithFragmentList:fragments dataSource:self] autorelease];
+}
+
+@end
+
+@implementation ILSwapPasteboardFragmentsReader
+
+- (id) initWithFragmentList:(NSArray*) f dataSource:(ILSwapPasteboardFragmentsDataSource*) ds;
+{
+	if (self = [super init]) {
+		fragments = [f copy];
+		dataSource = [ds retain];
+		current = -1;
+	}
+	
+	return self;
+}
+
+- (void) dealloc
+{
+	[fragments release];
+	[dataSource release];
+	[super dealloc];
+}
+
+
+@synthesize delegate;
+
+- (BOOL) isRunning;
+{
+	return current >= 0;
+}
+
+- (void) start;
+{
+	NSAssert(current < 0, @"Can't call -start on a running reader!");
+	current = 0;
+	
+	if ([delegate respondsToSelector:@selector(readerWillStart:)])
+		[delegate readerWillStart:self];
+	
+	[self scheduleNextFragmentRead];
+}
+
+- (void) stop;
+{
+	[[NSRunLoop currentRunLoop] cancelPerformSelector:@selector(readNextFragment) target:self argument:nil];
+	current = -1;
+}
+
+- (void) scheduleNextFragmentRead;
+{
+	[[NSRunLoop currentRunLoop] performSelector:@selector(readNextFragment) target:self argument:nil order:0 modes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+}
+
+- (void) readNextFragment;
+{
+	[[self retain] autorelease];
+	
+	if (current >= [fragments count]) {
+		current = -1;
+		if ([delegate respondsToSelector:@selector(readerDidEnd:)])
+			[delegate readerDidEnd:self];
+		return;
+	}
+	
+	BOOL dieWithError = NO;
+	
+	NSAutoreleasePool* pool = [NSAutoreleasePool new];
+	{
+		UIPasteboard* pb = [UIPasteboard pasteboardWithName:[fragments objectAtIndex:current] create:YES];
+		NSData* d = [pb dataForPasteboardType:kILSwapFragmentPasteboardType];
+		
+		if (!d)
+			dieWithError = YES;
+		else
+			[delegate reader:self didReceiveData:d];
+	}
+	[pool release];
+	
+	if (dieWithError) {
+		if ([delegate respondsToSelector:@selector(reader:didEncounterError:)]) {
+			// TODO better error
+			[delegate reader:self didEncounterError:[NSError errorWithDomain:NSPOSIXErrorDomain code:EINVAL userInfo:nil]];
+		}
+		
+		current = -1;
+		
+		if ([delegate respondsToSelector:@selector(readerDidEnd:)])
+			[delegate readerDidEnd:self];
+	} else
+		[self scheduleNextFragmentRead];
+}
+
+@end
+
+
+
+
+static id ILSwapItemValueFromPasteboardValue(NSString* uti, id value) {
+	if (![uti isEqual:kILSwapFragmentListPasteboardType])
+		return value;
+	else {
+		
+		if ([value isKindOfClass:[NSData class]]) {
+			
+			NSPropertyListFormat format;
+			NSString* error = nil;
+			
+			id m = [NSPropertyListSerialization propertyListFromData:value mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&error];
+			if (!m && error) {
+				NSLog(@"<SwapKit> An error occurred while deserializing item attributes from the pasteboard: %@", error);
+				[error release];
+			}
+			
+			value = m;
+			
+		}
+		
+		if (value && [value isKindOfClass:[NSArray class]])
+			return [[[ILSwapPasteboardFragmentsDataSource alloc] initWithFragmentList:value] autorelease];
+		else
+			return nil;
+	}
+}
+
+static NSString* ILSwapItemTypeFromAttributes(NSString* originalType, NSDictionary* attributes) {
+	if (![originalType isEqual:kILSwapFragmentListPasteboardType])
+		return originalType;
+	else
+		return [attributes objectForKey:kILSwapLargeItemOriginalTypeAttribute];
+}
+
+
 @interface ILSwapRequest ()
 
 @end
@@ -69,11 +251,18 @@
 	if (!uti)
 		return nil;
 	
-	NSData* d = [pb valueForPasteboardType:uti];
-	NSData* m = [pb valueForPasteboardType:kILSwapItemAttributesUTI];
+	id d = ILSwapItemValueFromPasteboardValue(uti, [pb valueForPasteboardType:uti]);
+	id m = [pb valueForPasteboardType:kILSwapItemAttributesUTI];
+	m = [ILSwapItem attributesFromPasteboardValue:m];
 	
-	return [ILSwapItem itemWithValue:d type:uti attributes:[ILSwapItem attributesFromPasteboardValue:m]];
+	uti = ILSwapItemTypeFromAttributes(uti, m);
+	if (!uti)
+		return nil;
+	
+	return !d? nil: [ILSwapItem itemWithValue:d type:uti attributes:m];
 }
+
+
 
 - (NSUInteger) countOfItems;
 {
@@ -97,14 +286,19 @@
 			if (!uti)
 				continue; // the item is missing, well, the item value :)
 			
-			id d = [item objectForKey:uti];
+			id d = ILSwapItemValueFromPasteboardValue(uti, [item objectForKey:uti]);
 			id m = [item objectForKey:kILSwapItemAttributesUTI];
+			m = [ILSwapItem attributesFromPasteboardValue:m];
 			
 			if (!d || ![ILSwapItem canUseAsItemValue:d])
 				continue;
 			
+			uti = ILSwapItemTypeFromAttributes(uti, m);
+			if (!uti)
+				continue;
+			
 			[a addObject:
-			 [ILSwapItem itemWithValue:d type:uti attributes:[ILSwapItem attributesFromPasteboardValue:m]]
+			 [ILSwapItem itemWithValue:d type:uti attributes:m]
 			 ];
 		}
 		
