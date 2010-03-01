@@ -125,9 +125,12 @@
 
 			[rs addObject:r];
 			
-			NSDictionary* a = [[item.attributes copy] autorelease];
-			if (a && [a count] > 0)
-				[attributesByReader setObject:a forKey:r];
+			NSMutableDictionary* a = [[item.attributes mutableCopy] autorelease];
+			if (!a)
+				a = [NSMutableDictionary dictionary];
+			
+			[a setObject:item.type forKey:kILSwapLargeItemOriginalTypeAttribute];
+			[attributesByReader setObject:a forKey:r];
 		}
 		
 		readers = [rs copy];
@@ -223,10 +226,8 @@
 		
 		for (id <ILSwapReader> r in readers) {
 			NSMutableDictionary* item = [NSMutableDictionary dictionary], * a = [attributesByReader objectForKey:r];
-			
-			if (a)
-				[item setObject:a forKey:kILSwapItemAttributesUTI];
-			
+
+			[item setObject:a forKey:kILSwapItemAttributesUTI];
 			[item setObject:[pasteboardListsByReader objectForKey:r] forKey:kILSwapFragmentListPasteboardType];
 			
 			[pbItems addObject:item];

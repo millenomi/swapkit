@@ -182,6 +182,13 @@ static id ILSwapItemValueFromPasteboardValue(NSString* uti, id value) {
 	}
 }
 
+static NSString* ILSwapItemTypeFromAttributes(NSString* originalType, NSDictionary* attributes) {
+	if (![originalType isEqual:kILSwapFragmentListPasteboardType])
+		return originalType;
+	else
+		return [attributes objectForKey:kILSwapLargeItemOriginalTypeAttribute];
+}
+
 
 @interface ILSwapRequest ()
 
@@ -241,8 +248,13 @@ static id ILSwapItemValueFromPasteboardValue(NSString* uti, id value) {
 	
 	id d = ILSwapItemValueFromPasteboardValue(uti, [pb valueForPasteboardType:uti]);
 	id m = [pb valueForPasteboardType:kILSwapItemAttributesUTI];
+	m = [ILSwapItem attributesFromPasteboardValue:m];
 	
-	return !d? nil: [ILSwapItem itemWithValue:d type:uti attributes:[ILSwapItem attributesFromPasteboardValue:m]];
+	uti = ILSwapItemTypeFromAttributes(uti, m);
+	if (!uti)
+		return nil;
+	
+	return !d? nil: [ILSwapItem itemWithValue:d type:uti attributes:m];
 }
 
 
@@ -271,12 +283,17 @@ static id ILSwapItemValueFromPasteboardValue(NSString* uti, id value) {
 			
 			id d = ILSwapItemValueFromPasteboardValue(uti, [item objectForKey:uti]);
 			id m = [item objectForKey:kILSwapItemAttributesUTI];
+			m = [ILSwapItem attributesFromPasteboardValue:m];
 			
 			if (!d || ![ILSwapItem canUseAsItemValue:d])
 				continue;
 			
+			uti = ILSwapItemTypeFromAttributes(uti, m);
+			if (!uti)
+				continue;
+			
 			[a addObject:
-			 [ILSwapItem itemWithValue:d type:uti attributes:[ILSwapItem attributesFromPasteboardValue:m]]
+			 [ILSwapItem itemWithValue:d type:uti attributes:m]
 			 ];
 		}
 		

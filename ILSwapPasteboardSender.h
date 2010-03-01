@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "L0Map.h"
 
+#define kILSwapLargeItemOriginalTypeAttribute @"ILSwapLargeItemOriginalType"
+
 #define kILSwapFragmentPasteboardType @"net.infinite-labs.SwapKit.Fragment"
 #define kILSwapFragmentListPasteboardType @"net.infinite-labs.SwapKit.FragmentList"
 
