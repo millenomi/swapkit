@@ -239,15 +239,20 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
 
  The items array must contain ILSwapItem instances only. This is a change from 1.0, which could contain ILSwapItems or raw values.
  
- but see ILSwapItem#value's documentation for details.
+ SwapKit might elect to send your request asynchronously. In this case, this method will return YES, and the #sendingAsynchronously property will be YES for the duration of the send. See also ILSwapServiceDelegate for delegate methods that are called in this case.
  
-@return YES if the item was dispatched to an app, NO otherwise.
+@return YES if the item was (or is going to be) dispatched to an app, NO otherwise.
 
 @param items An array of items, as specified above.
 @param action The action to be performed upon the items by the target application. Can be nil; @ref kILSwapDefaultAction will be used in that case.
 @param ident The application identifier for the target application, or nil to send to the first app that can handle the specified items, type and action.
 */
 - (BOOL) sendItems:(NSArray*) items forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) ident;
+
+/**
+ This property is YES if the last call to #sendItem:forAction:toApplicationWithIdentifier: or #sendItems:forAction:toApplicationWithIdentifier: is sending your request asynchronously, NO otherwise.
+ */
+@property(readonly) BOOL sendingAsynchronously;
 
 /**
  Searches for a registered application that can receive the given items and perform the given action. This is the same algorithm described for the #sendItems:forAction:toApplicationWithIdentifier: method when the application identifier is nil.
@@ -322,9 +327,16 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
  */
 - (void) swapServiceDidReceiveRequestWithAttributes:(NSDictionary*) a;
 
-
-@optional
+/**
+ Sent when the service begins sending a request asynchronously.
+ */
 - (void) swapServiceWillBeginSendingAsynchronousRequest;
+
+/**
+ Sent when the service ends sending a request asynchronously.
+ 
+ @param succeeded If YES, the request succeeded. If NO, an error prevented the request from being delivered.
+ */
 - (void) swapServiceDidEndSendingAsynchronousRequest:(BOOL) succeeded;
 
 @end

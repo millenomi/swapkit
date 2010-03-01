@@ -406,6 +406,11 @@ L0ObjCSingletonMethod(sharedService)
 #pragma mark -
 #pragma mark Sending
 
+- (BOOL) sendingAsynchronously;
+{
+	return asyncSender != nil;
+}
+
 - (BOOL) sendItem:(ILSwapItem*) item forAction:(NSString*) action toApplicationWithIdentifier:(NSString*) appID;
 {
 	return [self sendItems:[NSArray arrayWithObject:item] forAction:action toApplicationWithIdentifier:appID];
