@@ -3,7 +3,7 @@
 # - source compatibility changes
 # in the new version. A change in minor has neither.
 major: 1
-minor: 1
+minor: 2
 
 # The compatibility span is an additional flag for compatibility changes.
 # If it changes, then you might need to change your code!
@@ -19,5 +19,5 @@ compatibility_span: 2
 # The designation identifier is the number after "beta" or "development".
 # For example, it's the 2 in 1.0b2. For dev versions, the identifier is '-' followed the short version of the git commit hash (eg. 1.0d-123abc).
 beta:
-    designation_identifier: 0
+    designation_identifier: 1
 
