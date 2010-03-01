@@ -318,7 +318,7 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
  
  @param attricutres Contains the attributes for this request, the same ones that were passed to ILSwapService#sendRequestWithAttributes:.
  */
-- (void) swapServiceDidReceiveRequestWithAttributes:(NSDictionary*) attricutres;
+- (void) swapServiceDidReceiveRequestWithAttributes:(NSDictionary*) a;
 
 @end
 
