@@ -35,6 +35,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreFoundation/CoreFoundation.h>
 
+#define L0UUID ILSwapKit_L0UUID
+
 /// @internal
 @interface L0UUID : NSObject <NSCopying, NSCoding> {
 	__strong CFUUIDRef uuid;
