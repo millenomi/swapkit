@@ -242,7 +242,6 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
 @return YES if the item was dispatched to an app, NO otherwise.
 
 @param items An array of items, as specified above.
-@param uti The UTI for the type of all items in the items parameter array.
 @param action The action to be performed upon the items by the target application. Can be nil; @ref kILSwapDefaultAction will be used in that case.
 @param ident The application identifier for the target application, or nil to send to the first app that can handle the specified items, type and action.
 */
