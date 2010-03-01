@@ -32,7 +32,7 @@
 {
 	NSLog(@"%@", request.item.value);
 	
-	reader = [request.item.value reader];
+	reader = [[request.item.value reader] retain];
 	reader.delegate = self;
 	
 	[reader start];
