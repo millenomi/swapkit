@@ -462,6 +462,15 @@ L0ObjCSingletonMethod(sharedService)
 	return [[UIApplication sharedApplication] openURL:u];
 }
 
+- (BOOL) openApplicationWithIdentifier:(NSString*) ident;
+{
+	NSDictionary* d = [self registrationForApplicationWithIdentifier:ident];
+	if (!d)
+		return NO;
+	
+	return [self sendRequestWithAttributes:[NSDictionary dictionaryWithObject:@"YES" forKey:kILSwapServiceJustOpenKey] toApplicationWithRegistration:d];
+}
+
 @end
 
 @implementation ILSwapService (ILSwapPasteboardLifetime)

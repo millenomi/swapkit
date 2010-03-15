@@ -124,6 +124,9 @@ Request attributes are keys attached to a particular request, usually accessed t
 /** String: the name for the pasteboard that contains the data for this request. You shouldn't use this key directly; instead, implement the ILSwapServiceDelegate#swapServiceDidReceiveRequest: method in your delegate. This allows SwapKit to dispose of the pasteboard correctly once it's no longer useful (and, in the future, use means other than pasteboards to receive and send data). */
 #define kILSwapServicePasteboardNameKey @"swap.pasteboard"
 
+/** String: if equal to 'YES', this application was opened using the #openApplicationWithIdentifier: method from another application. */
+#define kILSwapServiceJustOpenKey @"swap.open"
+
 /** @} */
 
 // -- - --
@@ -302,6 +305,17 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
  This is our application regiatration, that is, the dictionary that was passed to the last #registerWithAttributes:update: call since the app started.
  */
 @property(readonly) NSDictionary* applicationRegistration;
+
+/**
+ Starts the application with the given identifier.
+ 
+ The app will open as though opened by an URL, and a request with custom attributes will be dispatched to it. This will not cause the ILSwapServiceDelegate#swapServiceDidReceiveRequest: to be called in the opened application.
+ 
+ This kind of request is always dispatched synchronously; it will never trigger an asynchronous send. (See #sendingAsynchronously for more information on asynchronous requests.)
+ 
+ @return YES if the request for starting an app has been dispatched, NO otherwise.
+ */
+- (BOOL) openApplicationWithIdentifier:(NSString*) ident;
 
 @end
 
