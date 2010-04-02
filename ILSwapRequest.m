@@ -58,7 +58,7 @@
 	if (pb.numberOfItems != 1)
 		return nil;
 	
-	NSString* uti; // take the first UTI off the item.
+	NSString* uti = nil; // take the first UTI off the item.
 	for (NSString* u in [pb pasteboardTypes]) {
 		if ([u isEqual:kILSwapItemAttributesUTI])
 			continue;
@@ -86,7 +86,7 @@
 		NSMutableArray* a = [NSMutableArray array];
 
 		for (NSDictionary* item in pb.items) {
-			NSString* uti; // take the first UTI off the item.
+			NSString* uti = nil; // take the first UTI off the item.
 			for (NSString* u in item) {
 				if ([u isEqual:kILSwapItemAttributesUTI])
 					continue;
