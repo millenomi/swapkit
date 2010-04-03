@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ILSwapSendImage.h"
 
-
-@interface ILSwapAppPane : UITableViewController <UIActionSheetDelegate> {
+@interface ILSwapAppPane : UITableViewController <UIActionSheetDelegate, ILSwapSendImageDelegate> {
 	NSDictionary* record;
 	NSArray* keys;
 	NSArray* values;

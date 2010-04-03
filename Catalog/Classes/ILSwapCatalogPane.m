@@ -26,23 +26,39 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 
 @implementation ILSwapCatalogPane
 
-@synthesize displayedApplications;
+@synthesize displayedApplications, lastSelection, keepsLastSelection;
 
 - (void) viewWillAppear:(BOOL)animated;
 {
+	if (ILSwapIsiPad())
+		keepsLastSelection = YES;
+	
 	self.title = NSLocalizedString(@"SwapKit Catalog", @"Title for the catalog pane");
+	if (ILSwapIsiPad())
+		self.navigationItem.titleView = ILSwapCatalogNavigationBarTitleViewForString(self.title);
+	
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"\u21c4 Catalog", @"Back (shorter) title for the catalog pane") style:UIBarButtonItemStyleBordered target:nil action:NULL] autorelease];
 	
 	[self reloadData];
 	[super viewWillAppear:animated];
+	
+	if (keepsLastSelection && self.lastSelection)
+		[self.tableView selectRowAtIndexPath:self.lastSelection animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void) dealloc
 {
 	[displayedApplications release];
+	[lastSelection release];
 	[super dealloc];
 }
 
+
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+{
+	return UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ||
+		[ILSwapCatalogApp() shouldSupportAdditionalOrientation:toInterfaceOrientation forViewController:self];
+}
 
 #pragma mark Table view methods
 
@@ -76,7 +92,9 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 	if (!u || ![[UIApplication sharedApplication] canOpenURL:u])
 		cell.textLabel.textColor = [UIColor grayColor];
 	
+#if !kILSwapCatalogPlatform_iPad
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+#endif
 
     return cell;
 }
@@ -86,12 +104,13 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 // Override to support row selection in the table view.
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSDictionary* record = [self.displayedApplications objectAtIndex:[indexPath row]];
+	[ILSwapCatalogApp() displayApplicationRegistration:record];
 	
-	ILSwapAppPane* pane = [[[ILSwapAppPane alloc] initWithApplicationRegistrationRecord:record] autorelease];
-	[self.navigationController pushViewController:pane animated:YES];
+	if (keepsLastSelection)
+		self.lastSelection = indexPath;
 }
 
-- (IBAction) deleteAllItems;
+- (IBAction) deleteAllItems:(id) sender;
 {
 	UIActionSheet* a = [[UIActionSheet new] autorelease];
 	a.title = NSLocalizedString(@"Do you really want to clear the app catalog for this device?", @"Prompt for delete all items");
@@ -99,7 +118,7 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 	a.cancelButtonIndex = [a addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")];
 	
 	a.delegate = self;
-	[a showInView:ILSwapCatalogApp().window];
+	[ILSwapCatalogApp() showActionSheet:a invokedByBarButtonItem:sender];
 }
 
 - (void) actionSheet:(UIActionSheet *)a clickedButtonAtIndex:(NSInteger)buttonIndex;
@@ -108,6 +127,7 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 		return;
 	
 	[[ILSwapService sharedService] deleteAllApplicationRegistrations];
+	[ILSwapCatalogApp() displayApplicationRegistration:nil];
 	[self reloadData];
 }
 

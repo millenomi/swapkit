@@ -8,8 +8,14 @@
 
 @interface ILSwapCatalogPane : UITableViewController {
 	NSArray* displayedApplications;
+	
+	NSIndexPath* lastSelection;
+	BOOL keepsLastSelection;
 }
 
-- (IBAction) deleteAllItems;
+- (IBAction) deleteAllItems:(id) sender;
+
+@property(copy) NSIndexPath* lastSelection;
+@property BOOL keepsLastSelection;
 
 @end

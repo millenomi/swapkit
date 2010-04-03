@@ -6,17 +6,44 @@
 //  Copyright __MyCompanyName__ 2010. All rights reserved.
 //
 
-@interface ILSwapCatalogAppDelegate : NSObject <UIApplicationDelegate, UIActionSheetDelegate> {
-    
-    UIWindow *window;
-    UINavigationController *navigationController;
-}
+extern UILabel* ILSwapCatalogNavigationBarTitleViewForString(NSString* s);
+extern BOOL ILSwapIsiPad();
 
-@property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
+@protocol ILSwapCatalogAppServices <NSObject>
+
+- (BOOL) shouldSupportAdditionalOrientation:(UIInterfaceOrientation) o forViewController:(UIViewController*) vc;
+
+- (void) showActionSheet:(UIActionSheet*) a invokedByBarButtonItem:(UIBarButtonItem*) item;
+- (void) showActionSheet:(UIActionSheet*) a invokedByView:(UIView*) view;
+
+- (void) displayApplicationRegistration:(NSDictionary*) reg;
+- (void) displaySendViewController:(UIViewController*) c;
 
 @end
 
-static inline ILSwapCatalogAppDelegate* ILSwapCatalogApp() {
-	return (ILSwapCatalogAppDelegate*) UIApp.delegate;
+// #define ILSwapiPadClass(name) (ILSwapIsiPad() ? NSClassFromString(@#name) : Nil)
+#define ILSwapiPadClass(name) ([name class])
+
+static inline id <ILSwapCatalogAppServices> ILSwapCatalogApp() {
+	return (id <ILSwapCatalogAppServices>) UIApp.delegate;
 }
+
+@interface ILSwapCatalogAppDelegate : NSObject
+<UIApplicationDelegate, UIActionSheetDelegate, ILSwapCatalogAppServices> {
+    IBOutlet UIWindow* window;
+    IBOutlet UINavigationController* navigationController;
+		
+	IBOutlet UINavigationController* detailsController;
+	IBOutlet UIViewController* noItemController;
+	
+	UISplitViewController* splitController;
+	
+	UIPopoverController* popover;
+	UIBarButtonItem* popoverItem;
+}
+
+@property(nonatomic, retain) UIPopoverController* popover;
+@property(nonatomic, retain) UIBarButtonItem* popoverItem;
+
+@end
+

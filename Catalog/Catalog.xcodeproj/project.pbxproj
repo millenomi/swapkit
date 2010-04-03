@@ -7,20 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		156E9EE2111ECE96003F6CBF /* ILSwapMvrContactSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 156E9EE1111ECE96003F6CBF /* ILSwapMvrContactSupport.m */; };
-		156E9EE4111ECEA5003F6CBF /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 156E9EE3111ECEA5003F6CBF /* AddressBook.framework */; };
-		156E9EF6111ECFDA003F6CBF /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 156E9EF5111ECFDA003F6CBF /* AddressBookUI.framework */; };
+		153F90E011202B1F00BAE43A /* Icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = 153F90DE11202B1F00BAE43A /* Icon72.png */; };
+		153F90E511202B6000BAE43A /* Icon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 153F90E311202B6000BAE43A /* Icon512.png */; };
+		1541E5281115914A00936240 /* L0Keyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 1541E5261115914A00936240 /* L0Keyboard.m */; };
+		1541E5FA11159DE500936240 /* ILSwapSendImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1541E5F911159DE500936240 /* ILSwapSendImage.m */; };
 		157417ED10F68636006C1DC2 /* ILSwapSendText.m in Sources */ = {isa = PBXBuildFile; fileRef = 157417EB10F68636006C1DC2 /* ILSwapSendText.m */; };
 		157417F010F68652006C1DC2 /* ILSwapSendText.xib in Resources */ = {isa = PBXBuildFile; fileRef = 157417EF10F68652006C1DC2 /* ILSwapSendText.xib */; };
+		158DA39F1122A0A2005A99B2 /* ILAutorotatingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1541E3361115780C00936240 /* ILAutorotatingViewController.m */; };
 		15923E2710F1F62A0011B29A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15923E2610F1F62A0011B29A /* MobileCoreServices.framework */; };
 		15923E2C10F1F63C0011B29A /* libSwapKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15923E2510F1F6230011B29A /* libSwapKit.a */; };
 		15923E8B10F1FC6D0011B29A /* ILSwapAppPane.m in Sources */ = {isa = PBXBuildFile; fileRef = 15923E8910F1FC6D0011B29A /* ILSwapAppPane.m */; };
 		15923E8F10F1FCAC0011B29A /* ILSwapAppPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15923E8E10F1FCAC0011B29A /* ILSwapAppPane.xib */; };
 		15923F1810F204960011B29A /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 15923F1710F204960011B29A /* Icon.png */; };
+		15AE0731111ED598001AAD9F /* ILSwapMvrContactSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 15AE072F111ED598001AAD9F /* ILSwapMvrContactSupport.m */; };
+		15AE0737111ED60C001AAD9F /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15AE0736111ED60C001AAD9F /* AddressBook.framework */; };
+		15AE0739111ED60C001AAD9F /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15AE0738111ED60C001AAD9F /* AddressBookUI.framework */; };
+		15FBA45F11222C8E00BF476E /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 15FBA45E11222C8E00BF476E /* MainWindow-iPad.xib */; };
 		1D3623260D0F684500981E51 /* ILSwapCatalogAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* ILSwapCatalogAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
-		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
 		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
 		28C286E10D94DF7D0034E888 /* ILSwapCatalogPane.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* ILSwapCatalogPane.m */; };
@@ -28,7 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		156E9EDE111ECE5E003F6CBF /* PBXContainerItemProxy */ = {
+		1541E3031115735C00936240 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 15923E1B10F1F6230011B29A /* SwapKit.xcodeproj */;
 			proxyType = 2;
@@ -52,10 +58,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		156E9EE0111ECE96003F6CBF /* ILSwapMvrContactSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapMvrContactSupport.h; sourceTree = "<group>"; };
-		156E9EE1111ECE96003F6CBF /* ILSwapMvrContactSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapMvrContactSupport.m; sourceTree = "<group>"; };
-		156E9EE3111ECEA5003F6CBF /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
-		156E9EF5111ECFDA003F6CBF /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		153F90DE11202B1F00BAE43A /* Icon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon72.png; sourceTree = "<group>"; };
+		153F90E311202B6000BAE43A /* Icon512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon512.png; sourceTree = "<group>"; };
+		1541E311111573BD00936240 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		1541E3351115780C00936240 /* ILAutorotatingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILAutorotatingViewController.h; sourceTree = "<group>"; };
+		1541E3361115780C00936240 /* ILAutorotatingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILAutorotatingViewController.m; sourceTree = "<group>"; };
+		1541E51911158FE700936240 /* Catalog-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Catalog-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		1541E5251115914A00936240 /* L0Keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = L0Keyboard.h; sourceTree = "<group>"; };
+		1541E5261115914A00936240 /* L0Keyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = L0Keyboard.m; sourceTree = "<group>"; };
+		1541E5F811159DE500936240 /* ILSwapSendImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapSendImage.h; sourceTree = "<group>"; };
+		1541E5F911159DE500936240 /* ILSwapSendImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapSendImage.m; sourceTree = "<group>"; };
 		157417EA10F68636006C1DC2 /* ILSwapSendText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapSendText.h; sourceTree = "<group>"; };
 		157417EB10F68636006C1DC2 /* ILSwapSendText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapSendText.m; sourceTree = "<group>"; };
 		157417EF10F68652006C1DC2 /* ILSwapSendText.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ILSwapSendText.xib; sourceTree = "<group>"; };
@@ -65,6 +77,13 @@
 		15923E8910F1FC6D0011B29A /* ILSwapAppPane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapAppPane.m; sourceTree = "<group>"; };
 		15923E8E10F1FCAC0011B29A /* ILSwapAppPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ILSwapAppPane.xib; sourceTree = "<group>"; };
 		15923F1710F204960011B29A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		15AE072F111ED598001AAD9F /* ILSwapMvrContactSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapMvrContactSupport.m; sourceTree = "<group>"; };
+		15AE0730111ED598001AAD9F /* ILSwapMvrContactSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapMvrContactSupport.h; sourceTree = "<group>"; };
+		15AE0736111ED60C001AAD9F /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		15AE0738111ED60C001AAD9F /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		15C87FAB111ED6480010D485 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		15C87FAD111ED6480010D485 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		15FBA45E11222C8E00BF476E /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* ILSwapCatalogAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSwapCatalogAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* ILSwapCatalogAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSwapCatalogAppDelegate.m; sourceTree = "<group>"; };
@@ -89,8 +108,8 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */,
 				15923E2710F1F62A0011B29A /* MobileCoreServices.framework in Frameworks */,
-				156E9EE4111ECEA5003F6CBF /* AddressBook.framework in Frameworks */,
-				156E9EF6111ECFDA003F6CBF /* AddressBookUI.framework in Frameworks */,
+				15AE0737111ED60C001AAD9F /* AddressBook.framework in Frameworks */,
+				15AE0739111ED60C001AAD9F /* AddressBookUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,27 +119,51 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				156E9EE0111ECE96003F6CBF /* ILSwapMvrContactSupport.h */,
-				156E9EE1111ECE96003F6CBF /* ILSwapMvrContactSupport.m */,
+				15AE0730111ED598001AAD9F /* ILSwapMvrContactSupport.h */,
+				15AE072F111ED598001AAD9F /* ILSwapMvrContactSupport.m */,
+				1541E3351115780C00936240 /* ILAutorotatingViewController.h */,
+				1541E3361115780C00936240 /* ILAutorotatingViewController.m */,
 				15923E8810F1FC6D0011B29A /* ILSwapAppPane.h */,
 				15923E8910F1FC6D0011B29A /* ILSwapAppPane.m */,
 				157417EA10F68636006C1DC2 /* ILSwapSendText.h */,
 				157417EB10F68636006C1DC2 /* ILSwapSendText.m */,
+				1541E5F811159DE500936240 /* ILSwapSendImage.h */,
+				1541E5F911159DE500936240 /* ILSwapSendImage.m */,
 				28C286DF0D94DF7D0034E888 /* ILSwapCatalogPane.h */,
 				28C286E00D94DF7D0034E888 /* ILSwapCatalogPane.m */,
 				1D3623240D0F684500981E51 /* ILSwapCatalogAppDelegate.h */,
 				1D3623250D0F684500981E51 /* ILSwapCatalogAppDelegate.m */,
+				1541E5251115914A00936240 /* L0Keyboard.h */,
+				1541E5261115914A00936240 /* L0Keyboard.m */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		1541E310111573B200936240 /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+				153F90DE11202B1F00BAE43A /* Icon72.png */,
+				1541E51911158FE700936240 /* Catalog-Info.plist */,
+				1541E311111573BD00936240 /* MainWindow.xib */,
+			);
+			path = iPad;
 			sourceTree = "<group>";
 		};
 		15923E1C10F1F6230011B29A /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				15923E2510F1F6230011B29A /* libSwapKit.a */,
-				156E9EDF111ECE5E003F6CBF /* SwapKit.bundle */,
+				1541E3041115735C00936240 /* SwapKit.bundle */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		15FBA45D11222C8E00BF476E /* Resources-iPad */ = {
+			isa = PBXGroup;
+			children = (
+				15FBA45E11222C8E00BF476E /* MainWindow-iPad.xib */,
+			);
+			name = "Resources-iPad";
 			sourceTree = "<group>";
 		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
@@ -138,11 +181,14 @@
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				15FBA45D11222C8E00BF476E /* Resources-iPad */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				15923E2610F1F62A0011B29A /* MobileCoreServices.framework */,
-				156E9EE3111ECEA5003F6CBF /* AddressBook.framework */,
-				156E9EF5111ECFDA003F6CBF /* AddressBookUI.framework */,
+				15AE0736111ED60C001AAD9F /* AddressBook.framework */,
+				15AE0738111ED60C001AAD9F /* AddressBookUI.framework */,
+				15C87FAB111ED6480010D485 /* AddressBook.framework */,
+				15C87FAD111ED6480010D485 /* AddressBookUI.framework */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -158,7 +204,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				1541E310111573B200936240 /* iPad */,
 				15923F1710F204960011B29A /* Icon.png */,
+				153F90E311202B6000BAE43A /* Icon512.png */,
 				157417EF10F68652006C1DC2 /* ILSwapSendText.xib */,
 				28F335F01007B36200424DE2 /* ILSwapCatalogPane.xib */,
 				15923E8E10F1FCAC0011B29A /* ILSwapAppPane.xib */,
@@ -230,11 +278,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		156E9EDF111ECE5E003F6CBF /* SwapKit.bundle */ = {
+		1541E3041115735C00936240 /* SwapKit.bundle */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = SwapKit.bundle;
-			remoteRef = 156E9EDE111ECE5E003F6CBF /* PBXContainerItemProxy */;
+			remoteRef = 1541E3031115735C00936240 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		15923E2510F1F6230011B29A /* libSwapKit.a */ = {
@@ -256,6 +304,9 @@
 				15923E8F10F1FCAC0011B29A /* ILSwapAppPane.xib in Resources */,
 				15923F1810F204960011B29A /* Icon.png in Resources */,
 				157417F010F68652006C1DC2 /* ILSwapSendText.xib in Resources */,
+				153F90E011202B1F00BAE43A /* Icon72.png in Resources */,
+				153F90E511202B6000BAE43A /* Icon512.png in Resources */,
+				15FBA45F11222C8E00BF476E /* MainWindow-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,7 +322,10 @@
 				28C286E10D94DF7D0034E888 /* ILSwapCatalogPane.m in Sources */,
 				15923E8B10F1FC6D0011B29A /* ILSwapAppPane.m in Sources */,
 				157417ED10F68636006C1DC2 /* ILSwapSendText.m in Sources */,
-				156E9EE2111ECE96003F6CBF /* ILSwapMvrContactSupport.m in Sources */,
+				1541E5281115914A00936240 /* L0Keyboard.m in Sources */,
+				1541E5FA11159DE500936240 /* ILSwapSendImage.m in Sources */,
+				15AE0731111ED598001AAD9F /* ILSwapMvrContactSupport.m in Sources */,
+				158DA39F1122A0A2005A99B2 /* ILAutorotatingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,13 +349,17 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../Tools/Common/iPhone/UIKit.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "kILSwapCatalogPlatform_iPhone=1";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../build/Headers";
 				INFOPLIST_FILE = "Catalog-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
 				);
 				PRODUCT_NAME = Catalog;
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -312,13 +370,17 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../Tools/Common/iPhone/UIKit.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "kILSwapCatalogPlatform_iPhone=1";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../build/Headers";
 				INFOPLIST_FILE = "Catalog-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
 				);
 				PRODUCT_NAME = Catalog;
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

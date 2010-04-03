@@ -14,7 +14,10 @@
 #import <AddressBookUI/AddressBookUI.h>
 
 #import "ILSwapSendText.h"
+#import "ILSwapSendImage.h"
 #import "ILSwapMvrContactSupport.h"
+
+#import "ILSwapCatalogAppDelegate.h"
 
 @interface ILSwapPickKindActionSheet : UIActionSheet
 {
@@ -40,6 +43,9 @@
 	
 	// kILSwapSendText
 	[self addButtonWithTitle:NSLocalizedString(@"Text (NSString)", @"Text button in item kind action sheet")];
+	
+	// kILSwapSendImagePNG
+	[self addButtonWithTitle:NSLocalizedString(@"Image (NSData, PNG)", @"Image (PNG) button in item kind action sheet")];
 	
 	self.cancelButtonIndex = [self addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")];
 	
@@ -74,7 +80,7 @@ enum {
 
 enum {
 	kILSwapSendText,
-	// kILSwapSendImage,
+	kILSwapSendImagePNG,
 };
 
 
@@ -161,8 +167,16 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 	types = [L0As(NSArray, [r objectForKey:kILAppSupportedReceivedItemsUTIs]) mutableCopy];
 	
 	self.title = [r objectForKey:kILAppVisibleName];
+
+	if (ILSwapIsiPad())
+		self.navigationItem.titleView = ILSwapCatalogNavigationBarTitleViewForString(self.title);
 	
 	return self;
+}
+
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+{
+	return UIInterfaceOrientationIsPortrait(toInterfaceOrientation) || [ILSwapCatalogApp() shouldSupportAdditionalOrientation:toInterfaceOrientation forViewController:self];
 }
 
 - (void) dealloc
@@ -177,6 +191,13 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 	[super dealloc];
 }
 
+- (void) viewWillAppear:(BOOL)animated;
+{
+	[super viewWillAppear:animated];
+	NSIndexPath* p = [self.tableView indexPathForSelectedRow];
+	if (p)
+		[self.tableView deselectRowAtIndexPath:p animated:animated];
+}
 
 #pragma mark Table view methods
 
@@ -272,6 +293,7 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 	UITableViewCell* cell = [self valueOnlyCellWithText:type fromTable:tv identifier:ident];
 	
 	if ([type isEqual:(id) kUTTypeUTF8PlainText] ||
+		[type isEqual:(id) kUTTypePNG] ||
 		[type isEqual:kMvrContactAsPropertyListType])
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
@@ -312,43 +334,95 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
 	if ([indexPath section] == kILSwapAppSectionTypes) {
+		if ([types count] == 0)
+			return;
+		
 		NSString* obj = L0As(NSString, [types objectAtIndex:[indexPath row]]);
 		
 		if ([obj isEqual:(id) kUTTypeUTF8PlainText]) {
 			
-			ILSwapSendText* t = [[[ILSwapSendText alloc] initWithApplicationIdentifier:[record objectForKey:kILAppIdentifier] type:obj] autorelease];
-			[self.navigationController pushViewController:t animated:YES];
+			ILSwapSendText* t = [[[ILSwapSendText alloc] initWithApplicationIdentifier:[record objectForKey:kILAppIdentifier] type:obj target:self didFinishSelector:@selector(didFinishSendingText:)] autorelease];
+			[ILSwapCatalogApp() displaySendViewController:t];
+			
+		} else if ([obj isEqual:(id) kUTTypePNG]) {
+			
+			ILSwapSendImage* i = [[ILSwapSendImage new] autorelease];
+			i.type = obj;
+			i.actualImageType = (id) kUTTypePNG;
+			i.application = record;
+			i.delegate = self;
+			
+			UIView* v = [self.tableView cellForRowAtIndexPath:indexPath];
+			if (!v)
+				v = self.tableView;
+			
+			[i sendFromView:v inViewController:self];
 			
 		} else if ([obj isEqual:kMvrContactAsPropertyListType]) {
 			
 			ABPeoplePickerNavigationController* peoplePicker = [[ABPeoplePickerNavigationController new] autorelease];
-			peoplePicker.navigationBar.tintColor = self.navigationController.navigationBar.tintColor;
 			peoplePicker.peoplePickerDelegate = self;
+			
+			if (ILSwapIsiPad() && [peoplePicker respondsToSelector:@selector(modalPresentationStyle)])
+				peoplePicker.modalPresentationStyle = UIModalPresentationFormSheet;
+			else
+				peoplePicker.navigationBar.tintColor = self.navigationController.navigationBar.tintColor;
+
 			[self presentModalViewController:peoplePicker animated:YES];
 			
 		} else if (obj) {
 			ILSwapPickKindActionSheet* s = [[[ILSwapPickKindActionSheet alloc] initWithSendingType:obj] autorelease];
 			s.delegate = self;
-			[s showInView:self.view];
+			
+			UIView* c = [tableView cellForRowAtIndexPath:indexPath].contentView;
+			if (!c)
+				c = tableView;
+			
+			[ILSwapCatalogApp() showActionSheet:s invokedByView:c];
 		}
 	}
 }
 
 - (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex;
 {
+	ILSwapPickKindActionSheet* a = (ILSwapPickKindActionSheet*) actionSheet;
+	BOOL deselect = YES;
+	
 	switch (buttonIndex) {
-		case kILSwapSendText: {
-			ILSwapPickKindActionSheet* a = (ILSwapPickKindActionSheet*) actionSheet;
-			
-			ILSwapSendText* t = [[[ILSwapSendText alloc] initWithApplicationIdentifier:[record objectForKey:kILAppIdentifier] type:a.sendingType] autorelease];
-			[self.navigationController pushViewController:t animated:YES];			
+		case kILSwapSendText: {			
+			ILSwapSendText* t = [[[ILSwapSendText alloc] initWithApplicationIdentifier:[record objectForKey:kILAppIdentifier] type:a.sendingType target:self didFinishSelector:@selector(didFinishSendingText:)] autorelease];
+			[ILSwapCatalogApp() displaySendViewController:t];			
 		} 
 			break;
+			
+		case kILSwapSendImagePNG: {
+			ILSwapSendImage* i = [[ILSwapSendImage new] autorelease];
+			i.type = a.sendingType;
+			i.actualImageType = (id) kUTTypePNG;
+			i.application = record;
+			i.delegate = self;
+			
+			NSIndexPath* p = [self.tableView indexPathForSelectedRow];
+			UIView* v = p? [self.tableView cellForRowAtIndexPath:p] : nil;
+			if (!v)
+				v = self.tableView;
+			
+			[i sendFromView:v inViewController:self];
+			deselect = NO;
+			break;
+		}
 			
 		default:
 			break;
 	}
 	
+	NSIndexPath* p = [self.tableView indexPathForSelectedRow];
+	if (p && deselect)
+		[self.tableView deselectRowAtIndexPath:p animated:YES];
+}
+
+- (void) didFinishPickingImage:(ILSwapSendImage *)i;
+{
 	NSIndexPath* p = [self.tableView indexPathForSelectedRow];
 	if (p)
 		[self.tableView deselectRowAtIndexPath:p animated:YES];
@@ -358,6 +432,9 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 
 - (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker;
 {
+	NSIndexPath* p = [self.tableView indexPathForSelectedRow];
+	if (p)
+		[self.tableView deselectRowAtIndexPath:p animated:YES];
 	[peoplePicker dismissModalViewControllerAnimated:YES];
 }
 
@@ -374,6 +451,15 @@ static NSComparisonResult ILSwapAppPaneCompareRegistrationKeys(id a, id b, void*
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier;
 {
 	return NO;
+}
+
+#pragma mark Sending text finish selector
+
+- (void) didFinishSendingText:(ILSwapSendText*) t;
+{
+	NSIndexPath* p = [self.tableView indexPathForSelectedRow];
+	if (p)
+		[self.tableView deselectRowAtIndexPath:p animated:YES];
 }
 
 @end
