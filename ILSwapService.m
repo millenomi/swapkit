@@ -75,6 +75,8 @@ static BOOL ILSwapContainsAllObjectsInArray(NSArray* containee, NSArray* content
 @interface ILSwapService ()
 
 - (NSDictionary*) registrationByApplyingDefaultsToAttributes:(NSDictionary*) a;
+- (void) checkWhetherAppCatalogChanged:(NSNotification*) n;
+- (void) respondToCatalogChanged;
 
 @end
 
@@ -123,9 +125,12 @@ L0ObjCSingletonMethod(sharedService)
 	if (self != nil) {
 		appCatalog = [[UIPasteboard pasteboardWithName:kILSwapServiceAppCatalogPasteboardName create:YES] retain];
 		appCatalog.persistent = YES;
+		changeCount = appCatalog.changeCount;
 		
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appCatalogChanged:) name:UIPasteboardChangedNotification object:appCatalog];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appCatalogRemoved:) name:UIPasteboardRemovedNotification object:appCatalog];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appCatalogChanged:) name:UIPasteboardChangedNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appCatalogRemoved:) name:UIPasteboardRemovedNotification object:nil];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkWhetherAppCatalogChanged:) name:UIApplicationWillEnterForegroundNotification object:nil];
 	}
 	
 	return self;
@@ -133,6 +138,8 @@ L0ObjCSingletonMethod(sharedService)
 
 - (void) dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[registrationAttributes release];
 	[appCatalog release];
 	[thisSessionOnlyPasteboards release];
@@ -148,12 +155,33 @@ L0ObjCSingletonMethod(sharedService)
 #pragma mark -
 #pragma mark Registration Management & Bindings
 
-- (void) appCatalogChanged:(NSNotification*) n;
+- (void) internalCheckWhetherAppCatalogChanged;
+{
+	[self checkWhetherAppCatalogChanged:nil];
+}
+
+- (void) checkWhetherAppCatalogChanged:(NSNotification*) n;
+{
+	if (changeCount != appCatalog.changeCount) {
+		changeCount = appCatalog.changeCount;
+		[self respondToCatalogChanged];
+	}
+}
+
+- (void) respondToCatalogChanged;
 {
 	[appRegistrations release]; appRegistrations = nil;
 	
 	if ([delegate respondsToSelector:@selector(swapServiceApplicationRegistrationsDidChange)])
 		[delegate swapServiceApplicationRegistrationsDidChange];
+}
+	
+- (void) appCatalogChanged:(NSNotification*) n;
+{
+	if (![[[n object] name] isEqual:kILSwapServiceAppCatalogPasteboardName])
+		return;
+	
+	[self respondToCatalogChanged];
 }
 
 - (BOOL) available;
@@ -163,6 +191,9 @@ L0ObjCSingletonMethod(sharedService)
 
 - (void) appCatalogRemoved:(NSNotification*) n;
 {
+	if (![[[n object] name] isEqual:kILSwapServiceAppCatalogPasteboardName])
+		return;
+
 	if (isInternallyDeletingAllAppRegistrations)
 		return;
 	
@@ -179,6 +210,7 @@ L0ObjCSingletonMethod(sharedService)
 {
 	appCatalog = [[UIPasteboard pasteboardWithName:kILSwapServiceAppCatalogPasteboardName create:YES] retain];
 	appCatalog.persistent = YES;
+	changeCount = appCatalog.changeCount;
 	
 	if ([delegate respondsToSelector:@selector(swapServiceDidChangeAvailability:)])
 		[delegate swapServiceDidChangeAvailability:YES];
@@ -375,6 +407,7 @@ L0ObjCSingletonMethod(sharedService)
 	
 	appCatalog = [[UIPasteboard pasteboardWithName:kILSwapServiceAppCatalogPasteboardName create:YES] retain];
 	appCatalog.persistent = YES;
+	changeCount = appCatalog.changeCount;
 	
 	isInternallyDeletingAllAppRegistrations = NO;
 }

@@ -152,6 +152,8 @@ TODO: More detailed information.
 	NSMutableSet* thisSessionOnlyPasteboards;
 	ILSwapPasteboardSender* asyncSender;
 	
+	NSInteger changeCount;
+	
 	BOOL isInternallyDeletingAllAppRegistrations;
 }
 
@@ -227,6 +229,14 @@ Returns all application registrations. The returned dictionary uses application 
  SwapKit availability doesn't change for this application as the method is invoked, but does change for all concurrently running applications.
  */
 - (void) deleteAllApplicationRegistrations;
+
+/**
+ \internal
+ Performs a test on the app catalog's backing store to determine if another app has changed it. If so, it will update its state and call appropriate delegate methods.
+ 
+ This method may be useful as a debugging feature or for writing apps that inspect the contents of the catalog, but should never be used by a normal SwapKit client. Do not rely on this being here in the future (that is, it's NOT part of the stable API).
+ */
+- (void) internalCheckWhetherAppCatalogChanged;
 
 /// Returns the registration info for the given application identifier, or nil if it's unavailable.
 - (NSDictionary*) registrationForApplicationWithIdentifier:(NSString*) appID;
