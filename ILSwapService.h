@@ -151,6 +151,8 @@ TODO: More detailed information.
 	NSDictionary* appRegistrations;
 	NSMutableSet* thisSessionOnlyPasteboards;
 	ILSwapPasteboardSender* asyncSender;
+	
+	BOOL isInternallyDeletingAllAppRegistrations;
 }
 
 /// Returns the shared instance of this class.
@@ -212,7 +214,7 @@ Returns all application registrations. The returned dictionary uses application 
  This property may be useful as a debugging feature or for writing apps that inspect the contents of the catalog, but should never be used by a normal SwapKit client. Do not rely on this being here in the future (that is, it's NOT part of the stable API).
  */
 @property(readonly) NSArray* internalApplicationRegistrationRecords;
- 
+
 
 /**
  \internal
@@ -221,6 +223,8 @@ Returns all application registrations. The returned dictionary uses application 
  Note that the use of this method also removes the current app's registration, as though you never called #registerWithAttributes:update: this session. If you want to use any service that requires registration, you might need to call this again.
  
  This method may be useful as a debugging feature or for writing apps that inspect the contents of the catalog, but should never be used by a normal SwapKit client. Do not rely on this being here in the future (that is, it's NOT part of the stable API).
+ 
+ SwapKit availability doesn't change for this application as the method is invoked, but does change for all concurrently running applications.
  */
 - (void) deleteAllApplicationRegistrations;
 
@@ -317,6 +321,11 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
  */
 - (BOOL) openApplicationWithIdentifier:(NSString*) ident;
 
+/**
+ If NO, the SwapKit service is unavailable (usually temporarily). The delegate will receive appropriate calls when this property changes.
+ */
+@property(readonly) BOOL available;
+
 @end
 
 /**
@@ -352,6 +361,19 @@ Passing nil for the action is the same as passing @ref kILSwapDefaultAction.
  @param succeeded If YES, the request succeeded. If NO, an error prevented the request from being delivered.
  */
 - (void) swapServiceDidEndSendingAsynchronousRequest:(BOOL) succeeded;
+
+
+/**
+ Sent when the service detects external changes in the application catalog. If you have cached any registrations, for example by holding onto the results of ILSwapService#applicationRegistrationForSendingItems:forAction:, it's wise to invalidate that cache and repeat.
+ */
+- (void) swapServiceApplicationRegistrationsDidChange;
+
+/**
+ Sent when SwapKit availability changes. If the system purges SwapKit data, it might become temporarily unavailable as the data is rebuilt. While SwapKit is unavailable, requests will always fail.
+ 
+ @param available YES if SwapKit returned available from a period of unavailability. NO if SwapKit has become unavailable after a period of unavailability.
+ */
+- (void) swapServiceDidChangeAvailability:(BOOL) available;
 
 @end
 

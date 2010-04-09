@@ -123,6 +123,9 @@ L0ObjCSingletonMethod(sharedService)
 	if (self != nil) {
 		appCatalog = [[UIPasteboard pasteboardWithName:kILSwapServiceAppCatalogPasteboardName create:YES] retain];
 		appCatalog.persistent = YES;
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appCatalogChanged:) name:UIPasteboardChangedNotification object:appCatalog];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appCatalogRemoved:) name:UIPasteboardRemovedNotification object:appCatalog];
 	}
 	
 	return self;
@@ -145,12 +148,54 @@ L0ObjCSingletonMethod(sharedService)
 #pragma mark -
 #pragma mark Registration Management & Bindings
 
+- (void) appCatalogChanged:(NSNotification*) n;
+{
+	[appRegistrations release]; appRegistrations = nil;
+	
+	if ([delegate respondsToSelector:@selector(swapServiceApplicationRegistrationsDidChange)])
+		[delegate swapServiceApplicationRegistrationsDidChange];
+}
+
+- (BOOL) available;
+{
+	return appCatalog != nil;
+}
+
+- (void) appCatalogRemoved:(NSNotification*) n;
+{
+	if (isInternallyDeletingAllAppRegistrations)
+		return;
+	
+	[appRegistrations release]; appRegistrations = nil;
+	[appCatalog release]; appCatalog = nil;
+	if ([delegate respondsToSelector:@selector(swapServiceDidChangeAvailability:)])
+		[delegate swapServiceDidChangeAvailability:YES];
+
+	long timeMsec = arc4random() % 10000;
+	[self performSelector:@selector(reregister) withObject:nil afterDelay:timeMsec / 1000.0];
+}
+
+- (void) reregister;
+{
+	appCatalog = [[UIPasteboard pasteboardWithName:kILSwapServiceAppCatalogPasteboardName create:YES] retain];
+	appCatalog.persistent = YES;
+	
+	if ([delegate respondsToSelector:@selector(swapServiceDidChangeAvailability:)])
+		[delegate swapServiceDidChangeAvailability:YES];
+
+	if (registrationAttributes)
+		[self registerWithAttributes:registrationAttributes update:YES];
+}
+
 - (void) registerWithAttributes:(NSDictionary*) a update:(BOOL) update;
 {
 	if (registrationAttributes) {
 		[registrationAttributes release];
 		registrationAttributes = nil;
 	}
+	
+	if (!self.available)
+		return;
 	
 	// check out if there's anything in the app catalog we have to fix.
 	NSString* appID = [a objectForKey:kILAppIdentifier];
@@ -263,6 +308,9 @@ L0ObjCSingletonMethod(sharedService)
 
 - (NSDictionary*) applicationRegistrations;
 {
+	if (!self.available)
+		return [NSDictionary dictionary];
+
 	if (!appRegistrations) {
 		NSMutableDictionary* regs = [NSMutableDictionary dictionary];
 		
@@ -293,6 +341,9 @@ L0ObjCSingletonMethod(sharedService)
 
 - (NSArray*) internalApplicationRegistrationRecords;
 {
+	if (!self.available)
+		return [NSArray array];
+
 	NSMutableArray* regs = [NSMutableArray array];
 	
 	NSIndexSet* s = [appCatalog itemSetWithPasteboardTypes:[NSArray arrayWithObject:kILSwapServiceRegistrationUTI]];
@@ -316,11 +367,16 @@ L0ObjCSingletonMethod(sharedService)
 
 - (void) deleteAllApplicationRegistrations;
 {
+	isInternallyDeletingAllAppRegistrations = YES;
+	
 	[registrationAttributes release]; registrationAttributes = nil;
 	[appCatalog release]; appCatalog = nil;
 	[UIPasteboard removePasteboardWithName:kILSwapServiceAppCatalogPasteboardName];
 	
 	appCatalog = [[UIPasteboard pasteboardWithName:kILSwapServiceAppCatalogPasteboardName create:YES] retain];
+	appCatalog.persistent = YES;
+	
+	isInternallyDeletingAllAppRegistrations = NO;
 }
 
 - (NSDictionary*) registrationForApplicationWithIdentifier:(NSString*) appID;

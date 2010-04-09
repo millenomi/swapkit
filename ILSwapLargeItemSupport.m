@@ -8,7 +8,11 @@
 
 #import "ILSwapLargeItemSupport.h"
 
-@interface ILSwapFileReader : NSObject <ILSwapReader> {
+@interface ILSwapFileReader : NSObject <ILSwapReader
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
+, NSStreamDelegate
+#endif
+> {
 	NSString* path;
 	NSInputStream* stream;
 	id <ILSwapReaderDelegate> delegate;
