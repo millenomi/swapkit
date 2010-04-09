@@ -17,5 +17,6 @@
 
 @property(copy) NSIndexPath* lastSelection;
 @property BOOL keepsLastSelection;
+- (void) reloadData;
 
 @end

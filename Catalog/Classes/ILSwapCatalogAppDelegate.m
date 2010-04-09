@@ -12,6 +12,7 @@
 
 #import <SwapKit/SwapKit.h>
 
+
 UILabel* ILSwapCatalogNavigationBarTitleViewForString(NSString* s) {
 	UILabel* l = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
 	l.text = s;
@@ -75,7 +76,7 @@ BOOL ILSwapIsiPad() {
 - (void) showActionSheet:(UIActionSheet*) a invokedByBarButtonItem:(UIBarButtonItem*) item;
 {
 	if (ILSwapIsiPad() && [a respondsToSelector:@selector(showFromBarButtonItem:)])
-		[a showFromBarButtonItem:item];
+		[a showFromBarButtonItem:item animated:YES];
 	else
 		[a showInView:window];
 }
@@ -159,6 +160,16 @@ BOOL ILSwapIsiPad() {
 	self.popover = nil;
 	self.popoverItem = nil;
 	[self updatePopverBarItem];
+}
+
+- (void) swapServiceApplicationRegistrationsDidChange;
+{
+	[catalogPane reloadData];
+
+	if (ILSwapIsiPad())
+		[self displayApplicationRegistration:nil];
+	else
+		[navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark -

@@ -6,6 +6,10 @@
 //  Copyright __MyCompanyName__ 2010. All rights reserved.
 //
 
+#import <SwapKit/SwapKit.h>
+
+@class ILSwapCatalogPane;
+
 extern UILabel* ILSwapCatalogNavigationBarTitleViewForString(NSString* s);
 extern BOOL ILSwapIsiPad();
 
@@ -29,9 +33,10 @@ static inline id <ILSwapCatalogAppServices> ILSwapCatalogApp() {
 }
 
 @interface ILSwapCatalogAppDelegate : NSObject
-<UIApplicationDelegate, UIActionSheetDelegate, ILSwapCatalogAppServices> {
-    IBOutlet UIWindow* window;
-    IBOutlet UINavigationController* navigationController;
+<UIApplicationDelegate, UIActionSheetDelegate, ILSwapCatalogAppServices, ILSwapServiceDelegate> {
+	IBOutlet UIWindow* window;
+	IBOutlet UINavigationController* navigationController;
+	IBOutlet ILSwapCatalogPane* catalogPane;
 		
 	IBOutlet UINavigationController* detailsController;
 	IBOutlet UIViewController* noItemController;

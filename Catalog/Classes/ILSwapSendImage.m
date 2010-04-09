@@ -78,8 +78,9 @@
 	if (i) {
 		// TODO check .actualImageType
 		NSData* d = UIImagePNGRepresentation(i);
+		ILSwapItem* item = [ILSwapItem itemWithValue:d type:(id) kUTTypePNG attributes:nil];
 		
-		[[ILSwapService sharedService] sendItem:d ofType:(id) kUTTypePNG forAction:nil toApplicationWithIdentifier:[application objectForKey:kILAppIdentifier]];
+		[[ILSwapService sharedService] sendItem:item forAction:nil toApplicationWithIdentifier:[application objectForKey:kILAppIdentifier]];
 	}
 	
 	if (popover) {

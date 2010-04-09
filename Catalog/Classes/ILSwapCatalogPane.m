@@ -13,7 +13,6 @@
 
 @interface ILSwapCatalogPane () <UIActionSheetDelegate>
 @property(copy) NSArray* displayedApplications;
-- (void) reloadData;
 @end
 
 static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id a, id b, void* context) {
@@ -88,7 +87,7 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 	cell.detailTextLabel.text = [d objectForKey:kILAppIdentifier];
 	
 	NSString* scheme = [d objectForKey:kILAppReceiveItemURLScheme];
-	NSURL* u = !scheme? nil : [NSURL URLWithString:[NSString stringWithFormat:@"%@:", scheme]];
+	NSURL* u = !scheme? nil : [NSURL URLWithString:[NSString stringWithFormat:@"%@:swapkit-echo-request", scheme]];
 	if (!u || ![[UIApplication sharedApplication] canOpenURL:u])
 		cell.textLabel.textColor = [UIColor grayColor];
 	
@@ -139,6 +138,9 @@ static NSComparisonResult ILSwapCatalogPaneCompareRegistrationsAlphabetically(id
 	[m release];
 	
 	[self.tableView reloadData];
+	NSIndexPath* ip = [self.tableView indexPathForSelectedRow];
+	if (ip)
+		[self.tableView deselectRowAtIndexPath:ip animated:YES];
 }
 
 @end
