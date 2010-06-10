@@ -130,7 +130,7 @@ L0ObjCSingletonMethod(sharedService)
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appCatalogChanged:) name:UIPasteboardChangedNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appCatalogRemoved:) name:UIPasteboardRemovedNotification object:nil];
 		
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkWhetherAppCatalogChanged:) name:UIApplicationWillEnterForegroundNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkWhetherAppCatalogChanged:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	}
 	
 	return self;
